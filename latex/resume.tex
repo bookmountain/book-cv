@@ -74,13 +74,15 @@
   \vspace{0.8em}%
 }
 
-\newcommand{\resumeExperience}[4]{%
+\newcommand{\resumeExperience}[5]{%
   \Needspace{6\baselineskip}%
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{0.34\textwidth}p{0.30\textwidth}r@{}}
-    {\resumebold #1} & {\resumebold #2} & {\resumebold #3}
-  \end{tabular*}\par
+  \begin{tabularx}{\textwidth}{@{}Y Z@{}}
+    {\resumebold #1} & {\resumebold #4} \\
+    {\small #2 \textbar\ #3} &
+  \end{tabularx}\par
+  \vspace{0.15em}
   \begin{itemize}
-    #4
+    #5
   \end{itemize}
   \vspace{0.55em}
 }
