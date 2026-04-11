@@ -1,0 +1,33 @@
+.DS_Store
+
+# LaTeX build output
+latex/build/
+latex/*.aux
+latex/*.fdb_latexmk
+latex/*.fls
+latex/*.log
+latex/*.out
+latex/*.pdf
+latex/*.synctex.gz
+latex/*.xdv
+
+# Node / Next.js
+app/nextjs/node_modules/
+app/nextjs/.next/
+app/nextjs/out/
+app/nextjs/.env*
+
+# Python / Django
+app/django/.venv/
+app/django/venv/
+app/django/env/
+app/django/__pycache__/
+app/django/**/*.pyc
+app/django/.env*
+app/django/staticfiles/
+app/django/media/
+
+# Editor noise
+.idea/
+.pytest_cache/
+

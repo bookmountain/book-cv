@@ -1,0 +1,128 @@
+%  !TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,left=1.25cm,right=1.25cm,top=1.15cm,bottom=1.25cm]{geometry}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fontspec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.2em,topsep=0.2em,parsep=0pt,partopsep=0pt}
+\renewcommand{\familydefault}{\sfdefault}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont[
+  Path=assets/fonts/,
+  Extension=.ttf,
+  UprightFont=*-Regular,
+  BoldFont=*-Bold,
+  ItalicFont=*-Italic,
+  BoldItalicFont=*-BoldItalic
+]{Roboto}
+\newfontfamily\resumebold[
+  Path=assets/fonts/,
+  Extension=.ttf,
+  UprightFont=*-Bold
+]{Roboto}
+\newfontfamily\resumelight[
+  Path=assets/fonts/,
+  Extension=.ttf,
+  UprightFont=*-Light,
+  ItalicFont=*-LightItalic
+]{Roboto}
+
+\definecolor{resumeText}{HTML}{111111}
+\hypersetup{
+  pdftitle={Book Sam Resume},
+  pdfauthor={Book Sam}
+}
+\color{resumeText}
+\linespread{1.08}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\raggedleft\arraybackslash}X}
+
+\newcommand{\resumeHeader}{%
+  \begin{center}
+    {\fontsize{30}{34}\selectfont\resumebold Book Sam}
+  \end{center}
+  \vspace{0.25em}
+  \hrule
+  \vspace{0.65em}
+  {\small
+  \begin{tabularx}{\textwidth}{@{}Y>{\centering\arraybackslash}X Z@{}}
+    \href{https://github.com/bookmountain}{github.com/bookmountain} &
+    \href{https://linkedin.com/in/book-sam-603004169}{linkedin.com/in/book-sam-603004169} &
+    \href{tel:0467364679}{0467364679} \\
+    Adelaide, Australia & &
+    \href{mailto:bookmountain0222@gmail.com}{bookmountain0222@gmail.com}
+  \end{tabularx}}
+}
+
+\newcommand{\resumeSection}[1]{%
+  \Needspace{5\baselineskip}%
+  \vspace{1.5em}%
+  {\fontsize{18}{22}\selectfont\resumebold #1\par}%
+  \vspace{0.35em}%
+  \hrule
+  \vspace{0.8em}%
+}
+
+\newcommand{\resumeExperience}[4]{%
+  \Needspace{6\baselineskip}%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{0.34\textwidth}p{0.30\textwidth}r@{}}
+    {\resumebold #1} & {\resumebold #2} & {\resumebold #3}
+  \end{tabular*}\par
+  \begin{itemize}
+    #4
+  \end{itemize}
+  \vspace{0.55em}
+}
+
+\newcommand{\resumeProject}[3]{%
+  \Needspace{4\baselineskip}%
+  {\resumebold #1} \textbar\ {\itshape #2}\par
+  \begin{itemize}
+    \item #3
+  \end{itemize}
+  \vspace{0.3em}
+}
+
+\newcommand{\resumeSkillLine}[2]{%
+  {\resumebold #1:} #2\par
+}
+
+\newcommand{\resumeEducation}[4]{%
+  \Needspace{3\baselineskip}%
+  \begin{tabularx}{\textwidth}{@{}Y Z@{}}
+    {\resumebold #1} & {\resumebold #2} \\
+    #3 & #4
+  \end{tabularx}\par
+  \vspace{0.45em}
+}
+
+\newcommand{\resumeReferee}[3]{%
+  \begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}Y@{}}
+    {\resumebold #1} & #2 \textbar\ \href{mailto:#3}{#3}
+  \end{tabularx}\par
+}
+
+\begin{document}
+\resumeHeader
+
+\input{sections/resume/summary.tex}
+\input{sections/resume/experience.tex}
+\input{sections/resume/projects.tex}
+\input{sections/resume/skills.tex}
+
+\newpage
+\input{sections/resume/education.tex}
+\input{sections/resume/referees.tex}
+
+\end{document}
