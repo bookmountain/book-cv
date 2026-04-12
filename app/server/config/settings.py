@@ -20,7 +20,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", "change-me-before-production")
 DEBUG = env_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = env_list(
     "DJANGO_ALLOWED_HOSTS",
-    "localhost,127.0.0.1,server,192.168.4.106,me.bookmountain.work,me.admin.bookmountain.work",
+    "localhost,127.0.0.1,server,192.168.4.106,me.bookmountain.work,me-admin.bookmountain.work",
 )
 CSRF_TRUSTED_ORIGINS = env_list(
     "DJANGO_CSRF_TRUSTED_ORIGINS",
@@ -32,7 +32,7 @@ CSRF_TRUSTED_ORIGINS = env_list(
         "http://192.168.4.106:3000,"
         "http://192.168.4.106:8000,"
         "https://me.bookmountain.work,"
-        "https://me.admin.bookmountain.work"
+        "https://me-admin.bookmountain.work"
     ),
 )
 

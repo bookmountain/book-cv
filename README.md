@@ -72,7 +72,7 @@ bash scripts/deploy-remote.sh
 Public hostnames:
 
 - frontend: `https://me.bookmountain.work`
-- Django admin and API: `https://me.admin.bookmountain.work`
+- Django admin and API: `https://me-admin.bookmountain.work`
 
 ### GitHub Actions deploy
 
@@ -89,7 +89,7 @@ The workflow syncs the repo to `/home/book/work/book-cv`, preserves the server-s
 The tunnel config on `.106` should expose:
 
 - `me.bookmountain.work -> http://192.168.4.106:3000`
-- `me.admin.bookmountain.work -> http://192.168.4.106:8000`
+- `me-admin.bookmountain.work -> http://192.168.4.106:8000`
 
 After editing `/etc/cloudflared/config.yml`, validate and reload:
 
