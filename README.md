@@ -65,7 +65,7 @@ The production server uses the same `docker-compose.yml` file and a separate `.e
 Manual deploy on the server:
 
 ```bash
-cd ~/work/book-cv
+cd /work/book-cv
 bash scripts/deploy-remote.sh
 ```
 
@@ -82,7 +82,7 @@ Required GitHub Actions secret:
 
 - `DEPLOY_SSH_KEY`: private SSH key that can connect to `book@192.168.4.106`
 
-The workflow syncs the repo to `/home/book/work/book-cv`, preserves the server-side `.env`, and runs `bash scripts/deploy-remote.sh`.
+The workflow syncs the repo to `/work/book-cv`, preserves the server-side `.env`, and runs `bash scripts/deploy-remote.sh`.
 
 ### Cloudflare tunnel
 

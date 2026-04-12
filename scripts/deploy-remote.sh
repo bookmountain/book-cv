@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="${1:-$HOME/work/book-cv}"
+DEFAULT_ROOT="/work/book-cv"
+if [[ ! -d "${DEFAULT_ROOT}" ]]; then
+  DEFAULT_ROOT="$HOME/work/book-cv"
+fi
+
+ROOT_DIR="${1:-$DEFAULT_ROOT}"
 
 cd "${ROOT_DIR}"
 

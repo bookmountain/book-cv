@@ -99,10 +99,10 @@ jobs:
             --exclude ".env" \
             --exclude "app/client/node_modules/" \
             --exclude "app/client/.next/" \
-            ./ /home/book/work/book-cv/
+            ./ /work/book-cv/
 
       - name: Restart containers
         run: |
-          cd /home/book/work/book-cv
+          cd /work/book-cv
           # This runs the local script you already have
           bash scripts/deploy-remote.sh
