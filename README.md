@@ -69,6 +69,11 @@ cd /work/book-cv
 bash scripts/deploy-remote.sh
 ```
 
+Production env handling:
+
+- canonical env file on `.106`: `/etc/book-cv.env`
+- repo path: `/work/book-cv/.env` should point to `/etc/book-cv.env`
+
 Public hostnames:
 
 - frontend: `https://me.bookmountain.work`
