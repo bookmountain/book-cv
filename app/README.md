@@ -2,8 +2,7 @@
 
 Application workspace for the personal website.
 
-- `nextjs/`: frontend placeholder
-- `django/`: backend placeholder
+- `client/`: Next.js 16 public website
+- `server/`: Django 6 backend and admin
 
-These folders are intentionally minimal for now.
-
+The Docker stack for the website lives at the repo root in `docker-compose.yml`.

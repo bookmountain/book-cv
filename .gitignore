@@ -1,4 +1,7 @@
 .DS_Store
+.env
+.cache
+deploy-keys/
 
 # LaTeX build output
 latex/build/
@@ -12,22 +15,24 @@ latex/*.synctex.gz
 latex/*.xdv
 
 # Node / Next.js
-app/nextjs/node_modules/
-app/nextjs/.next/
-app/nextjs/out/
-app/nextjs/.env*
+app/client/node_modules/
+app/client/.next/
+app/client/out/
+app/client/.env*
 
 # Python / Django
-app/django/.venv/
-app/django/venv/
-app/django/env/
-app/django/__pycache__/
-app/django/**/*.pyc
-app/django/.env*
-app/django/staticfiles/
-app/django/media/
+app/server/.venv/
+app/server/venv/
+app/server/env/
+app/server/__pycache__/
+app/server/**/*.pyc
+app/server/.env*
+app/server/staticfiles/
+app/server/media/
 
 # Editor noise
 .idea/
 .pytest_cache/
 
+# Local logs
+*.pid

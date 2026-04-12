@@ -32,7 +32,6 @@ env:
 
 jobs:
   validate:
-    # We still use GitHub's servers for testing to save your local CPU
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -70,7 +69,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12" # Changed to 3.12 as 3.14 isn't stable yet
+          python-version: "3.14"
 
       - name: Install backend dependencies
         run: |
@@ -87,8 +86,7 @@ jobs:
   deploy:
     needs: validate
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    # KEY CHANGE: This now runs directly on your vm100
-    runs-on: self-hosted 
+    runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
