@@ -1,9 +1,17 @@
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Project, SiteProfile
-from .serializers import ProjectSerializer, SiteProfileSerializer
+from .models import BookNote, Experience, Project, Reference, SiteProfile, WritingEntry
+from .serializers import (
+    BookNoteSerializer,
+    ExperienceSerializer,
+    ProjectSerializer,
+    ReferenceSerializer,
+    SiteProfileSerializer,
+    WritingEntrySerializer,
+)
 
 
 @api_view(["GET"])
@@ -23,4 +31,41 @@ class SiteProfileView(generics.GenericAPIView):
 
 class ProjectListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(is_featured=True)
+    queryset = Project.objects.all()
+
+
+class ExperienceListView(generics.ListAPIView):
+    serializer_class = ExperienceSerializer
+    queryset = Experience.objects.all()
+
+
+class WritingEntryListView(generics.ListAPIView):
+    serializer_class = WritingEntrySerializer
+    queryset = WritingEntry.objects.filter(is_featured=True)
+
+
+class BookNoteListView(generics.ListAPIView):
+    serializer_class = BookNoteSerializer
+    queryset = BookNote.objects.filter(is_published=True)
+
+
+class ReferenceListView(generics.ListAPIView):
+    serializer_class = ReferenceSerializer
+    queryset = Reference.objects.all()
+
+
+class PortfolioContentView(APIView):
+    def get(self, _request):
+        profile = SiteProfile.objects.first()
+        payload = {
+            "profile": SiteProfileSerializer(profile).data if profile else None,
+            "projects": ProjectSerializer(Project.objects.all(), many=True).data,
+            "experiences": ExperienceSerializer(Experience.objects.all(), many=True).data,
+            "writings": WritingEntrySerializer(
+                WritingEntry.objects.filter(is_featured=True),
+                many=True,
+            ).data,
+            "books": BookNoteSerializer(BookNote.objects.filter(is_published=True), many=True).data,
+            "references": ReferenceSerializer(Reference.objects.all(), many=True).data,
+        }
+        return Response(payload, status=status.HTTP_200_OK)

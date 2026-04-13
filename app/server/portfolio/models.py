@@ -36,3 +36,71 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class Experience(models.Model):
+    company = models.CharField(max_length=160)
+    role = models.CharField(max_length=180)
+    location = models.CharField(max_length=120, blank=True)
+    period = models.CharField(max_length=80)
+    summary = models.TextField()
+    highlights = models.JSONField(default=list, blank=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "company"]
+
+    def __str__(self) -> str:
+        return f"{self.company} — {self.role}"
+
+
+class WritingEntry(models.Model):
+    title = models.CharField(max_length=180)
+    slug = models.SlugField(unique=True)
+    eyebrow = models.CharField(max_length=80, blank=True)
+    category = models.CharField(max_length=60, blank=True)
+    reading_time = models.CharField(max_length=40, blank=True)
+    summary = models.TextField()
+    body = models.TextField(blank=True)
+    is_featured = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "title"]
+
+    def __str__(self) -> str:
+        return self.title
+
+
+class BookNote(models.Model):
+    title = models.CharField(max_length=180)
+    author = models.CharField(max_length=120, blank=True)
+    summary = models.TextField()
+    takeaway = models.CharField(max_length=220, blank=True)
+    is_published = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "title"]
+
+    def __str__(self) -> str:
+        return self.title
+
+
+class Reference(models.Model):
+    name = models.CharField(max_length=120)
+    role = models.CharField(max_length=180)
+    organization = models.CharField(max_length=160, blank=True)
+    email = models.EmailField(blank=True)
+    relationship = models.CharField(max_length=180, blank=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "name"]
+
+    def __str__(self) -> str:
+        return self.name

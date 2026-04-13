@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, SiteProfile
+from .models import BookNote, Experience, Project, Reference, SiteProfile, WritingEntry
 
 
 @admin.register(SiteProfile)
@@ -12,3 +12,34 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ("title", "eyebrow", "is_featured", "sort_order", "updated_at")
     list_filter = ("is_featured", "eyebrow")
     prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ("company", "role", "period", "location", "sort_order", "updated_at")
+    search_fields = ("company", "role", "location")
+    ordering = ("sort_order",)
+
+
+@admin.register(WritingEntry)
+class WritingEntryAdmin(admin.ModelAdmin):
+    list_display = ("title", "category", "reading_time", "is_featured", "sort_order", "updated_at")
+    list_filter = ("is_featured", "category")
+    prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title", "summary", "body")
+    ordering = ("sort_order",)
+
+
+@admin.register(BookNote)
+class BookNoteAdmin(admin.ModelAdmin):
+    list_display = ("title", "author", "is_published", "sort_order", "updated_at")
+    list_filter = ("is_published",)
+    search_fields = ("title", "author", "summary", "takeaway")
+    ordering = ("sort_order",)
+
+
+@admin.register(Reference)
+class ReferenceAdmin(admin.ModelAdmin):
+    list_display = ("name", "role", "organization", "email", "sort_order", "updated_at")
+    search_fields = ("name", "role", "organization", "email", "relationship")
+    ordering = ("sort_order",)
