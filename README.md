@@ -32,6 +32,10 @@ cp .env.example .env
 ./scripts/bootstrap-local.sh
 ```
 
+The repo root `.env` is the canonical local env file. Django loads it automatically, and Next.js reads it through `app/client/next.config.ts`.
+
+For direct local runs, keep PostgreSQL available on `127.0.0.1:5432` or adjust `.env` to match your machine. The bootstrap script installs packages, then runs migrations and seeds portfolio content when PostgreSQL is reachable.
+
 If Docker is available locally, bring the full stack up from the repo root:
 
 ```bash

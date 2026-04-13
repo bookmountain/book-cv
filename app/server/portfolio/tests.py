@@ -2,7 +2,7 @@ from django.core.management import call_command
 from django.test import TestCase
 
 
-class PortfolioApiTests(TestCase):
+class TestPortfolioApi(TestCase):
     def setUp(self):
         call_command("seed_portfolio")
 

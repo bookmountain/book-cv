@@ -21,7 +21,7 @@ class SiteProfile(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=160)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=120)
     eyebrow = models.CharField(max_length=80, blank=True)
     stack = models.CharField(max_length=240, blank=True)
     summary = models.TextField()
@@ -57,7 +57,7 @@ class Experience(models.Model):
 
 class WritingEntry(models.Model):
     title = models.CharField(max_length=180)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=120)
     eyebrow = models.CharField(max_length=80, blank=True)
     category = models.CharField(max_length=60, blank=True)
     reading_time = models.CharField(max_length=40, blank=True)

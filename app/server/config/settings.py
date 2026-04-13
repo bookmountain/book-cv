@@ -2,6 +2,23 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+REPO_ROOT = BASE_DIR.parent.parent
+
+
+def load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+
+    for raw_line in path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_env_file(REPO_ROOT / ".env")
 
 
 def env(key: str, default: str = "") -> str:
@@ -85,7 +102,7 @@ DATABASES = {
         "NAME": env("POSTGRES_DB", "bookcv"),
         "USER": env("POSTGRES_USER", "postgres"),
         "PASSWORD": env("POSTGRES_PASSWORD", ""),
-        "HOST": env("POSTGRES_HOST", "db"),
+        "HOST": env("POSTGRES_HOST", "127.0.0.1"),
         "PORT": env("POSTGRES_PORT", "5432"),
     }
 }
