@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
@@ -16,7 +19,7 @@ export function SiteNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="main-nav" aria-label="Primary">
+    <nav aria-label="Primary" className="flex flex-col gap-2">
       {navItems.map((item) => {
         const isActive =
           item.href === "/"
@@ -24,13 +27,15 @@ export function SiteNav() {
             : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         return (
-          <Link
-            className={`nav-link${isActive ? " is-active" : ""}`}
-            href={item.href}
+          <Button
+            aria-current={isActive ? "page" : undefined}
+            className={cn("w-full justify-start rounded-full", !isActive && "text-muted-foreground")}
             key={item.href}
+            render={<Link href={item.href} />}
+            variant={isActive ? "default" : "ghost"}
           >
             {item.label}
-          </Link>
+          </Button>
         );
       })}
     </nav>

@@ -1,6 +1,7 @@
 .DS_Store
 .env
 .cache
+.codex
 deploy-keys/
 
 # LaTeX build output
