@@ -1,14 +1,6 @@
 import { PageIntro } from "@/components/page-intro";
 import { Reveal } from "@/components/reveal";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 import { capabilityRows, getExperiences, getSiteProfile } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
@@ -18,111 +10,58 @@ export default async function AboutPage() {
   const experiences = await getExperiences();
 
   return (
-    <div className="flex flex-col gap-14">
+    <div className="flex flex-col gap-10">
       <PageIntro
         eyebrow="About"
-        lede={`${profile.summary} I aim for software that reads clearly, deploys cleanly, and keeps making sense after teams start iterating on it.`}
-        title="Background, working style, and the environments that shaped how I build products."
+        lede="Frontend, backend, automation, and AI-enabled delivery."
+        title="About"
       />
 
-      <section className="grid gap-4 xl:grid-cols-2">
-        <Reveal>
-          <Card className="h-full rounded-[1.8rem] border-border/70">
-            <CardHeader className="gap-4">
-              <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="outline">
-                Working style
-              </Badge>
-              <CardTitle className="font-serif text-4xl leading-none text-balance">
-                I like products that feel considered on the surface and disciplined underneath.
-              </CardTitle>
-              <CardDescription className="text-base leading-8">
-                In practice that means clear interfaces, restrained abstractions, automation that removes real repeat
-                work, and enough structural discipline that the system stays readable after the first release.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Reveal>
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
+        <Card>
+          <CardContent className="flex flex-col gap-3 p-5">
+            <p className="text-sm leading-7 text-foreground">{profile.summary}</p>
+            <p className="text-sm leading-7 text-muted-foreground">
+              I prefer products that stay easy to use, easy to operate, and easy to change.
+            </p>
+          </CardContent>
+        </Card>
 
-        <Reveal delay={80}>
-          <Card className="h-full rounded-[1.8rem] border-border/70">
-            <CardHeader className="gap-4">
-              <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="secondary">
-                Current phase
-              </Badge>
-              <CardTitle className="font-serif text-4xl leading-none">{profile.location}</CardTitle>
-              <CardDescription className="text-base leading-8">
-                I am currently studying in Adelaide while continuing to build around AI workflows, web delivery,
-                systems thinking, and the practical side of shipping maintainable software.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Reveal>
+        <Card>
+          <CardContent className="grid gap-3 p-5">
+            {capabilityRows.map((row) => (
+              <div className="flex flex-col gap-1" key={row.label}>
+                <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">{row.label}</p>
+                <p className="text-sm leading-7 text-foreground">{row.value}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </section>
 
-      <Separator />
-
-      <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
-          <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="outline">
-            Capabilities
-          </Badge>
-          <h2 className="max-w-3xl font-serif text-3xl leading-none text-balance sm:text-4xl">
-            Core stack and engineering focus
-          </h2>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          {capabilityRows.map((row, index) => (
-            <Reveal delay={index * 60} key={row.label}>
-              <Card className="h-full rounded-[1.5rem] border-border/70">
-                <CardHeader className="gap-3">
-                  <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="outline">
-                    {row.label}
-                  </Badge>
-                  <CardDescription className="text-base leading-8 text-foreground/88">{row.value}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <Separator />
-
-      <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
-          <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="outline">
-            Experience
-          </Badge>
-          <h2 className="max-w-3xl font-serif text-3xl leading-none text-balance sm:text-4xl">
-            Where this approach was shaped in practice
-          </h2>
+      <section className="flex flex-col gap-4 border-t pt-8">
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Experience</p>
+          <h2 className="text-2xl font-semibold tracking-tight">Work history</h2>
         </div>
 
         <div className="grid gap-4">
           {experiences.map((experience, index) => (
-            <Reveal delay={index * 70} key={`${experience.company}-${experience.role}`}>
-              <Card className="rounded-[1.7rem] border-border/70">
-                <CardHeader className="gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className="rounded-full px-3 py-1 uppercase tracking-[0.2em]" variant="outline">
-                      {experience.company}
-                    </Badge>
-                    <Badge className="rounded-full px-3 py-1" variant="secondary">
-                      {experience.period}
-                    </Badge>
+            <Reveal delay={index * 40} key={`${experience.company}-${experience.role}`}>
+              <Card>
+                <CardContent className="flex flex-col gap-3 p-5">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                    <span>{experience.company}</span>
+                    <span className="h-1 w-1 rounded-full bg-border" />
+                    <span>{experience.period}</span>
+                    <span className="h-1 w-1 rounded-full bg-border" />
+                    <span>{experience.location}</span>
                   </div>
-                  <CardTitle className="font-serif text-3xl leading-none">{experience.role}</CardTitle>
-                  <CardDescription className="text-sm leading-7">
-                    {experience.location} · {experience.summary}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-3">
-                  {experience.highlights.map((highlight) => (
-                    <p className="text-sm leading-7 text-muted-foreground" key={highlight}>
-                      {highlight}
-                    </p>
-                  ))}
+                  <h3 className="text-xl font-semibold tracking-tight">{experience.role}</h3>
+                  <p className="text-sm leading-7 text-muted-foreground">{experience.summary}</p>
+                  {experience.highlights[0] ? (
+                    <p className="text-sm leading-7 text-foreground/85">{experience.highlights[0]}</p>
+                  ) : null}
                 </CardContent>
               </Card>
             </Reveal>

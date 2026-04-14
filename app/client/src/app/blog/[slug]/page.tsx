@@ -4,15 +4,7 @@ import { notFound } from "next/navigation";
 
 import { PageIntro } from "@/components/page-intro";
 import { RichText } from "@/components/rich-text";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { getWritingBySlug, getWritings } from "@/lib/site-content";
 
 type WritingPageProps = {
@@ -49,41 +41,21 @@ export default async function BlogEntryPage({ params }: WritingPageProps) {
   }
 
   return (
-    <div className="flex flex-col gap-14">
-      <PageIntro
-        eyebrow={`${entry.eyebrow} · ${entry.reading_time}`}
-        lede={entry.summary}
-        title={entry.title}
-      >
+    <div className="flex flex-col gap-10">
+      <PageIntro eyebrow="Blog" lede={entry.summary} title={entry.title}>
         <Button render={<Link href="/blog" />} variant="ghost">
           Back to blog
         </Button>
       </PageIntro>
 
-      <section className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
-        <Card className="h-fit rounded-[1.8rem] border-border/70 xl:sticky xl:top-6">
-          <CardHeader className="gap-4">
-            <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="outline">
-              Entry
-            </Badge>
-            <CardTitle className="font-serif text-4xl leading-none">{entry.category}</CardTitle>
-            <CardDescription className="text-sm leading-7">
-              This page is meant to be read comfortably, with enough space for the argument rather than compressing
-              everything into a narrow content strip.
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <section className="max-w-3xl">
+        <div className="flex flex-wrap items-center gap-2 pb-6 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          <span>{entry.category}</span>
+          <span className="h-1 w-1 rounded-full bg-border" />
+          <span>{entry.reading_time}</span>
+        </div>
 
-        <Card className="rounded-[1.8rem] border-border/70">
-          <CardHeader className="gap-4">
-            <Badge className="w-fit rounded-full px-3 py-1 uppercase tracking-[0.22em]" variant="secondary">
-              {entry.category}
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <RichText className="grid gap-5 text-base leading-8 text-foreground/92" value={entry.body} />
-          </CardContent>
-        </Card>
+        <RichText className="grid gap-5 border-t pt-6 text-[15px] leading-8 text-foreground/92" value={entry.body} />
       </section>
     </div>
   );

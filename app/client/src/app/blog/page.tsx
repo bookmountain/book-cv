@@ -2,15 +2,8 @@ import Link from "next/link";
 
 import { PageIntro } from "@/components/page-intro";
 import { Reveal } from "@/components/reveal";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getWritings } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
@@ -19,36 +12,31 @@ export default async function BlogPage() {
   const writings = await getWritings();
 
   return (
-    <div className="flex flex-col gap-14">
+    <div className="flex flex-col gap-10">
       <PageIntro
         eyebrow="Blog"
-        lede="Posts live here as a proper archive instead of an afterthought on the homepage. The writing is part of the portfolio because the decisions behind the work matter as much as the screenshots."
-        title="Writing on engineering practice, study, and using AI tools without dropping the engineering bar."
+        lede="Notes on engineering practice, AI tools, and software design."
+        title="Blog"
       />
 
       <section className="grid gap-4">
         {writings.map((entry, index) => (
-          <Reveal delay={index * 60} key={entry.slug}>
-            <Card className="rounded-[1.8rem] border-border/70">
-              <CardHeader className="gap-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge className="rounded-full px-3 py-1 uppercase tracking-[0.2em]" variant="outline">
-                    {entry.eyebrow}
-                  </Badge>
-                  <Badge className="rounded-full px-3 py-1" variant="secondary">
-                    {entry.reading_time}
-                  </Badge>
+          <Reveal delay={index * 40} key={entry.slug}>
+            <Card>
+              <CardContent className="flex flex-col gap-3 p-5">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                  <span>{entry.category}</span>
+                  <span className="h-1 w-1 rounded-full bg-border" />
+                  <span>{entry.reading_time}</span>
                 </div>
-                <CardTitle className="font-serif text-4xl leading-none text-balance">{entry.title}</CardTitle>
-                <CardDescription className="text-sm leading-7">
-                  {entry.category} · {entry.summary}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button render={<Link href={`/blog/${entry.slug}`} />} size="sm" variant="ghost">
-                  Read post
-                </Button>
-              </CardFooter>
+                <h2 className="text-xl font-semibold tracking-tight">{entry.title}</h2>
+                <p className="max-w-3xl text-sm leading-7 text-muted-foreground">{entry.summary}</p>
+                <div>
+                  <Button render={<Link href={`/blog/${entry.slug}`} />} size="sm" variant="ghost">
+                    Read post
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
           </Reveal>
         ))}

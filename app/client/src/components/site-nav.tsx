@@ -15,11 +15,19 @@ const navItems = [
   { href: "/references", label: "References" },
 ];
 
-export function SiteNav() {
+type SiteNavProps = {
+  orientation?: "horizontal" | "vertical";
+};
+
+export function SiteNav({ orientation = "vertical" }: SiteNavProps) {
   const pathname = usePathname();
+  const isHorizontal = orientation === "horizontal";
 
   return (
-    <nav aria-label="Primary" className="flex flex-col gap-2">
+    <nav
+      aria-label="Primary"
+      className={cn("flex gap-2", isHorizontal ? "flex-wrap items-center" : "flex-col")}
+    >
       {navItems.map((item) => {
         const isActive =
           item.href === "/"
@@ -29,10 +37,15 @@ export function SiteNav() {
         return (
           <Button
             aria-current={isActive ? "page" : undefined}
-            className={cn("w-full justify-start rounded-full", !isActive && "text-muted-foreground")}
+            className={cn(
+              "rounded-full",
+              isHorizontal ? "justify-center px-4" : "w-full justify-start rounded-xl",
+              !isActive && "text-muted-foreground",
+            )}
             key={item.href}
             render={<Link href={item.href} />}
-            variant={isActive ? "default" : "ghost"}
+            size="sm"
+            variant={isActive ? "secondary" : "ghost"}
           >
             {item.label}
           </Button>
