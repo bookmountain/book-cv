@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import BookNote, Experience, Project, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+
+
+class ProjectScreenshotInline(admin.StackedInline):
+    model = ProjectScreenshot
+    extra = 0
+    fields = ("title", "introduction", "image", "image_url", "alt_text", "sort_order")
 
 
 @admin.register(SiteProfile)
@@ -12,6 +18,9 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ("title", "eyebrow", "is_featured", "sort_order", "updated_at")
     list_filter = ("is_featured", "eyebrow")
     prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title", "summary", "details", "stack")
+    ordering = ("sort_order",)
+    inlines = [ProjectScreenshotInline]
 
 
 @admin.register(Experience)
@@ -41,5 +50,5 @@ class BookNoteAdmin(admin.ModelAdmin):
 @admin.register(Reference)
 class ReferenceAdmin(admin.ModelAdmin):
     list_display = ("name", "role", "organization", "email", "sort_order", "updated_at")
-    search_fields = ("name", "role", "organization", "email", "relationship")
+    search_fields = ("name", "role", "organization", "email", "relationship", "quote")
     ordering = ("sort_order",)

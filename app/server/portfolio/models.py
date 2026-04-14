@@ -25,6 +25,8 @@ class Project(models.Model):
     eyebrow = models.CharField(max_length=80, blank=True)
     stack = models.CharField(max_length=240, blank=True)
     summary = models.TextField()
+    details = models.TextField(blank=True)
+    highlights = models.JSONField(default=list, blank=True)
     repo_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
     is_featured = models.BooleanField(default=True)
@@ -36,6 +38,23 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class ProjectScreenshot(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="screenshots")
+    title = models.CharField(max_length=160)
+    introduction = models.TextField(blank=True)
+    image = models.FileField(upload_to="project-screenshots/", blank=True)
+    image_url = models.URLField(blank=True)
+    alt_text = models.CharField(max_length=180, blank=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "title"]
+
+    def __str__(self) -> str:
+        return f"{self.project.title} — {self.title}"
 
 
 class Experience(models.Model):
@@ -96,6 +115,7 @@ class Reference(models.Model):
     organization = models.CharField(max_length=160, blank=True)
     email = models.EmailField(blank=True)
     relationship = models.CharField(max_length=180, blank=True)
+    quote = models.TextField(blank=True)
     sort_order = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
 

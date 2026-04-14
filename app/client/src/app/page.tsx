@@ -1,5 +1,14 @@
+import Link from "next/link";
+
+import { PageIntro } from "@/components/page-intro";
 import { Reveal } from "@/components/reveal";
-import { capabilityRows, getPortfolioContent } from "@/lib/site-content";
+import {
+  capabilityRows,
+  getBooks,
+  getPortfolioContent,
+  getReferences,
+  getWritings,
+} from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
@@ -7,242 +16,175 @@ function toMailto(value: string) {
   return value.startsWith("mailto:") ? value : `mailto:${value}`;
 }
 
-function stripProtocol(url: string) {
-  return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-}
-
 export default async function HomePage() {
   const content = await getPortfolioContent();
-  const featuredProjects = content.projects.filter((project) => project.is_featured);
-  const currentQueue = content.projects.filter((project) => !project.is_featured);
+  const featuredProjects = content.projects.filter((project) => project.is_featured).slice(0, 3);
+  const posts = (await getWritings()).slice(0, 3);
+  const books = (await getBooks()).slice(0, 3);
+  const references = (await getReferences()).slice(0, 2);
 
   return (
-    <main className="page-shell" id="top">
-      <header className="site-header">
-        <a className="brand" href="#top">
-          {content.profile.full_name}
+    <div className="page-stack">
+      <PageIntro
+        eyebrow="Portfolio"
+        title="Readable portfolio, real projects, and work that holds up under detail."
+        lede={content.profile.summary}
+      >
+        <Link className="button button-solid" href="/projects">
+          View projects
+        </Link>
+        <Link className="button button-ghost" href="/blog">
+          Read posts
+        </Link>
+        <a className="button button-ghost" href={toMailto(content.profile.email)}>
+          Contact
         </a>
-        <nav className="site-nav" aria-label="Primary">
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#journal">Journal</a>
-          <a href="#reading">Reading</a>
-          <a href="#references">References</a>
-        </nav>
-      </header>
+      </PageIntro>
 
-      <section className="hero" id="about">
-        <Reveal className="hero-copy">
-          <p className="eyebrow">Software Engineer</p>
-          <h1>{content.profile.title}</h1>
-          <p className="lede">{content.profile.summary}</p>
-          <div className="hero-actions">
-            <a
-              className="button button-solid"
-              href={content.profile.github_url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View GitHub
-            </a>
-            <a className="button button-ghost" href={toMailto(content.profile.email)}>
-              Contact
-            </a>
-          </div>
+      <section className="home-hero-grid">
+        <Reveal className="feature-panel">
+          <p className="mini-label">What I do</p>
+          <h2>Product UI, backend systems, AI delivery, and the operational glue between them.</h2>
+          <p>
+            I build software that needs to be understandable after launch, not only impressive during the demo.
+          </p>
         </Reveal>
 
-        <Reveal className="hero-aside" delay={120}>
-          <dl className="fact-list">
-            <div>
-              <dt>Based</dt>
-              <dd>{content.profile.location}</dd>
-            </div>
-            <div>
-              <dt>Current mode</dt>
-              <dd>Building clear software across AI, product UI, and delivery systems.</dd>
-            </div>
-            <div>
-              <dt>Study</dt>
-              <dd>Master of IT in Adelaide, with a systems and AI engineering focus.</dd>
-            </div>
-          </dl>
-
-          <div className="contact-list">
-            <a href={content.profile.linkedin_url} target="_blank" rel="noreferrer">
-              {stripProtocol(content.profile.linkedin_url)}
-            </a>
-            <a href={content.profile.github_url} target="_blank" rel="noreferrer">
-              {stripProtocol(content.profile.github_url)}
-            </a>
-            <a href={toMailto(content.profile.email)}>{content.profile.email}</a>
-          </div>
+        <Reveal className="feature-panel" delay={80}>
+          <p className="mini-label">Current focus</p>
+          <ul className="metric-list">
+            <li>AI-assisted engineering with practical verification</li>
+            <li>Microservice architecture and delivery workflows</li>
+            <li>Private local AI infrastructure for experimentation</li>
+          </ul>
         </Reveal>
       </section>
 
-      <section className="section-row" id="capability">
-        <Reveal className="section-label">Capabilities</Reveal>
-        <div className="section-content capability-list">
+      <section className="section-block">
+        <div className="section-heading">
+          <p className="mini-label">Capabilities</p>
+          <h2>The stack I keep returning to</h2>
+        </div>
+        <div className="capability-grid">
           {capabilityRows.map((row, index) => (
-            <Reveal className="capability-row" key={row.label} delay={index * 60}>
-              <span>{row.label}</span>
+            <Reveal className="capability-card" delay={index * 60} key={row.label}>
+              <p className="mini-label">{row.label}</p>
               <p>{row.value}</p>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="section-row" id="experience">
-        <Reveal className="section-label">Experience</Reveal>
-        <div className="section-content stacked-list">
-          {content.experiences.map((experience, index) => (
-            <Reveal className="content-block" key={`${experience.company}-${experience.role}`} delay={index * 70}>
-              <header className="block-header">
-                <div>
-                  <p className="block-kicker">{experience.company}</p>
-                  <h2>{experience.role}</h2>
-                  <p className="block-meta">{experience.location}</p>
-                </div>
-                <p className="block-period">{experience.period}</p>
-              </header>
-              <p className="block-summary">{experience.summary}</p>
-              <ul className="detail-list">
-                {experience.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
-              </ul>
-            </Reveal>
-          ))}
+      <section className="section-block">
+        <div className="section-heading section-heading-inline">
+          <div>
+            <p className="mini-label">Projects</p>
+            <h2>Selected work</h2>
+          </div>
+          <Link className="text-link" href="/projects">
+            See all projects
+          </Link>
         </div>
-      </section>
-
-      <section className="section-row" id="projects">
-        <Reveal className="section-label">Selected Projects</Reveal>
-        <div className="section-content stacked-list">
+        <div className="card-grid">
           {featuredProjects.map((project, index) => (
-            <Reveal className="content-block" key={project.slug} delay={index * 80}>
-              <header className="block-header">
-                <div>
-                  <p className="block-kicker">{project.eyebrow}</p>
-                  <h2>{project.title}</h2>
-                </div>
-                <p className="block-meta">{project.stack}</p>
-              </header>
-              <p className="block-summary">{project.summary}</p>
-              <div className="inline-links">
+            <Reveal className="project-card" delay={index * 70} key={project.slug}>
+              <p className="mini-label">{project.eyebrow}</p>
+              <h3>{project.title}</h3>
+              <p className="supporting-text">{project.stack}</p>
+              <p>{project.summary}</p>
+              <div className="card-actions">
+                <Link className="text-link" href={`/projects/${project.slug}`}>
+                  Project details
+                </Link>
                 {project.repo_url ? (
-                  <a href={project.repo_url} target="_blank" rel="noreferrer">
+                  <a className="text-link" href={project.repo_url} rel="noreferrer" target="_blank">
                     Repository
                   </a>
                 ) : null}
-                {project.live_url ? (
-                  <a href={project.live_url} target="_blank" rel="noreferrer">
-                    Live site
-                  </a>
-                ) : null}
               </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="section-row" id="queue">
-        <Reveal className="section-label">Current Queue</Reveal>
-        <div className="section-content compact-grid">
-          {currentQueue.map((project, index) => (
-            <Reveal className="queue-item" key={project.slug} delay={index * 60}>
-              <p className="block-kicker">{project.eyebrow}</p>
-              <h2>{project.title}</h2>
-              <p className="queue-stack">{project.stack}</p>
-              <p>{project.summary}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-row" id="journal">
-        <Reveal className="section-label">Journal</Reveal>
-        <div className="section-content compact-grid">
-          {content.writings.map((entry, index) => (
-            <Reveal className="journal-entry" key={entry.slug} delay={index * 70}>
-              <div className="journal-meta">
-                <span>{entry.eyebrow}</span>
-                <span>{entry.reading_time}</span>
-              </div>
-              <h2>{entry.title}</h2>
-              <p className="entry-tag">{entry.category}</p>
-              <p>{entry.summary}</p>
-              <p className="journal-body">{entry.body}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-row" id="reading">
-        <Reveal className="section-label">Reading</Reveal>
-        <div className="section-content">
-          {content.books.length > 0 ? (
-            <div className="stacked-list">
-              {content.books.map((book, index) => (
-                <Reveal className="content-block" key={`${book.title}-${book.author}`} delay={index * 60}>
-                  <header className="block-header">
-                    <div>
-                      <p className="block-kicker">Book note</p>
-                      <h2>{book.title}</h2>
-                    </div>
-                    <p className="block-meta">{book.author}</p>
-                  </header>
-                  <p className="block-summary">{book.summary}</p>
-                  {book.takeaway ? <p className="book-takeaway">{book.takeaway}</p> : null}
-                </Reveal>
-              ))}
+      <section className="section-block split-section">
+        <div>
+          <div className="section-heading section-heading-inline">
+            <div>
+              <p className="mini-label">Blog</p>
+              <h2>Posts and notes</h2>
             </div>
-          ) : (
-            <Reveal className="empty-state">
-              <p className="block-kicker">Ready for notes</p>
-              <h2>Reading entries are wired in and ready for your books.</h2>
-              <p>
-                I set up the section and admin plumbing without inventing titles you did not give me. Add book
-                notes in the Django admin and they will slot straight into this page.
-              </p>
-            </Reveal>
-          )}
+            <Link className="text-link" href="/blog">
+              Open blog
+            </Link>
+          </div>
+          <div className="stack-list">
+            {posts.map((entry, index) => (
+              <Reveal className="list-card" delay={index * 70} key={entry.slug}>
+                <p className="mini-label">
+                  {entry.category} · {entry.reading_time}
+                </p>
+                <h3>{entry.title}</h3>
+                <p>{entry.summary}</p>
+                <Link className="text-link" href={`/blog/${entry.slug}`}>
+                  Read post
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="section-heading section-heading-inline">
+            <div>
+              <p className="mini-label">Reading</p>
+              <h2>Books that shaped how I work</h2>
+            </div>
+            <Link className="text-link" href="/books">
+              See reading page
+            </Link>
+          </div>
+          <div className="book-preview-grid">
+            {books.map((book, index) => (
+              <Reveal className="book-preview-card" delay={index * 70} key={book.title}>
+                <div className={`book-cover tone-${(index % 5) + 1}`}>
+                  <span>{book.title}</span>
+                  <small>{book.author}</small>
+                </div>
+                <p className="book-takeaway">{book.takeaway}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="section-row" id="references">
-        <Reveal className="section-label">References</Reveal>
-        <div className="section-content compact-grid">
-          {content.references.map((reference, index) => (
-            <Reveal className="reference-card" key={reference.email || reference.name} delay={index * 60}>
-              <h2>{reference.name}</h2>
-              <p className="entry-tag">{reference.relationship}</p>
-              <p>{reference.role}</p>
-              <p>{reference.organization}</p>
-              <a href={toMailto(reference.email)}>{reference.email}</a>
+      <section className="section-block">
+        <div className="section-heading section-heading-inline">
+          <div>
+            <p className="mini-label">References</p>
+            <h2>People who can speak to my work</h2>
+          </div>
+          <Link className="text-link" href="/references">
+            Open references
+          </Link>
+        </div>
+        <div className="quote-grid">
+          {references.map((reference, index) => (
+            <Reveal className="quote-card" delay={index * 70} key={reference.email || reference.name}>
+              <span className="quote-mark">“</span>
+              <p className="quote-body">
+                {reference.quote || "Add the exact quote in Django admin to turn this card into a full testimonial."}
+              </p>
+              <div className="quote-meta">
+                <strong>{reference.name}</strong>
+                <span>
+                  {reference.role}, {reference.organization}
+                </span>
+              </div>
             </Reveal>
           ))}
         </div>
       </section>
-
-      <footer className="footer-section" id="contact">
-        <Reveal>
-          <p className="eyebrow">Get in touch</p>
-          <h2>Open to thoughtful engineering work across product, systems, and AI delivery.</h2>
-          <div className="hero-actions">
-            <a className="button button-solid" href={toMailto(content.profile.email)}>
-              Email Book
-            </a>
-            <a
-              className="button button-ghost"
-              href={content.profile.linkedin_url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </Reveal>
-      </footer>
-    </main>
+    </div>
   );
 }

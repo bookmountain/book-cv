@@ -1,6 +1,26 @@
 from rest_framework import serializers
 
-from .models import BookNote, Experience, Project, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+
+
+class ProjectScreenshotSerializer(serializers.ModelSerializer):
+    image_src = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProjectScreenshot
+        fields = [
+            "title",
+            "introduction",
+            "image_src",
+            "alt_text",
+        ]
+
+    def get_image_src(self, obj: ProjectScreenshot) -> str:
+        if obj.image:
+            request = self.context.get("request")
+            image_url = obj.image.url
+            return request.build_absolute_uri(image_url) if request else image_url
+        return obj.image_url
 
 
 class SiteProfileSerializer(serializers.ModelSerializer):
@@ -18,6 +38,8 @@ class SiteProfileSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    screenshots = ProjectScreenshotSerializer(many=True, read_only=True)
+
     class Meta:
         model = Project
         fields = [
@@ -26,9 +48,12 @@ class ProjectSerializer(serializers.ModelSerializer):
             "eyebrow",
             "stack",
             "summary",
+            "details",
+            "highlights",
             "repo_url",
             "live_url",
             "is_featured",
+            "screenshots",
         ]
 
 
@@ -79,4 +104,5 @@ class ReferenceSerializer(serializers.ModelSerializer):
             "organization",
             "email",
             "relationship",
+            "quote",
         ]

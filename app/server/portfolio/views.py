@@ -22,16 +22,22 @@ def health_check(_request):
 class SiteProfileView(generics.GenericAPIView):
     serializer_class = SiteProfileSerializer
 
-    def get(self, _request):
+    def get(self, request):
         profile = SiteProfile.objects.first()
         if profile is None:
             return Response({"detail": "Profile not configured."}, status=status.HTTP_404_NOT_FOUND)
-        return Response(self.get_serializer(profile).data, status=status.HTTP_200_OK)
+        return Response(self.get_serializer(profile, context={"request": request}).data, status=status.HTTP_200_OK)
 
 
 class ProjectListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
+
+
+class ProjectDetailView(generics.RetrieveAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+    lookup_field = "slug"
 
 
 class ExperienceListView(generics.ListAPIView):
@@ -42,6 +48,12 @@ class ExperienceListView(generics.ListAPIView):
 class WritingEntryListView(generics.ListAPIView):
     serializer_class = WritingEntrySerializer
     queryset = WritingEntry.objects.filter(is_featured=True)
+
+
+class WritingEntryDetailView(generics.RetrieveAPIView):
+    serializer_class = WritingEntrySerializer
+    queryset = WritingEntry.objects.filter(is_featured=True)
+    lookup_field = "slug"
 
 
 class BookNoteListView(generics.ListAPIView):
@@ -55,11 +67,15 @@ class ReferenceListView(generics.ListAPIView):
 
 
 class PortfolioContentView(APIView):
-    def get(self, _request):
+    def get(self, request):
         profile = SiteProfile.objects.first()
         payload = {
-            "profile": SiteProfileSerializer(profile).data if profile else None,
-            "projects": ProjectSerializer(Project.objects.all(), many=True).data,
+            "profile": SiteProfileSerializer(profile, context={"request": request}).data if profile else None,
+            "projects": ProjectSerializer(
+                Project.objects.all(),
+                many=True,
+                context={"request": request},
+            ).data,
             "experiences": ExperienceSerializer(Experience.objects.all(), many=True).data,
             "writings": WritingEntrySerializer(
                 WritingEntry.objects.filter(is_featured=True),
