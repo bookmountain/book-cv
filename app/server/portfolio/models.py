@@ -74,6 +74,19 @@ class Experience(models.Model):
         return f"{self.company} — {self.role}"
 
 
+class Capability(models.Model):
+    label = models.CharField(max_length=120, unique=True)
+    value = models.TextField()
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "label"]
+
+    def __str__(self) -> str:
+        return self.label
+
+
 class WritingEntry(models.Model):
     title = models.CharField(max_length=180)
     slug = models.SlugField(unique=True, max_length=120)

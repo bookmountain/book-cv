@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BookNote, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Capability, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
 
 
 class ProjectScreenshotInline(admin.StackedInline):
@@ -27,6 +27,13 @@ class ProjectAdmin(admin.ModelAdmin):
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ("company", "role", "period", "location", "sort_order", "updated_at")
     search_fields = ("company", "role", "location")
+    ordering = ("sort_order",)
+
+
+@admin.register(Capability)
+class CapabilityAdmin(admin.ModelAdmin):
+    list_display = ("label", "sort_order", "updated_at")
+    search_fields = ("label", "value")
     ordering = ("sort_order",)
 
 

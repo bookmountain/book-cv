@@ -2,13 +2,14 @@ import { PageIntro } from "@/components/page-intro";
 import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
 import { Card, CardContent } from "@/components/ui/card";
-import { capabilityRows, getExperiences, getSiteProfile } from "@/lib/site-content";
+import { getCapabilities, getExperiences, getSiteProfile } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
   const profile = await getSiteProfile();
   const experiences = await getExperiences();
+  const capabilities = await getCapabilities();
 
   return (
     <div className="flex flex-col gap-16">
@@ -75,7 +76,7 @@ export default async function AboutPage() {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {capabilityRows.map((row) => (
+        {capabilities.map((row) => (
           <Card key={row.label}>
             <CardContent className="flex h-full flex-col gap-3 p-6">
               <p className="eyebrow-label">{row.label}</p>

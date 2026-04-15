@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from portfolio.models import (
     BookNote,
+    Capability,
     Experience,
     Project,
     ProjectScreenshot,
@@ -370,6 +371,32 @@ class Command(BaseCommand):
                 role=payload["role"],
                 defaults=payload,
             )
+
+        seed_capabilities = [
+            {
+                "label": "Application",
+                "value": "TypeScript, React, Next.js, NestJS, Vue, PostgreSQL",
+                "sort_order": 1,
+            },
+            {
+                "label": "AI",
+                "value": "Azure AI Studio, Ollama, RAG architecture, Codex, Copilot",
+                "sort_order": 2,
+            },
+            {
+                "label": "Automation",
+                "value": "Playwright, Selenium, pragmatic CI, browser verification",
+                "sort_order": 3,
+            },
+            {
+                "label": "Systems",
+                "value": "Proxmox, Linux, Docker, RabbitMQ, gRPC, WSL2",
+                "sort_order": 4,
+            },
+        ]
+
+        for payload in seed_capabilities:
+            Capability.objects.update_or_create(label=payload["label"], defaults=payload)
 
         seed_writings = [
             {

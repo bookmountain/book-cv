@@ -21,6 +21,7 @@ class TestPortfolioApi(TestCase):
         self.assertIsNotNone(payload["profile"])
         self.assertGreaterEqual(len(payload["projects"]), 4)
         self.assertGreaterEqual(len(payload["experiences"]), 4)
+        self.assertEqual(len(payload["capabilities"]), 4)
         self.assertGreaterEqual(len(payload["writings"]), 4)
         self.assertEqual(len(payload["books"]), 5)
         self.assertEqual(len(payload["references"]), 2)
