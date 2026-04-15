@@ -10,7 +10,7 @@ import { RichText } from "@/components/rich-text";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { getProjectBySlug, getProjects } from "@/lib/site-content";
+import { getProjectBySlug } from "@/lib/site-content";
 
 type ProjectPageProps = {
   params: Promise<{
@@ -18,10 +18,7 @@ type ProjectPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({ slug: project.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;

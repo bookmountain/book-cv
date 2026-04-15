@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/page-intro";
 import { RichText } from "@/components/rich-text";
 import { Button } from "@/components/ui/button";
-import { getWritingBySlug, getWritings } from "@/lib/site-content";
+import { getWritingBySlug } from "@/lib/site-content";
 
 type WritingPageProps = {
   params: Promise<{
@@ -13,10 +13,7 @@ type WritingPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  const writings = await getWritings();
-  return writings.map((entry) => ({ slug: entry.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: WritingPageProps): Promise<Metadata> {
   const { slug } = await params;
