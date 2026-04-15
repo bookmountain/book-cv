@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
   { href: "/books", label: "Books" },
-  { href: "/references", label: "References" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 type SiteNavProps = {
@@ -26,7 +25,7 @@ export function SiteNav({ orientation = "vertical" }: SiteNavProps) {
   return (
     <nav
       aria-label="Primary"
-      className={cn("flex gap-2", isHorizontal ? "flex-wrap items-center" : "flex-col")}
+      className={cn("flex", isHorizontal ? "flex-wrap items-center gap-6" : "flex-col gap-4")}
     >
       {navItems.map((item) => {
         const isActive =
@@ -35,20 +34,18 @@ export function SiteNav({ orientation = "vertical" }: SiteNavProps) {
             : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         return (
-          <Button
+          <Link
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "rounded-full",
-              isHorizontal ? "justify-center px-4" : "w-full justify-start rounded-xl",
-              !isActive && "text-muted-foreground",
+              "border-b border-transparent pb-1 text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground transition-colors duration-300 hover:text-foreground",
+              isHorizontal ? "justify-center" : "w-fit text-left",
+              isActive && "border-foreground text-foreground",
             )}
+            href={item.href}
             key={item.href}
-            render={<Link href={item.href} />}
-            size="sm"
-            variant={isActive ? "secondary" : "ghost"}
           >
             {item.label}
-          </Button>
+          </Link>
         );
       })}
     </nav>

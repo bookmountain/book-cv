@@ -1,4 +1,5 @@
 import { PageIntro } from "@/components/page-intro";
+import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
 import { Card, CardContent } from "@/components/ui/card";
 import { capabilityRows, getExperiences, getSiteProfile } from "@/lib/site-content";
@@ -10,16 +11,18 @@ export default async function AboutPage() {
   const experiences = await getExperiences();
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-16">
       <PageIntro
-        eyebrow="About"
-        lede="Frontend, backend, automation, and AI-enabled delivery."
-        title="About"
+        eyebrow="Current chapter"
+        lede="A product-minded software engineer working across interface craft, backend clarity, and AI-enabled delivery."
+        title="Narrative of a systems architect."
+        titleClassName="max-w-4xl"
       />
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
+      <section className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
         <Card>
-          <CardContent className="flex flex-col gap-3 p-5">
+          <CardContent className="flex flex-col gap-5 p-6 sm:p-8">
+            <p className="eyebrow-label">Overview</p>
             <p className="text-sm leading-7 text-foreground">{profile.summary}</p>
             <p className="text-sm leading-7 text-muted-foreground">
               I prefer products that stay easy to use, easy to operate, and easy to change.
@@ -27,46 +30,59 @@ export default async function AboutPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="grid gap-3 p-5">
-            {capabilityRows.map((row) => (
-              <div className="flex flex-col gap-1" key={row.label}>
-                <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">{row.label}</p>
-                <p className="text-sm leading-7 text-foreground">{row.value}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <ProjectCover
+          caption="A practice shaped by shipping software that stays readable under scale."
+          className="min-h-[24rem]"
+          eyebrow="Portrait of the work"
+          title="About visual"
+        />
       </section>
 
-      <section className="flex flex-col gap-4 border-t pt-8">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Experience</p>
-          <h2 className="text-2xl font-semibold tracking-tight">Work history</h2>
+      <section className="page-band rounded-[0.85rem] px-6 py-8 sm:px-8 sm:py-10">
+        <blockquote className="mx-auto max-w-4xl text-center font-serif text-3xl leading-tight tracking-[-0.03em] text-foreground sm:text-[2.35rem]">
+          “Software gets more valuable when the system behind it stays calm, legible, and easy to evolve.”
+        </blockquote>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
+          <p className="eyebrow-label">Experience</p>
+          <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Work history</h2>
         </div>
 
         <div className="grid gap-4">
           {experiences.map((experience, index) => (
             <Reveal delay={index * 40} key={`${experience.company}-${experience.role}`}>
               <Card>
-                <CardContent className="flex flex-col gap-3 p-5">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    <span>{experience.company}</span>
-                    <span className="h-1 w-1 rounded-full bg-border" />
-                    <span>{experience.period}</span>
-                    <span className="h-1 w-1 rounded-full bg-border" />
-                    <span>{experience.location}</span>
+                <CardContent className="grid gap-6 p-6 lg:grid-cols-[minmax(200px,0.34fr)_minmax(0,1fr)] lg:p-8">
+                  <div className="flex flex-col gap-2">
+                    <p className="eyebrow-label">{experience.company}</p>
+                    <p className="text-sm font-medium text-foreground">{experience.period}</p>
+                    <p className="text-sm text-muted-foreground">{experience.location}</p>
                   </div>
-                  <h3 className="text-xl font-semibold tracking-tight">{experience.role}</h3>
-                  <p className="text-sm leading-7 text-muted-foreground">{experience.summary}</p>
-                  {experience.highlights[0] ? (
-                    <p className="text-sm leading-7 text-foreground/85">{experience.highlights[0]}</p>
-                  ) : null}
+                  <div className="flex flex-col gap-3">
+                    <h3 className="font-serif text-[1.9rem] leading-tight tracking-[-0.03em]">{experience.role}</h3>
+                    {experience.highlights[0] ? (
+                      <p className="text-sm leading-7 text-foreground/88">{experience.highlights[0]}</p>
+                    ) : null}
+                    <p className="text-sm leading-7 text-muted-foreground">{experience.summary}</p>
+                  </div>
                 </CardContent>
               </Card>
             </Reveal>
           ))}
         </div>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {capabilityRows.map((row) => (
+          <Card key={row.label}>
+            <CardContent className="flex h-full flex-col gap-3 p-6">
+              <p className="eyebrow-label">{row.label}</p>
+              <p className="text-sm leading-7 text-foreground">{row.value}</p>
+            </CardContent>
+          </Card>
+        ))}
       </section>
     </div>
   );
