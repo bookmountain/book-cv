@@ -1,3 +1,6 @@
+import json
+
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.test import TestCase
 
@@ -51,3 +54,24 @@ class TestPortfolioApi(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["status"], "ok")
+
+
+class TestAdminMarkdownPreview(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            username="admin",
+            email="admin@example.com",
+            password="password123",
+        )
+        self.client.force_login(self.user)
+
+    def test_admin_markdown_preview_renders_html(self):
+        response = self.client.post(
+            "/admin/markdown-preview/",
+            data=json.dumps({"markdown": "## Heading\n\n- first"}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("<h2>Heading</h2>", response.json()["html"])
+        self.assertIn("<li>first</li>", response.json()["html"])

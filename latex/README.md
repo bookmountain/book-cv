@@ -20,6 +20,12 @@ latexmk -xelatex resume.tex
 
 The generated PDF is written to `build/resume.pdf`.
 
+To refresh the copy served by the Next.js frontend, run from the repo root:
+
+```bash
+bash scripts/build-resume-pdf.sh
+```
+
 ## VS Code
 
 The repo root includes `.vscode/settings.json` for LaTeX Workshop. Open `latex/resume.tex`, then build with the default `latexmk (xelatex)` recipe.

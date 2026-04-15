@@ -14,7 +14,7 @@ Monorepo for Book Sam's CV and personal website.
 
 ## Resume
 
-Build from the `latex/` directory:
+Build the LaTeX output directly from the `latex/` directory:
 
 ```bash
 cd latex
@@ -22,6 +22,14 @@ latexmk -xelatex resume.tex
 ```
 
 The generated PDF is written to `latex/build/resume.pdf`.
+
+To regenerate the public download used by the site:
+
+```bash
+bash scripts/build-resume-pdf.sh
+```
+
+This copies the latest LaTeX build to `app/client/public/book-sam-resume.pdf`.
 
 ## Website
 

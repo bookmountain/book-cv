@@ -139,8 +139,84 @@
     @apply text-base leading-8 text-foreground/90;
   }
 
-  .rich-text p + p {
-    @apply mt-6;
+  .rich-text > :first-child {
+    @apply mt-0;
+  }
+
+  .rich-text > :last-child {
+    @apply mb-0;
+  }
+
+  .rich-text :where(p, ul, ol, blockquote, pre, table, hr) {
+    @apply my-6;
+  }
+
+  .rich-text :where(h1, h2, h3, h4) {
+    @apply mt-10 mb-4 font-serif font-medium leading-tight tracking-[-0.03em] text-foreground;
+  }
+
+  .rich-text h1 {
+    @apply text-4xl;
+  }
+
+  .rich-text h2 {
+    @apply text-3xl;
+  }
+
+  .rich-text h3 {
+    @apply text-2xl;
+  }
+
+  .rich-text h4 {
+    @apply text-xl;
+  }
+
+  .rich-text a {
+    @apply underline decoration-black/20 decoration-2 underline-offset-4 transition-colors hover:text-foreground hover:decoration-black/60;
+  }
+
+  .rich-text ul {
+    @apply list-disc pl-6;
+  }
+
+  .rich-text ol {
+    @apply list-decimal pl-6;
+  }
+
+  .rich-text li + li {
+    @apply mt-2;
+  }
+
+  .rich-text blockquote {
+    @apply border-l border-black/12 pl-5 italic text-foreground/78;
+  }
+
+  .rich-text hr {
+    @apply border-black/8;
+  }
+
+  .rich-text code {
+    @apply rounded-[0.35rem] bg-black/[0.045] px-1.5 py-1 text-[0.92em] text-foreground;
+  }
+
+  .rich-text pre {
+    @apply overflow-x-auto rounded-[0.75rem] bg-slate-950 px-5 py-4 text-sm text-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)];
+  }
+
+  .rich-text pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .rich-text table {
+    @apply w-full border-collapse overflow-hidden rounded-[0.75rem] border border-black/8 text-sm;
+  }
+
+  .rich-text th {
+    @apply bg-black/[0.03] px-4 py-3 text-left font-semibold text-foreground;
+  }
+
+  .rich-text td {
+    @apply border-t border-black/8 px-4 py-3 align-top;
   }
 }
 

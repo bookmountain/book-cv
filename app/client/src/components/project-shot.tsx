@@ -1,6 +1,7 @@
 import type { ProjectScreenshot } from "@/lib/site-content";
 
 import { ProjectCover } from "@/components/project-cover";
+import { RichText } from "@/components/rich-text";
 import { Card, CardContent } from "@/components/ui/card";
 
 type ProjectShotProps = {
@@ -21,7 +22,7 @@ export function ProjectShot({ screenshot }: ProjectShotProps) {
 
         <div className="flex flex-col gap-2">
           <h3 className="font-serif text-2xl font-medium tracking-[-0.02em]">{screenshot.title}</h3>
-          <p className="text-sm leading-7 text-muted-foreground">{screenshot.introduction}</p>
+          <RichText className="text-sm leading-7 text-muted-foreground" value={screenshot.introduction} />
         </div>
       </CardContent>
     </Card>

@@ -1,0 +1,158 @@
+.markdown-editor {
+  border: 1px solid var(--hairline-color, #d4d4d8);
+  border-radius: 8px;
+  background: var(--body-bg, #fff);
+  overflow: hidden;
+}
+
+.markdown-editor__header {
+  align-items: center;
+  background: color-mix(in srgb, var(--body-bg, #fff) 88%, #eef2f7);
+  border-bottom: 1px solid var(--hairline-color, #d4d4d8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.markdown-editor__modes,
+.markdown-editor__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.markdown-editor__mode,
+.markdown-editor__tool {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--hairline-color, #d4d4d8);
+  border-radius: 999px;
+  color: var(--body-fg, #111827);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 7px 10px;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.markdown-editor__mode:hover,
+.markdown-editor__tool:hover,
+.markdown-editor__mode:focus-visible,
+.markdown-editor__tool:focus-visible {
+  border-color: var(--link-fg, #2563eb);
+  outline: none;
+}
+
+.markdown-editor__mode.is-active {
+  background: var(--button-bg, #111827);
+  border-color: var(--button-bg, #111827);
+  color: var(--button-fg, #fff);
+}
+
+.markdown-editor__body {
+  min-height: 18rem;
+}
+
+.markdown-editor__write-pane textarea {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  font-family:
+    "SFMono-Regular",
+    ui-monospace,
+    "Cascadia Code",
+    "Source Code Pro",
+    Menlo,
+    Consolas,
+    monospace;
+  margin: 0;
+  min-height: 18rem;
+  padding: 14px 16px;
+  resize: vertical;
+  width: 100%;
+}
+
+.markdown-editor__write-pane textarea:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.markdown-editor__preview {
+  line-height: 1.7;
+  padding: 14px 16px 18px;
+}
+
+.markdown-editor__preview > :first-child {
+  margin-top: 0;
+}
+
+.markdown-editor__preview > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-editor__preview h1,
+.markdown-editor__preview h2,
+.markdown-editor__preview h3,
+.markdown-editor__preview h4 {
+  line-height: 1.2;
+  margin: 1.25em 0 0.6em;
+}
+
+.markdown-editor__preview p,
+.markdown-editor__preview ul,
+.markdown-editor__preview ol,
+.markdown-editor__preview blockquote,
+.markdown-editor__preview pre {
+  margin: 1em 0;
+}
+
+.markdown-editor__preview ul,
+.markdown-editor__preview ol {
+  padding-left: 1.4rem;
+}
+
+.markdown-editor__preview blockquote {
+  border-left: 3px solid var(--hairline-color, #d4d4d8);
+  color: var(--body-quiet-color, #4b5563);
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+.markdown-editor__preview code {
+  background: color-mix(in srgb, var(--body-bg, #fff) 92%, #0f172a 8%);
+  border-radius: 4px;
+  font-family:
+    "SFMono-Regular",
+    ui-monospace,
+    Menlo,
+    Consolas,
+    monospace;
+  font-size: 0.92em;
+  padding: 0.1rem 0.3rem;
+}
+
+.markdown-editor__preview pre {
+  background: #0f172a;
+  border-radius: 8px;
+  color: #e2e8f0;
+  overflow-x: auto;
+  padding: 0.85rem 1rem;
+}
+
+.markdown-editor__preview pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.markdown-editor__placeholder {
+  color: var(--body-quiet-color, #6b7280);
+  margin: 0;
+}

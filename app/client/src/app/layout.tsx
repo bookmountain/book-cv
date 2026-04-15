@@ -6,6 +6,7 @@ import { MenuIcon } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { RESUME_PDF_FILENAME, RESUME_PDF_URL } from "@/lib/resume";
 import {
   Sheet,
   SheetContent,
@@ -69,6 +70,9 @@ export default async function RootLayout({
                 <Button render={<a href={profile.github_url} rel="noreferrer" target="_blank" />} size="sm" variant="ghost">
                   GitHub
                 </Button>
+                <Button render={<a download={RESUME_PDF_FILENAME} href={RESUME_PDF_URL} />} size="sm" variant="outline">
+                  Resume PDF
+                </Button>
                 <Button render={<Link href="/contact" />} size="sm">
                   Contact
                 </Button>
@@ -93,6 +97,9 @@ export default async function RootLayout({
                       <Separator />
                       <div className="flex flex-col gap-2 text-sm text-muted-foreground">
                         <span>{profile.location}</span>
+                        <a download={RESUME_PDF_FILENAME} href={RESUME_PDF_URL}>
+                          Resume PDF
+                        </a>
                         <a href={toMailto(profile.email)}>{profile.email}</a>
                         <a href={profile.github_url} rel="noreferrer" target="_blank">
                           {stripProtocol(profile.github_url)}

@@ -177,10 +177,3 @@ export const getBooks = cache(async (): Promise<BookNote[]> => {
 export const getReferences = cache(async (): Promise<Reference[]> => {
   return (await getPortfolioContent()).references;
 });
-
-export function splitParagraphs(value: string) {
-  return value
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
-}

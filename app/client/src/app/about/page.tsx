@@ -1,8 +1,11 @@
 import { PageIntro } from "@/components/page-intro";
 import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
+import { RichText } from "@/components/rich-text";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCapabilities, getExperiences, getSiteProfile } from "@/lib/site-content";
+import { RESUME_PDF_FILENAME, RESUME_PDF_URL } from "@/lib/resume";
 
 export const dynamic = "force-dynamic";
 
@@ -24,10 +27,15 @@ export default async function AboutPage() {
         <Card>
           <CardContent className="flex flex-col gap-5 p-6 sm:p-8">
             <p className="eyebrow-label">Overview</p>
-            <p className="text-sm leading-7 text-foreground">{profile.summary}</p>
+            <RichText className="text-sm leading-7 text-foreground" value={profile.summary} />
             <p className="text-sm leading-7 text-muted-foreground">
               I prefer products that stay easy to use, easy to operate, and easy to change.
             </p>
+            <div>
+              <Button render={<a download={RESUME_PDF_FILENAME} href={RESUME_PDF_URL} />} size="sm" variant="outline">
+                Download resume PDF
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
@@ -66,7 +74,7 @@ export default async function AboutPage() {
                     {experience.highlights[0] ? (
                       <p className="text-sm leading-7 text-foreground/88">{experience.highlights[0]}</p>
                     ) : null}
-                    <p className="text-sm leading-7 text-muted-foreground">{experience.summary}</p>
+                    <RichText className="text-sm leading-7 text-muted-foreground" value={experience.summary} />
                   </div>
                 </CardContent>
               </Card>
