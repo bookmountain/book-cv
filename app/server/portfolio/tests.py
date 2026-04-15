@@ -6,6 +6,12 @@ class TestPortfolioApi(TestCase):
     def setUp(self):
         call_command("seed_portfolio")
 
+    def test_root_redirects_to_admin(self):
+        response = self.client.get("/", follow=False)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/admin/")
+
     def test_content_endpoint_returns_expected_sections(self):
         response = self.client.get("/api/content/")
 
