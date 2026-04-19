@@ -19,16 +19,14 @@ export function PageIntro({
   children,
 }: PageIntroProps) {
   return (
-    <section className="flex flex-col gap-8 pb-10">
-      <p className="border-l border-black/10 pl-4 text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-muted-foreground">
-        {eyebrow}
-      </p>
+    <section className="flex flex-col gap-8 pb-6 pt-4">
+      <p className="section-kicker">{eyebrow}</p>
 
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
         <div className="flex flex-col gap-3">
           <h1
             className={cn(
-              "max-w-5xl font-serif text-4xl font-medium leading-[1.04] tracking-[-0.035em] text-balance text-foreground sm:text-5xl xl:text-[4.3rem]",
+              "max-w-5xl font-serif text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-balance text-foreground sm:text-5xl xl:text-[4.45rem]",
               titleClassName,
             )}
           >

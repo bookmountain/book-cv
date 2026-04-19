@@ -1,9 +1,6 @@
 import Link from "next/link";
 
-import { PageIntro } from "@/components/page-intro";
 import { Reveal } from "@/components/reveal";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { getReferences } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
@@ -16,52 +13,77 @@ export default async function ReferencesPage() {
   const references = await getReferences();
 
   return (
-    <div className="flex flex-col gap-16">
-      <PageIntro
-        eyebrow="References"
-        lede="People who can speak to how I work, how I collaborate, and how I operate under delivery pressure."
-        title="References and endorsements"
-      />
+    <div className="page-wrapper">
+      <section className="section">
+        <div className="container">
+          <div className="animate-fadeUp" style={{ animationDelay: "0.1s", maxWidth: 760 }}>
+            <div className="section-label">References</div>
+            <h1 className="section-title">References and endorsements.</h1>
+            <p className="section-sub">People who can speak to how I work, how I collaborate, and how I operate under delivery pressure.</p>
+          </div>
 
-      <section className="grid gap-5 md:grid-cols-2">
-        {references.map((reference, index) => (
-          <Reveal delay={index * 40} key={reference.email || reference.name}>
-            <Card>
-              <CardContent className="flex h-full flex-col gap-6 p-6">
-                <p className="font-serif text-[1.75rem] leading-tight tracking-[-0.03em] text-foreground">
-                  {reference.quote || "Add a quote for this reference in Django admin."}
-                </p>
+          <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+            {references.map((reference, index) => {
+              const fallbackQuote = `${reference.name} can speak to my ${reference.relationship.toLowerCase()} at ${reference.organization}.`;
 
-                <div className="mt-auto flex flex-col gap-2 border-t border-black/6 pt-5">
-                  <p className="eyebrow-label">Reference</p>
-                  <p className="font-medium tracking-tight">{reference.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {reference.role}, {reference.organization}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{reference.relationship}</p>
-                  <div className="pt-1">
-                    <Button render={<a href={toMailto(reference.email)} />} size="sm" variant="ghost">
-                      {reference.email}
-                    </Button>
+              return (
+                <Reveal delay={index * 60} key={reference.email || reference.name}>
+                  <div className="card" style={{ display: "flex", flexDirection: "column", gap: 24, minHeight: 280, padding: "24px 24px 22px" }}>
+                    <p style={{ fontSize: 26, fontWeight: 600, lineHeight: 1.2, color: "#fff", letterSpacing: "-0.03em" }}>
+                      {reference.quote || fallbackQuote}
+                    </p>
+
+                    <div style={{ marginTop: "auto", paddingTop: 18, borderTop: "1px solid var(--border)", display: "grid", gap: 6 }}>
+                      <span className="tag green" style={{ width: "fit-content" }}>
+                        {reference.relationship}
+                      </span>
+                      <p style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{reference.name}</p>
+                      <p style={{ fontSize: 13, color: "var(--muted-foreground)" }}>
+                        {reference.role}, {reference.organization}
+                      </p>
+                      <a
+                        className="btn btn-ghost"
+                        href={toMailto(reference.email)}
+                        style={{ justifySelf: "start", marginTop: 8, padding: "8px 14px", fontSize: 12 }}
+                      >
+                        {reference.email}
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </Reveal>
-        ))}
-      </section>
+                </Reveal>
+              );
+            })}
+          </div>
 
-      <section className="page-band grid gap-5 rounded-[0.85rem] px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-        <div className="flex flex-col gap-3">
-          <p className="eyebrow-label">Start a conversation</p>
-          <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Need a direct introduction or want to discuss a project?</h2>
-          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-            The fastest path is to reach out directly. I can provide context, examples, and the right references for the work.
-          </p>
+          <Reveal delay={160}>
+            <div
+              className="card"
+              style={{
+                marginTop: 48,
+                padding: "26px 28px",
+                display: "grid",
+                gap: 20,
+                alignItems: "center",
+                gridTemplateColumns: "minmax(0, 1fr) auto",
+              }}
+            >
+              <div>
+                <div className="section-label" style={{ marginBottom: 12 }}>
+                  Start A Conversation
+                </div>
+                <h2 style={{ fontSize: 28, fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 10 }}>
+                  Need a direct introduction or want to discuss a project?
+                </h2>
+                <p style={{ maxWidth: 620, color: "var(--muted-foreground)", fontSize: 15, lineHeight: 1.75 }}>
+                  The fastest path is to reach out directly. I can provide context, examples, and the right references for the work.
+                </p>
+              </div>
+              <Link className="btn btn-primary" href="/contact">
+                Contact
+              </Link>
+            </div>
+          </Reveal>
         </div>
-        <Button render={<Link href="/contact" />} size="lg">
-          Contact
-        </Button>
       </section>
     </div>
   );

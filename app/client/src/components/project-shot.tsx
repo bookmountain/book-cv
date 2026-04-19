@@ -2,7 +2,6 @@ import type { ProjectScreenshot } from "@/lib/site-content";
 
 import { ProjectCover } from "@/components/project-cover";
 import { RichText } from "@/components/rich-text";
-import { Card, CardContent } from "@/components/ui/card";
 
 type ProjectShotProps = {
   screenshot: ProjectScreenshot;
@@ -10,21 +9,21 @@ type ProjectShotProps = {
 
 export function ProjectShot({ screenshot }: ProjectShotProps) {
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-6 p-6">
+    <div className="card" style={{ height: "100%", overflow: "hidden" }}>
+      <div style={{ borderBottom: "1px solid var(--border)" }}>
         <ProjectCover
           alt={screenshot.alt_text || screenshot.title}
-          caption={screenshot.image_src ? screenshot.title : null}
+          caption={null}
           className="aspect-[16/10]"
           imageSrc={screenshot.image_src}
           title={screenshot.title}
         />
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <h3 className="font-serif text-2xl font-medium tracking-[-0.02em]">{screenshot.title}</h3>
-          <RichText className="text-sm leading-7 text-muted-foreground" value={screenshot.introduction} />
-        </div>
-      </CardContent>
-    </Card>
+      <div style={{ padding: "18px 20px 20px" }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, color: "#fff", lineHeight: 1.4, marginBottom: 8 }}>{screenshot.title}</h3>
+        <RichText className="text-sm leading-7 text-muted-foreground" value={screenshot.introduction} />
+      </div>
+    </div>
   );
 }

@@ -37,9 +37,9 @@ export function SiteNav({ orientation = "vertical" }: SiteNavProps) {
           <Link
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "border-b border-transparent pb-1 text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground transition-colors duration-300 hover:text-foreground",
+              "border-b border-transparent pb-1 font-mono text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-300 hover:text-foreground",
               isHorizontal ? "justify-center" : "w-fit text-left",
-              isActive && "border-foreground text-foreground",
+              isActive && "border-primary text-primary",
             )}
             href={item.href}
             key={item.href}

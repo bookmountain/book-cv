@@ -2,14 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PageIntro } from "@/components/page-intro";
-import { ProjectCover } from "@/components/project-cover";
 import { ProjectShot } from "@/components/project-shot";
+import { ProjectVisual } from "@/components/prototype-ui";
 import { Reveal } from "@/components/reveal";
 import { RichText } from "@/components/rich-text";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { getProjectBySlug } from "@/lib/site-content";
 
 type ProjectPageProps = {
@@ -42,95 +38,140 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const stackItems = project.stack
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const heroShot = project.screenshots.find((shot) => shot.image_src);
+
   return (
-    <div className="flex flex-col gap-16">
-      <PageIntro eyebrow={project.eyebrow} lede={project.summary} title={project.title}>
-        {project.live_url ? (
-          <Button render={<a href={project.live_url} rel="noreferrer" target="_blank" />}>Live demo</Button>
-        ) : null}
-        {project.repo_url ? (
-          <Button render={<a href={project.repo_url} rel="noreferrer" target="_blank" />} variant="outline">
-            GitHub
-          </Button>
-        ) : null}
-        <Button render={<Link href="/projects" />} variant="ghost">
-          Back
-        </Button>
-      </PageIntro>
+    <div className="page-wrapper">
+      <section className="section">
+        <div className="container">
+          <div className="animate-fadeUp" style={{ animationDelay: "0.1s", maxWidth: 760 }}>
+            <div className="section-label">{project.eyebrow}</div>
+            <h1 className="section-title" style={{ fontSize: "clamp(34px,5vw,52px)", marginBottom: 16 }}>
+              {project.title}
+            </h1>
+            <p className="section-sub" style={{ maxWidth: 680, marginBottom: 28 }}>
+              {project.summary}
+            </p>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {project.live_url ? (
+                <a className="btn btn-primary" href={project.live_url} rel="noreferrer" target="_blank">
+                  Live demo ↗
+                </a>
+              ) : null}
+              {project.repo_url ? (
+                <a className="btn btn-ghost" href={project.repo_url} rel="noreferrer" target="_blank">
+                  GitHub ↗
+                </a>
+              ) : null}
+              <Link className="btn btn-ghost" href="/projects">
+                Back to projects
+              </Link>
+            </div>
+          </div>
 
-      <ProjectCover
-        alt={project.screenshots[0]?.alt_text}
-        className="aspect-[16/8] min-h-[20rem]"
-        imageSrc={project.screenshots[0]?.image_src}
-        title={project.title}
-      />
+          <Reveal delay={120}>
+            <div className="card" style={{ overflow: "hidden", marginTop: 36 }}>
+              {heroShot ? (
+                <div style={{ borderBottom: "1px solid var(--border)" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={heroShot.alt_text || project.title}
+                    src={heroShot.image_src}
+                    style={{ display: "block", width: "100%", aspectRatio: "16 / 7", objectFit: "cover" }}
+                  />
+                </div>
+              ) : (
+                <div style={{ padding: "40px clamp(20px, 4vw, 40px)", borderBottom: "1px solid var(--border)" }}>
+                  <ProjectVisual project={project} />
+                </div>
+              )}
+            </div>
+          </Reveal>
 
-      <section className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="flex flex-col gap-10">
-          <div className="grid gap-6">
-            <div className="flex flex-col gap-4">
-              <p className="eyebrow-label">About the project</p>
-              <RichText className="max-w-3xl text-sm leading-8 text-muted-foreground" value={project.details} />
+          <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_280px]" style={{ gap: 32, marginTop: 32 }}>
+            <div style={{ display: "grid", gap: 28 }}>
+              <Reveal delay={160}>
+                <section>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>About the project</h2>
+                  <div className="card" style={{ padding: "24px 26px" }}>
+                    <RichText className="text-sm leading-8 text-foreground/88" value={project.details} />
+                  </div>
+                </section>
+              </Reveal>
+
+              {project.highlights.length ? (
+                <section>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>Key outcomes</h2>
+                  <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+                    {project.highlights.map((highlight, index) => (
+                      <Reveal delay={180 + index * 60} key={highlight}>
+                        <div className="card" style={{ padding: "18px 20px", height: "100%" }}>
+                          <span className="tag green">Highlight</span>
+                          <p style={{ fontSize: 13, lineHeight: 1.7, color: "var(--muted-foreground)", marginTop: 12 }}>{highlight}</p>
+                        </div>
+                      </Reveal>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
+
+              {project.screenshots.length ? (
+                <section>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>Walkthrough</h2>
+                  <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+                    {project.screenshots.map((screenshot, index) => (
+                      <Reveal delay={220 + index * 60} key={`${project.slug}-${screenshot.title}`}>
+                        <ProjectShot screenshot={screenshot} />
+                      </Reveal>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
             </div>
 
-            {project.highlights.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                <p className="eyebrow-label">Key outcomes</p>
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  {project.highlights.map((highlight) => (
-                    <Card key={highlight}>
-                      <CardContent className="flex h-full flex-col gap-3 p-6">
-                        <p className="eyebrow-label">Highlight</p>
-                        <p className="text-sm leading-7 text-foreground/88">{highlight}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
+            <Reveal delay={200}>
+              <aside className="card" style={{ padding: "22px 24px", height: "fit-content", position: "sticky", top: 84 }}>
+                <div style={{ display: "grid", gap: 22 }}>
+                  <div>
+                    <div className="section-label" style={{ marginBottom: 10 }}>
+                      Type
+                    </div>
+                    <p style={{ fontSize: 14, color: "#fff" }}>{project.eyebrow}</p>
+                  </div>
+
+                  <div style={{ height: 1, background: "var(--border)" }} />
+
+                  <div>
+                    <div className="section-label" style={{ marginBottom: 10 }}>
+                      Status
+                    </div>
+                    <p style={{ fontSize: 14, color: "#fff" }}>{project.live_url ? "Live" : "Build in progress"}</p>
+                  </div>
+
+                  <div style={{ height: 1, background: "var(--border)" }} />
+
+                  <div>
+                    <div className="section-label" style={{ marginBottom: 10 }}>
+                      Stack
+                    </div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      {stackItems.map((item) => (
+                        <span className="tag" key={item}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              </aside>
+            </Reveal>
           </div>
         </div>
-
-        <Card className="h-fit xl:sticky xl:top-28">
-          <CardContent className="grid gap-5 p-6">
-            <div className="flex flex-col gap-1">
-              <p className="eyebrow-label">Type</p>
-              <p className="text-sm leading-7 text-foreground">{project.eyebrow}</p>
-            </div>
-            <Separator />
-            <div className="flex flex-col gap-1">
-              <p className="eyebrow-label">Stack</p>
-              <div className="flex flex-wrap gap-2 text-[0.58rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {project.stack.split(",").map((item) => (
-                  <span key={item.trim()}>{item.trim()}</span>
-                ))}
-              </div>
-            </div>
-            <Separator />
-            <div className="flex flex-col gap-1">
-              <p className="eyebrow-label">Status</p>
-              <p className="text-sm leading-7 text-foreground">{project.live_url ? "Live" : "Build in progress"}</p>
-            </div>
-          </CardContent>
-        </Card>
       </section>
-
-      {project.screenshots.length > 0 ? (
-        <section className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <p className="eyebrow-label">Screenshots</p>
-            <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Walkthrough</h2>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-2">
-            {project.screenshots.map((screenshot, index) => (
-              <Reveal delay={index * 40} key={`${project.slug}-${screenshot.title}`}>
-                <ProjectShot screenshot={screenshot} />
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      ) : null}
     </div>
   );
 }

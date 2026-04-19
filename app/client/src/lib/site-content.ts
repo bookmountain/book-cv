@@ -177,3 +177,91 @@ export const getBooks = cache(async (): Promise<BookNote[]> => {
 export const getReferences = cache(async (): Promise<Reference[]> => {
   return (await getPortfolioContent()).references;
 });
+
+function collectText(...values: Array<string | string[] | undefined>) {
+  return values
+    .flatMap((value) => (Array.isArray(value) ? value : [value]))
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function compactText(value: string, limit = 120) {
+  const normalized = value.replace(/\s+/g, " ").trim();
+
+  if (normalized.length <= limit) {
+    return normalized;
+  }
+
+  const sliced = normalized.slice(0, limit);
+  const breakpoint = sliced.lastIndexOf(" ");
+  const output = breakpoint > 72 ? sliced.slice(0, breakpoint) : sliced;
+
+  return `${output.replace(/[.,;:!?-]+$/, "")}…`;
+}
+
+export function getDisplayCapabilities(
+  content: Pick<PortfolioContent, "capabilities" | "experiences" | "projects" | "writings">,
+): CapabilityRow[] {
+  const explicit = asArray(content.capabilities).filter((row) => row.label.trim() && row.value.trim());
+
+  if (explicit.length) {
+    return explicit;
+  }
+
+  const items: CapabilityRow[] = [];
+  const projects = asArray(content.projects);
+  const experiences = asArray(content.experiences);
+  const writings = asArray(content.writings);
+
+  const push = (label: string, value?: string) => {
+    if (!value || items.some((item) => item.label === label)) {
+      return;
+    }
+
+    items.push({
+      label,
+      value: compactText(value),
+    });
+  };
+
+  const microsoftExperience = experiences.find((experience) =>
+    /microsoft|azure ai|document/.test(collectText(experience.company, experience.summary, experience.highlights)),
+  );
+  const documentProject = projects.find((project) =>
+    /form recognizer|document intelligence|azure ai/.test(
+      collectText(project.title, project.slug, project.stack, project.summary, project.details, project.highlights),
+    ),
+  );
+  const homelabProject = projects.find((project) =>
+    /ollama|proxmox|self-hosted|homelab|local model/.test(
+      collectText(project.title, project.slug, project.stack, project.summary, project.details, project.highlights),
+    ),
+  );
+  const agentProject =
+    projects.find((project) => project.slug.includes("ai-agent-project")) ??
+    projects.find((project) =>
+      /agent orchestration|agent-style|bounded tools/.test(
+        collectText(project.title, project.slug, project.stack, project.summary, project.details, project.highlights),
+      ),
+    );
+  const deliveryWriting =
+    writings.find((entry) => entry.slug.includes("building-with-ai")) ??
+    writings.find((entry) => /\bai\b|copilot|codex|claude|local model/.test(collectText(entry.title, entry.summary, entry.body)));
+  const promptProject =
+    projects.find((project) => project.slug.includes("ai-web-generator")) ??
+    projects.find((project) =>
+      /prompt workflows|generation|generated|maintainability as a first-class output metric/.test(
+        collectText(project.title, project.slug, project.stack, project.summary, project.details, project.highlights),
+      ),
+    );
+
+  push("Azure AI Studio", microsoftExperience?.summary || microsoftExperience?.highlights[0]);
+  push("Document Intelligence", documentProject?.summary || documentProject?.highlights[0]);
+  push("Self-hosted Models", homelabProject?.summary || homelabProject?.highlights[0]);
+  push("Agent Workflows", agentProject?.summary || agentProject?.highlights[0]);
+  push("AI-assisted Delivery", deliveryWriting?.summary || microsoftExperience?.highlights[1]);
+  push("Prompt Workflows", promptProject?.summary || promptProject?.highlights[0]);
+
+  return items.slice(0, 6);
+}

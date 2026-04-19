@@ -1,183 +1,184 @@
 import Link from "next/link";
 
-import { PageIntro } from "@/components/page-intro";
-import { ProjectCover } from "@/components/project-cover";
-import { Reveal } from "@/components/reveal";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { getBooks, getPortfolioContent, getWritings } from "@/lib/site-content";
+import { HomeTerminal } from "@/components/home-terminal";
+import { AISection, PostRow, ProjectCard } from "@/components/prototype-ui";
+import { getDisplayCapabilities, getPortfolioContent, getWritings } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
-function toMailto(value: string) {
-  return value.startsWith("mailto:") ? value : `mailto:${value}`;
+function getExperienceYears(periods: string[]) {
+  const years = periods
+    .flatMap((period) => period.match(/\b(19|20)\d{2}\b/g) ?? [])
+    .map((value) => Number(value))
+    .filter((value) => Number.isFinite(value));
+
+  if (!years.length) {
+    return 5;
+  }
+
+  return Math.max(1, Math.max(...years) - Math.min(...years));
 }
 
 export default async function HomePage() {
   const content = await getPortfolioContent();
   const featuredProjects = content.projects.filter((project) => project.is_featured).slice(0, 3);
   const posts = (await getWritings()).slice(0, 3);
-  const books = (await getBooks()).slice(0, 3);
+  const capabilityRows = getDisplayCapabilities(content);
+  const experienceYears = getExperienceYears(content.experiences.map((experience) => experience.period));
+  const writingIndex = capabilityRows.length ? "04" : "03";
+
+  const terminalLines = [
+    { command: "$ whoami", output: `${content.profile.full_name} — ${content.profile.title}` },
+    { command: "$ cat experience/microsoft.txt", output: "3 yrs · VDI Team · Azure AI Studio · Copilot · Jest" },
+    {
+      command: "$ ls skills/ai/",
+      output: capabilityRows.slice(0, 6).map((row) => row.label.toLowerCase()).join("  ") || "rag  agents  ollama  prompting",
+    },
+    {
+      command: "$ echo $STATUS",
+      output: `Open to thoughtful engineering work · ${content.profile.location || "Australia"}`,
+    },
+  ];
 
   return (
-    <div className="flex flex-col gap-16">
-      <PageIntro
-        eyebrow="Engineering excellence"
-        lede="With a background at Microsoft, I focus on bridging complex backend infrastructure with high-fidelity product UI."
-        title="Software engineer building practical products and reliable systems."
-        titleClassName="max-w-4xl text-[2.7rem] sm:text-5xl xl:text-[4.2rem]"
-        ledeClassName="max-w-xl"
+    <div className="page-wrapper">
+      <div
+        className="container"
+        style={{
+          minHeight: "calc(100svh - var(--nav-height))",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          paddingTop: "clamp(28px, 6vw, 48px)",
+          paddingBottom: "clamp(36px, 7vw, 64px)",
+        }}
       >
-        <Button render={<Link href="/projects" />}>View projects</Button>
-        <Button render={<Link href="/contact" />} variant="outline">
-          Contact
-        </Button>
-      </PageIntro>
-
-      <section className="grid gap-8 border-t border-black/6 pt-10 md:grid-cols-3">
-        {[
-          { label: "Location", value: content.profile.location },
-          { label: "Focus", value: "Web apps, AI systems, and automation" },
-          { label: "Primary stack", value: "Next.js, Django, PostgreSQL, Docker" },
-        ].map((item) => (
-          <div className="flex flex-col gap-2" key={item.label}>
-            <p className="eyebrow-label">{item.label}</p>
-            <p className="text-sm font-medium text-foreground">{item.value}</p>
+        <div className="animate-fadeUp" style={{ animationDelay: "0.1s", marginBottom: 28 }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "7px 14px",
+              background: "rgba(0,164,239,0.08)",
+              border: "1px solid rgba(0,164,239,0.2)",
+              borderRadius: 6,
+            }}
+          >
+            <span className="status-pulse" style={{ width: 10, height: 10, borderRadius: "50%", background: "#60b8f0" }} />
+            <span style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "#60b8f0", letterSpacing: "0.04em" }}>
+              ex-Microsoft · VDI Team · 2022–2025
+            </span>
           </div>
-        ))}
-      </section>
+        </div>
 
-      <section className="page-band flex flex-col gap-8 rounded-[0.85rem] px-6 py-8 sm:px-8 sm:py-10">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div className="flex max-w-xl flex-col gap-3">
-            <p className="eyebrow-label">Selected work</p>
-            <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Systems and interfaces built to last.</h2>
-            <p className="text-sm leading-7 text-muted-foreground">
-              A curated set of delivery-focused projects spanning product UI, architecture, and developer tooling.
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center" style={{ gap: 48 }}>
+          <div>
+            <h1
+              className="animate-fadeUp"
+              style={{
+                animationDelay: "0.2s",
+                fontSize: "clamp(36px,5vw,58px)",
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.1,
+                color: "#fff",
+                marginBottom: 20,
+              }}
+            >
+              Engineering
+              <br />
+              <span style={{ color: "var(--accent)" }}>with intent.</span>
+            </h1>
+            <p
+              className="animate-fadeUp"
+              style={{
+                animationDelay: "0.35s",
+                color: "var(--muted-foreground)",
+                fontSize: 16,
+                lineHeight: 1.75,
+                marginBottom: 32,
+                maxWidth: 420,
+              }}
+            >
+              {content.profile.summary}
             </p>
+            <div className="animate-fadeUp" style={{ animationDelay: "0.5s", display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link className="btn btn-primary" href="/projects">
+                View work
+              </Link>
+              <Link className="btn btn-ghost" href="/contact">
+                Get in touch
+              </Link>
+            </div>
+
+            <div
+              className="animate-fadeUp"
+              style={{ animationDelay: "0.65s", display: "flex", gap: 28, marginTop: 40, paddingTop: 28, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}
+            >
+              {[
+                [`${experienceYears}`, "years exp."],
+                ["Microsoft", "alumnus"],
+                [content.profile.location.split(",")[0] || "Adelaide", "based"],
+              ].map(([value, label]) => (
+                <div key={label}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>{value}</div>
+                  <div style={{ fontSize: 12, color: "var(--muted-foreground)", fontFamily: "JetBrains Mono", marginTop: 2 }}>{label}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <Button render={<Link href="/projects" />} size="sm" variant="ghost">
-            All projects
-          </Button>
-        </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {featuredProjects.map((project, index) => (
-            <Reveal delay={index * 40} key={project.slug}>
-              <Card className="h-full">
-                <CardContent className="flex h-full flex-col gap-5 p-6">
-                  <ProjectCover
-                    alt={project.screenshots[0]?.alt_text}
-                    className="aspect-[4/3]"
-                    imageSrc={project.screenshots[0]?.image_src}
-                    title={project.title}
-                  />
-                  <div className="flex flex-col gap-3">
-                    <p className="eyebrow-label">{project.eyebrow}</p>
-                    <h3 className="font-serif text-[1.75rem] leading-tight tracking-[-0.03em]">{project.title}</h3>
-                    <p className="text-sm leading-7 text-muted-foreground">{project.summary}</p>
-                    <div className="flex flex-wrap gap-3 text-[0.58rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                      {project.stack.split(",").slice(0, 3).map((item) => (
-                        <span key={item.trim()}>{item.trim()}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="mt-auto flex items-center justify-between gap-4 pt-2">
-                    <Button render={<Link href={`/projects/${project.slug}`} />} size="sm" variant="ghost">
-                      View project
-                    </Button>
-                    {project.live_url ? (
-                      <Button render={<a href={project.live_url} rel="noreferrer" target="_blank" />} size="sm" variant="outline">
-                        Live demo
-                      </Button>
-                    ) : null}
-                  </div>
-                </CardContent>
-              </Card>
-            </Reveal>
-          ))}
+          <div className="animate-fadeUp" style={{ animationDelay: "0.4s" }}>
+            <HomeTerminal lines={terminalLines} />
+          </div>
+        </div>
+      </div>
+
+      <hr className="divider" />
+
+      <section className="section">
+        <div className="container">
+          <div className="section-label">02 / Selected Work</div>
+          <h2 className="section-title">Systems and interfaces built to last.</h2>
+          <p className="section-sub">Delivery-focused projects spanning product UI, architecture, and developer tooling.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+            {featuredProjects.map((project, index) => (
+              <ProjectCard delay={index * 100} key={project.slug} project={project} />
+            ))}
+          </div>
+          <div style={{ marginTop: 28 }}>
+            <Link className="btn btn-ghost" href="/projects">
+              All projects →
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="grid gap-10 xl:grid-cols-[minmax(0,0.34fr)_1fr]">
-        <div className="flex flex-col gap-3">
-          <p className="eyebrow-label">Latest posts</p>
-          <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Writing on engineering, AI, and software delivery.</h2>
-        </div>
-        <div className="divide-y divide-black/6">
-          {posts.map((entry) => (
-            <article className="grid gap-4 py-7 md:grid-cols-[140px_minmax(0,1fr)] md:items-start" key={entry.slug}>
-              <div className="flex flex-col gap-2 text-[0.58rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                <span>{entry.category}</span>
-                <span>{entry.reading_time}</span>
-              </div>
-              <div className="flex flex-col gap-4">
-                <h3 className="font-serif text-[1.9rem] leading-tight tracking-[-0.03em]">{entry.title}</h3>
-                <p className="max-w-2xl text-sm leading-7 text-muted-foreground">{entry.summary}</p>
-                <div>
-                  <Button render={<Link href={`/blog/${entry.slug}`} />} size="sm" variant="ghost">
-                    Read post
-                  </Button>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <hr className="divider" />
 
-      <section className="page-band grid gap-10 rounded-[0.85rem] px-6 py-8 sm:px-8 sm:py-10 xl:grid-cols-[minmax(0,0.34fr)_1fr]">
-        <div className="flex flex-col gap-3">
-          <p className="eyebrow-label">Current shelf</p>
-          <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Books shaping how I design and build.</h2>
-          <p className="text-sm leading-7 text-muted-foreground">
-            Continuous learning sits underneath the architectural mindset. These are the books currently influencing the work.
-          </p>
-        </div>
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {books.map((book, index) => (
-            <Card key={book.title}>
-              <CardContent className="flex h-full flex-col gap-5 p-6">
-                <div
-                  className="flex aspect-[3/4] items-end rounded-[0.55rem] border border-white/30 p-5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]"
-                  style={{
-                    background:
-                      [
-                        "linear-gradient(160deg, #111827 0%, #334155 100%)",
-                        "linear-gradient(160deg, #1f2937 0%, #475569 100%)",
-                        "linear-gradient(160deg, #0f172a 0%, #64748b 100%)",
-                      ][index % 3],
-                  }}
-                >
-                  <div className="flex flex-col gap-2">
-                    <p className="text-[0.56rem] font-semibold uppercase tracking-[0.28em] text-white/70">Book note</p>
-                    <p className="font-serif text-2xl leading-tight">{book.title}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <p className="text-sm font-medium text-foreground">{book.author}</p>
-                  <p className="text-sm leading-7 text-muted-foreground">{book.takeaway}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      {capabilityRows.length ? (
+        <>
+          <AISection capabilities={capabilityRows} />
+          <hr className="divider" />
+        </>
+      ) : null}
 
-      <section className="grid gap-6 rounded-[0.85rem] border border-black/6 bg-[rgba(255,255,255,0.7)] px-6 py-8 shadow-[0_16px_36px_rgba(15,23,42,0.04)] sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-        <div className="flex flex-col gap-3">
-          <p className="eyebrow-label">Collaborate</p>
-          <h2 className="font-serif text-3xl font-medium tracking-[-0.03em]">Interested in building something durable together?</h2>
-          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-            I work best where product thinking, systems clarity, and fast delivery need to coexist.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button render={<Link href="/contact" />} size="lg">
-            Start a project
-          </Button>
-          <Button render={<a href={toMailto(content.profile.email)} />} size="lg" variant="outline">
-            Email me
-          </Button>
+      <section className="section">
+        <div className="container">
+          <div className="section-label">{writingIndex} / Writing</div>
+          <h2 className="section-title">Engineering, AI, and delivery.</h2>
+          <p className="section-sub">Notes from practice.</p>
+          <div style={{ display: "grid", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+            {posts.map((entry, index) => (
+              <PostRow delay={index * 80} entry={entry} key={entry.slug} />
+            ))}
+          </div>
+          <div style={{ marginTop: 24 }}>
+            <Link className="btn btn-ghost" href="/blog">
+              All posts →
+            </Link>
+          </div>
         </div>
       </section>
     </div>

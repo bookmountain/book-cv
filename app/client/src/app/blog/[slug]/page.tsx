@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PageIntro } from "@/components/page-intro";
+import { PostVisual } from "@/components/prototype-ui";
+import { Reveal } from "@/components/reveal";
 import { RichText } from "@/components/rich-text";
-import { Button } from "@/components/ui/button";
 import { getWritingBySlug } from "@/lib/site-content";
 
 type WritingPageProps = {
@@ -38,22 +38,34 @@ export default async function BlogEntryPage({ params }: WritingPageProps) {
   }
 
   return (
-    <div className="flex flex-col gap-14">
-      <PageIntro eyebrow="Blog" lede={entry.summary} title={entry.title}>
-        <Button render={<Link href="/blog" />} variant="ghost">
-          Back to blog
-        </Button>
-      </PageIntro>
+    <div className="page-wrapper">
+      <section className="section">
+        <div className="container" style={{ maxWidth: 860 }}>
+          <div className="animate-fadeUp" style={{ animationDelay: "0.1s" }}>
+            <div className="section-label">{entry.category}</div>
+            <h1 className="section-title" style={{ fontSize: "clamp(32px,4.5vw,48px)", marginBottom: 16 }}>
+              {entry.title}
+            </h1>
+            <p className="section-sub" style={{ maxWidth: 680, marginBottom: 24 }}>
+              {entry.summary}
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+              <span className="tag">{entry.category}</span>
+              <span className="tag">{entry.reading_time}</span>
+              <Link className="btn btn-ghost" href="/blog">
+                Back to blog
+              </Link>
+            </div>
+          </div>
 
-      <section className="max-w-4xl">
-        <div className="flex flex-wrap items-center gap-3 pb-8 text-[0.58rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-          <span>{entry.category}</span>
-          <span className="h-1 w-1 rounded-full bg-border" />
-          <span>{entry.reading_time}</span>
-        </div>
-
-        <div className="rounded-[0.85rem] border border-black/6 bg-[rgba(255,255,255,0.74)] px-6 py-8 shadow-[0_18px_44px_rgba(15,23,42,0.05)] sm:px-8 sm:py-10">
-          <RichText className="max-w-3xl text-[1rem] leading-8 text-foreground/92" value={entry.body} />
+          <Reveal delay={120}>
+            <div className="card" style={{ overflow: "hidden", marginTop: 32 }}>
+              <PostVisual entry={entry} />
+              <div style={{ padding: "28px clamp(20px, 4vw, 30px) 34px" }}>
+                <RichText className="text-[0.98rem] leading-8 text-foreground/92" value={entry.body} />
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>
