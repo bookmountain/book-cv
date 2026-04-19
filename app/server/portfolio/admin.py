@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import BookNote, Capability, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Capability, Education, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
 from .widgets import MarkdownEditorWidget
 
 
@@ -44,6 +44,13 @@ class ExperienceAdmin(MarkdownEditorMixin, admin.ModelAdmin):
     search_fields = ("company", "role", "location")
     ordering = ("sort_order",)
     markdown_fields = ("summary",)
+
+
+@admin.register(Education)
+class EducationAdmin(admin.ModelAdmin):
+    list_display = ("degree", "institution", "period", "location", "sort_order", "updated_at")
+    search_fields = ("degree", "institution", "location")
+    ordering = ("sort_order",)
 
 
 @admin.register(Capability)

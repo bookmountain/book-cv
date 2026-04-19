@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from portfolio.models import (
     BookNote,
     Capability,
+    Education,
     Experience,
     Project,
     ProjectScreenshot,
@@ -10,6 +11,7 @@ from portfolio.models import (
     SiteProfile,
     WritingEntry,
 )
+from portfolio.resume_source import load_resume_education_entries, load_resume_reference_entries
 
 
 class Command(BaseCommand):
@@ -372,6 +374,22 @@ class Command(BaseCommand):
                 defaults=payload,
             )
 
+        seeded_education_ids = []
+
+        for entry in load_resume_education_entries():
+            education, _created = Education.objects.update_or_create(
+                degree=entry.degree,
+                institution=entry.institution,
+                defaults={
+                    "location": entry.location,
+                    "period": entry.period,
+                    "sort_order": entry.sort_order,
+                },
+            )
+            seeded_education_ids.append(education.id)
+
+        Education.objects.exclude(id__in=seeded_education_ids).delete()
+
         seed_capabilities = [
             {
                 "label": "Application",
@@ -536,28 +554,22 @@ class Command(BaseCommand):
         for payload in seed_books:
             BookNote.objects.update_or_create(title=payload["title"], defaults=payload)
 
-        seed_references = [
-            {
-                "name": "Shih Chia Wang",
-                "role": "Senior Software Engineer",
-                "organization": "Microsoft",
-                "email": "scwang0103@gmail.com",
-                "relationship": "Engineering reference",
-                "quote": "",
-                "sort_order": 1,
-            },
-            {
-                "name": "Debby King",
-                "role": "Principal Program Manager",
-                "organization": "Microsoft",
-                "email": "debbyk@microsoft.com",
-                "relationship": "Program leadership reference",
-                "quote": "",
-                "sort_order": 2,
-            },
-        ]
+        seeded_reference_emails = set()
 
-        for payload in seed_references:
-            Reference.objects.update_or_create(email=payload["email"], defaults=payload)
+        for entry in load_resume_reference_entries():
+            seeded_reference_emails.add(entry.email)
+            Reference.objects.update_or_create(
+                email=entry.email,
+                defaults={
+                    "name": entry.name,
+                    "role": entry.role,
+                    "organization": entry.organization,
+                    "relationship": entry.relationship,
+                    "quote": "",
+                    "sort_order": entry.sort_order,
+                },
+            )
+
+        Reference.objects.exclude(email__in=seeded_reference_emails).delete()
 
         self.stdout.write(self.style.SUCCESS("Seeded portfolio content."))

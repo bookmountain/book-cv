@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function AboutPage() {
   const content = await getPortfolioContent();
   const profile = content.profile;
+  const education = content.education;
   const experiences = content.experiences;
   const capabilities = getDisplayCapabilities(content);
   const summaryParagraphs = profile.summary
@@ -23,6 +24,38 @@ export default async function AboutPage() {
           <h1 className="section-title">Book Sam.</h1>
 
           <div style={{ display: "grid", gap: 40, marginTop: 8 }}>
+            <div>
+              <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 28 }}>Experience</h2>
+              <div style={{ display: "grid", gap: 0, position: "relative" }}>
+                <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 1, background: "var(--border)" }} />
+                {experiences.map((experience, index) => (
+                  <div key={experience.company} style={{ display: "grid", gridTemplateColumns: "16px 1fr", gap: 20, marginBottom: 36 }}>
+                    <div
+                      style={{
+                        width: 15,
+                        height: 15,
+                        borderRadius: "50%",
+                        background: index === 0 ? "var(--accent)" : "#1a1a1a",
+                        border: `2px solid ${index === 0 ? "var(--accent)" : "rgba(255,255,255,0.12)"}`,
+                        flexShrink: 0,
+                        zIndex: 1,
+                        marginTop: 3,
+                      }}
+                    />
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
+                        {index === 0 ? <MsLogo size={16} /> : null}
+                        <span style={{ fontWeight: 700, color: "#fff", fontSize: 15 }}>{experience.company}</span>
+                        <span style={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "var(--muted-foreground)" }}>{experience.period}</span>
+                      </div>
+                      <div style={{ fontSize: 13, color: "var(--muted-foreground)", marginBottom: 10 }}>{experience.role}</div>
+                      <div style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.8 }}>{experience.summary}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {summaryParagraphs.length ? (
               summaryParagraphs.map((paragraph, index) => (
                 <p key={index} style={{ fontSize: 16, color: "var(--muted-foreground)", lineHeight: 1.85 }}>
@@ -58,37 +91,33 @@ export default async function AboutPage() {
               </div>
             ) : null}
 
-            <div>
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 28 }}>Experience</h2>
-              <div style={{ display: "grid", gap: 0, position: "relative" }}>
-                <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 1, background: "var(--border)" }} />
-                {experiences.map((experience, index) => (
-                  <div key={experience.company} style={{ display: "grid", gridTemplateColumns: "16px 1fr", gap: 20, marginBottom: 36 }}>
-                    <div
-                      style={{
-                        width: 15,
-                        height: 15,
-                        borderRadius: "50%",
-                        background: index === 0 ? "var(--accent)" : "#1a1a1a",
-                        border: `2px solid ${index === 0 ? "var(--accent)" : "rgba(255,255,255,0.12)"}`,
-                        flexShrink: 0,
-                        zIndex: 1,
-                        marginTop: 3,
-                      }}
-                    />
-                    <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
-                        {index === 0 ? <MsLogo size={16} /> : null}
-                        <span style={{ fontWeight: 700, color: "#fff", fontSize: 15 }}>{experience.company}</span>
-                        <span style={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "var(--muted-foreground)" }}>{experience.period}</span>
+            {education.length ? (
+              <div>
+                <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 24 }}>Education</h2>
+                <div style={{ display: "grid", gap: 14 }}>
+                  {education.map((entry) => (
+                    <div className="card" key={`${entry.degree}-${entry.institution}`} style={{ padding: "18px 22px", display: "grid", gap: 8 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          gap: 16,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <div>
+                          <div style={{ fontWeight: 700, color: "#fff", fontSize: 15 }}>{entry.degree}</div>
+                          <div style={{ fontSize: 13, color: "var(--muted-foreground)", marginTop: 4 }}>{entry.institution}</div>
+                        </div>
+                        <span className="tag">{entry.period}</span>
                       </div>
-                      <div style={{ fontSize: 13, color: "var(--muted-foreground)", marginBottom: 10 }}>{experience.role}</div>
-                      <div style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.8 }}>{experience.summary}</div>
+                      <div style={{ fontSize: 12, color: "var(--muted-foreground)", fontFamily: "JetBrains Mono" }}>{entry.location}</div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <div style={{ paddingTop: 8 }}>
               <Link className="btn btn-primary" href="/contact">

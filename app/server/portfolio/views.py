@@ -3,10 +3,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import BookNote, Capability, Experience, Project, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Capability, Education, Experience, Project, Reference, SiteProfile, WritingEntry
 from .serializers import (
     BookNoteSerializer,
     CapabilitySerializer,
+    EducationSerializer,
     ExperienceSerializer,
     ProjectSerializer,
     ReferenceSerializer,
@@ -46,6 +47,11 @@ class ExperienceListView(generics.ListAPIView):
     queryset = Experience.objects.all()
 
 
+class EducationListView(generics.ListAPIView):
+    serializer_class = EducationSerializer
+    queryset = Education.objects.all()
+
+
 class WritingEntryListView(generics.ListAPIView):
     serializer_class = WritingEntrySerializer
     queryset = WritingEntry.objects.filter(is_featured=True)
@@ -78,6 +84,7 @@ class PortfolioContentView(APIView):
                 context={"request": request},
             ).data,
             "experiences": ExperienceSerializer(Experience.objects.all(), many=True).data,
+            "education": EducationSerializer(Education.objects.all(), many=True).data,
             "capabilities": CapabilitySerializer(Capability.objects.all(), many=True).data,
             "writings": WritingEntrySerializer(
                 WritingEntry.objects.filter(is_featured=True),

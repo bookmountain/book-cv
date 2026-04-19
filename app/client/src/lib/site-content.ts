@@ -40,6 +40,13 @@ export type Experience = {
   highlights: string[];
 };
 
+export type Education = {
+  degree: string;
+  institution: string;
+  location: string;
+  period: string;
+};
+
 export type CapabilityRow = {
   label: string;
   value: string;
@@ -75,6 +82,7 @@ export type PortfolioContent = {
   profile: SiteProfile;
   projects: Project[];
   experiences: Experience[];
+  education: Education[];
   capabilities: CapabilityRow[];
   writings: WritingEntry[];
   books: BookNote[];
@@ -135,6 +143,7 @@ export const getPortfolioContent = cache(async (): Promise<PortfolioContent> => 
     profile: asProfile(payload?.profile),
     projects: asArray(payload?.projects),
     experiences: asArray(payload?.experiences),
+    education: asArray(payload?.education),
     capabilities: asArray(payload?.capabilities),
     writings: asArray(payload?.writings),
     books: asArray(payload?.books),
@@ -156,6 +165,10 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 
 export const getExperiences = cache(async (): Promise<Experience[]> => {
   return (await getPortfolioContent()).experiences;
+});
+
+export const getEducation = cache(async (): Promise<Education[]> => {
+  return (await getPortfolioContent()).education;
 });
 
 export const getCapabilities = cache(async (): Promise<CapabilityRow[]> => {

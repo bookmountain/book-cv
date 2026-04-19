@@ -24,7 +24,11 @@ export default async function ReferencesPage() {
 
           <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
             {references.map((reference, index) => {
-              const fallbackQuote = `${reference.name} can speak to my ${reference.relationship.toLowerCase()} at ${reference.organization}.`;
+              const relationshipLabel = reference.relationship || "Professional reference";
+              const relationshipContext = relationshipLabel.replace(/\breference\b/gi, "").trim().toLowerCase();
+              const fallbackQuote = relationshipContext
+                ? `${reference.name} can speak to my ${relationshipContext} at ${reference.organization}.`
+                : `${reference.name} can speak to my work at ${reference.organization}.`;
 
               return (
                 <Reveal delay={index * 60} key={reference.email || reference.name}>
@@ -35,7 +39,7 @@ export default async function ReferencesPage() {
 
                     <div style={{ marginTop: "auto", paddingTop: 18, borderTop: "1px solid var(--border)", display: "grid", gap: 6 }}>
                       <span className="tag green" style={{ width: "fit-content" }}>
-                        {reference.relationship}
+                        {relationshipLabel}
                       </span>
                       <p style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{reference.name}</p>
                       <p style={{ fontSize: 13, color: "var(--muted-foreground)" }}>

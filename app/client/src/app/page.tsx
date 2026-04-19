@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 import { HomeTerminal } from "@/components/home-terminal";
-import { AISection, PostRow, ProjectCard } from "@/components/prototype-ui";
-import { getDisplayCapabilities, getPortfolioContent, getWritings } from "@/lib/site-content";
+import { AISection, MsLogo, PostRow, ProjectCard } from "@/components/prototype-ui";
+import { Reveal } from "@/components/reveal";
+import { getDisplayCapabilities, getPortfolioContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
@@ -19,13 +20,39 @@ function getExperienceYears(periods: string[]) {
   return Math.max(1, Math.max(...years) - Math.min(...years));
 }
 
+function formatSectionNumber(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+function getReferenceSummary(relationship: string, organization: string) {
+  const relationshipText = relationship.trim();
+  const organizationText = organization.trim();
+
+  if (relationshipText && organizationText) {
+    return `${relationshipText} covering work delivered at ${organizationText}.`;
+  }
+
+  if (relationshipText) {
+    return relationshipText;
+  }
+
+  if (organizationText) {
+    return `Reference available for work delivered at ${organizationText}.`;
+  }
+
+  return "Professional reference available on request.";
+}
+
 export default async function HomePage() {
   const content = await getPortfolioContent();
   const featuredProjects = content.projects.filter((project) => project.is_featured).slice(0, 3);
-  const posts = (await getWritings()).slice(0, 3);
+  const posts = content.writings.slice(0, 3);
   const capabilityRows = getDisplayCapabilities(content);
   const experienceYears = getExperienceYears(content.experiences.map((experience) => experience.period));
-  const writingIndex = capabilityRows.length ? "04" : "03";
+  const references = content.references.slice(0, 3);
+  const contentSectionCount = 2 + (capabilityRows.length ? 1 : 0);
+  const referenceIndex = formatSectionNumber(contentSectionCount + 1);
+  const writingIndex = formatSectionNumber(contentSectionCount + (references.length ? 2 : 1));
 
   const terminalLines = [
     { command: "$ whoami", output: `${content.profile.full_name} — ${content.profile.title}` },
@@ -160,6 +187,70 @@ export default async function HomePage() {
       {capabilityRows.length ? (
         <>
           <AISection capabilities={capabilityRows} />
+          <hr className="divider" />
+        </>
+      ) : null}
+
+      {references.length ? (
+        <>
+          <section className="section">
+            <div className="container">
+              <div className="section-label">{referenceIndex} / References</div>
+              <h2 className="section-title">References, presented like trusted reviews.</h2>
+              <p className="section-sub">People who can speak directly to delivery, collaboration, and product work from Microsoft.</p>
+              <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+                {references.map((reference, index) => {
+                  const summary = reference.quote || getReferenceSummary(reference.relationship, reference.organization);
+                  const showMicrosoftBadge = /microsoft/i.test(reference.organization);
+
+                  return (
+                    <Reveal delay={index * 70} key={reference.email || reference.name}>
+                      <div className="card" style={{ minHeight: 320, padding: "24px 24px 22px", display: "flex", flexDirection: "column", gap: 22 }}>
+                        <div style={{ fontSize: 42, lineHeight: 0.8, color: "rgba(96,184,240,0.28)", fontFamily: "Georgia, serif" }}>“</div>
+                        <p style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.25, color: "#fff", letterSpacing: "-0.03em" }}>{summary}</p>
+
+                        <div
+                          style={{
+                            marginTop: "auto",
+                            paddingTop: 18,
+                            borderTop: "1px solid var(--border)",
+                            display: "grid",
+                            gap: 8,
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                              {showMicrosoftBadge ? <MsLogo size={16} /> : null}
+                              <span style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{reference.name}</span>
+                            </div>
+                            {reference.relationship ? <span className="tag green">{reference.relationship}</span> : null}
+                          </div>
+                          <p style={{ fontSize: 13, color: "var(--muted-foreground)" }}>
+                            {reference.role}
+                            {reference.organization ? `, ${reference.organization}` : ""}
+                          </p>
+                          {reference.email ? (
+                            <a
+                              className="btn btn-ghost"
+                              href={`mailto:${reference.email}`}
+                              style={{ justifySelf: "start", marginTop: 4, padding: "8px 12px", fontSize: 12 }}
+                            >
+                              {reference.email}
+                            </a>
+                          ) : null}
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
+              <div style={{ marginTop: 28 }}>
+                <Link className="btn btn-ghost" href="/references">
+                  All references →
+                </Link>
+              </div>
+            </div>
+          </section>
           <hr className="divider" />
         </>
       ) : null}

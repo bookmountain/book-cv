@@ -24,11 +24,14 @@ class TestPortfolioApi(TestCase):
         self.assertIsNotNone(payload["profile"])
         self.assertGreaterEqual(len(payload["projects"]), 4)
         self.assertGreaterEqual(len(payload["experiences"]), 4)
+        self.assertEqual(len(payload["education"]), 3)
         self.assertEqual(len(payload["capabilities"]), 4)
         self.assertGreaterEqual(len(payload["writings"]), 4)
         self.assertEqual(len(payload["books"]), 5)
         self.assertEqual(len(payload["references"]), 2)
         self.assertIn("screenshots", payload["projects"][0])
+        self.assertEqual(payload["education"][0]["institution"], "Adelaide University")
+        self.assertEqual(payload["references"][0]["organization"], "Microsoft")
 
     def test_project_detail_endpoint_returns_gallery(self):
         response = self.client.get("/api/projects/book-sam-portfolio/")
@@ -48,6 +51,16 @@ class TestPortfolioApi(TestCase):
 
         self.assertEqual(payload["slug"], "life-in-microsoft")
         self.assertIn("Microsoft", payload["body"])
+
+    def test_education_endpoint_returns_resume_seeded_entries(self):
+        response = self.client.get("/api/education/")
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+
+        self.assertEqual(len(payload), 3)
+        self.assertEqual(payload[0]["degree"], "Master of Information Technology")
+        self.assertEqual(payload[1]["institution"], "University of South Australia (UniSA)")
 
     def test_health_endpoint_returns_ok(self):
         response = self.client.get("/api/health/")

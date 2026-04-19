@@ -74,6 +74,21 @@ class Experience(models.Model):
         return f"{self.company} — {self.role}"
 
 
+class Education(models.Model):
+    degree = models.CharField(max_length=180)
+    institution = models.CharField(max_length=180)
+    location = models.CharField(max_length=120, blank=True)
+    period = models.CharField(max_length=80)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "institution"]
+
+    def __str__(self) -> str:
+        return f"{self.degree} — {self.institution}"
+
+
 class Capability(models.Model):
     label = models.CharField(max_length=120, unique=True)
     value = models.TextField()

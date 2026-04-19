@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import BookNote, Capability, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Capability, Education, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
 
 
 class ProjectScreenshotSerializer(serializers.ModelSerializer):
@@ -67,6 +67,17 @@ class ExperienceSerializer(serializers.ModelSerializer):
             "period",
             "summary",
             "highlights",
+        ]
+
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = [
+            "degree",
+            "institution",
+            "location",
+            "period",
         ]
 
 
