@@ -5,8 +5,18 @@ from pathlib import Path
 import re
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-LATEX_DIR = REPO_ROOT / "latex"
+def _find_latex_dir() -> Path:
+    """Walk up from this file until we find a directory containing ``latex/``."""
+    current = Path(__file__).resolve().parent
+    while current != current.parent:
+        candidate = current / "latex"
+        if candidate.is_dir():
+            return candidate
+        current = current.parent
+    raise FileNotFoundError("Could not locate the latex directory.")
+
+
+LATEX_DIR = _find_latex_dir()
 RESUME_SECTIONS_DIR = LATEX_DIR / "sections" / "resume"
 
 INPUT_PATTERN = re.compile(r"\\input\{([^}]+)\}")

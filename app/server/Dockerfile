@@ -10,6 +10,7 @@ COPY app/server/requirements.txt ./
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY app/server/ ./
+COPY latex/ ./latex/
 RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
