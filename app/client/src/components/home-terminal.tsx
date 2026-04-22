@@ -98,10 +98,10 @@ export function HomeTerminal({ lines }: HomeTerminalProps) {
 
   return (
     <div className="terminal-shell terminal-grid motion-fade-up relative" style={{ animationDelay: "420ms" }}>
-      <div className="flex items-center gap-2 border-b border-white/8 bg-white/[0.03] px-5 py-4">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+      <div className="flex items-center gap-2 border-b px-5 py-4" style={{ borderColor: "var(--border)", background: "var(--window-bar)" }}>
+        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--window-red)" }} />
+        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--window-yellow)" }} />
+        <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--window-green)" }} />
         <span className="ml-3 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground">
           book@adelaide ~ portfolio
         </span>
@@ -109,7 +109,7 @@ export function HomeTerminal({ lines }: HomeTerminalProps) {
 
       <div className="space-y-5 px-5 py-6 font-mono text-[0.8rem] leading-7 sm:px-6">
         {displayed.map((line, index) => (
-          <div key={`${index}-${line.type}`} className={line.type === "cmd" ? "text-foreground" : "text-primary/90"}>
+          <div key={`${index}-${line.type}`} style={{ color: line.type === "cmd" ? "var(--foreground)" : "var(--primary)" }}>
             {line.text}
           </div>
         ))}

@@ -21,7 +21,7 @@ export function ProjectShot({ screenshot }: ProjectShotProps) {
       </div>
 
       <div style={{ padding: "18px 20px 20px" }}>
-        <h3 style={{ fontSize: 16, fontWeight: 600, color: "#fff", lineHeight: 1.4, marginBottom: 8 }}>{screenshot.title}</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.4, marginBottom: 8 }}>{screenshot.title}</h3>
         <RichText className="text-sm leading-7 text-muted-foreground" value={screenshot.introduction} />
       </div>
     </div>

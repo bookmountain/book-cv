@@ -96,7 +96,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <div style={{ display: "grid", gap: 28 }}>
               <Reveal delay={160}>
                 <section>
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>About the project</h2>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)", marginBottom: 16 }}>About the project</h2>
                   <div className="card" style={{ padding: "24px 26px" }}>
                     <RichText className="text-sm leading-8 text-foreground/88" value={project.details} />
                   </div>
@@ -105,7 +105,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
               {project.highlights.length ? (
                 <section>
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>Key outcomes</h2>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)", marginBottom: 16 }}>Key outcomes</h2>
                   <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
                     {project.highlights.map((highlight, index) => (
                       <Reveal delay={180 + index * 60} key={highlight}>
@@ -121,7 +121,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
               {project.screenshots.length ? (
                 <section>
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 16 }}>Walkthrough</h2>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)", marginBottom: 16 }}>Walkthrough</h2>
                   <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
                     {project.screenshots.map((screenshot, index) => (
                       <Reveal delay={220 + index * 60} key={`${project.slug}-${screenshot.title}`}>
@@ -140,7 +140,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     <div className="section-label" style={{ marginBottom: 10 }}>
                       Type
                     </div>
-                    <p style={{ fontSize: 14, color: "#fff" }}>{project.eyebrow}</p>
+                    <p style={{ fontSize: 14, color: "var(--foreground)" }}>{project.eyebrow}</p>
                   </div>
 
                   <div style={{ height: 1, background: "var(--border)" }} />
@@ -149,7 +149,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     <div className="section-label" style={{ marginBottom: 10 }}>
                       Status
                     </div>
-                    <p style={{ fontSize: 14, color: "#fff" }}>{project.live_url ? "Live" : "Build in progress"}</p>
+                    <p style={{ fontSize: 14, color: "var(--foreground)" }}>{project.live_url ? "Live" : "Build in progress"}</p>
                   </div>
 
                   <div style={{ height: 1, background: "var(--border)" }} />

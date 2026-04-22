@@ -288,13 +288,11 @@ export function MsLogo({ size = 20 }: { size?: number }) {
 }
 
 export function ProjectCard({ delay = 0, project }: { delay?: number; project: Project }) {
-  const href = project.live_url || project.repo_url || `/projects/${project.slug}`;
-  const isExternal = /^https?:\/\//.test(href);
-  const linkProps = isExternal ? { href, rel: "noreferrer", target: "_blank" as const } : { href };
+  const detailHref = `/projects/${project.slug}`;
 
   return (
     <Reveal delay={delay}>
-      <div className="card" style={{ cursor: "default", overflow: "hidden", position: "relative" }}>
+      <article className="card prototype-project-card" style={{ cursor: "default", position: "relative" }}>
         {project.is_featured ? (
           <div
             style={{
@@ -309,24 +307,20 @@ export function ProjectCard({ delay = 0, project }: { delay?: number; project: P
           />
         ) : null}
 
-        <div style={{ borderBottom: "1px solid var(--border)", overflow: "hidden" }}>
+        <Link className="prototype-project-cover-link" href={detailHref} style={{ overflow: "hidden" }}>
           <ProjectVisual project={project} />
-        </div>
+        </Link>
 
         <div style={{ padding: "22px 24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
             <span className="tag green">{project.eyebrow}</span>
-            {isExternal ? (
-              <a href={href} rel="noreferrer" style={{ fontSize: 16, color: "var(--muted-foreground)" }} target="_blank">
-                ↗
-              </a>
-            ) : (
-              <Link href={href} style={{ fontSize: 16, color: "var(--muted-foreground)" }}>
-                ↗
-              </Link>
-            )}
+            <span style={{ fontSize: 11, color: "var(--muted-foreground)", fontFamily: "var(--font-mono-stack)" }}>case file</span>
           </div>
-          <h3 style={{ fontSize: 16, fontWeight: 600, color: "#fff", marginBottom: 9, lineHeight: 1.35 }}>{project.title}</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 9, lineHeight: 1.35 }}>
+            <Link className="prototype-project-title-link" href={detailHref}>
+              {project.title}
+            </Link>
+          </h3>
           <p style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.65, marginBottom: 16 }}>{project.summary}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {project.stack
@@ -339,8 +333,23 @@ export function ProjectCard({ delay = 0, project }: { delay?: number; project: P
                 </span>
               ))}
           </div>
+          <div className="prototype-project-actions">
+            <Link className="btn btn-primary" href={detailHref}>
+              Project details
+            </Link>
+            {project.live_url ? (
+              <a className="btn btn-ghost" href={project.live_url} rel="noreferrer" target="_blank">
+                Live demo ↗
+              </a>
+            ) : null}
+            {project.repo_url ? (
+              <a className="btn btn-ghost" href={project.repo_url} rel="noreferrer" target="_blank">
+                Repo ↗
+              </a>
+            ) : null}
+          </div>
         </div>
-      </div>
+      </article>
     </Reveal>
   );
 }
@@ -353,7 +362,7 @@ export function PostRow({ delay = 0, entry }: { delay?: number; entry: WritingEn
           {entry.category}
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontWeight: 600, color: "#fff", fontSize: 14, marginBottom: 4 }}>{entry.title}</div>
+          <div style={{ fontWeight: 600, color: "var(--foreground)", fontSize: 14, marginBottom: 4 }}>{entry.title}</div>
           <div
             style={{
               fontSize: 13,
@@ -392,7 +401,7 @@ export function AISection({ capabilities }: { capabilities: CapabilityRow[] }) {
             <Reveal delay={index * 70} key={item.label}>
               <div className="card" style={{ padding: "18px 20px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <span style={{ fontWeight: 600, fontSize: 14, color: "#fff" }}>{item.label}</span>
+                  <span style={{ fontWeight: 600, fontSize: 14, color: "var(--foreground)" }}>{item.label}</span>
                   <span className="tag green" style={{ fontSize: 10 }}>
                     Focus
                   </span>
@@ -438,7 +447,7 @@ export function BlogCard({ delay = 0, entry }: { delay?: number; entry: WritingE
               {entry.reading_time}
             </span>
           </div>
-          <h2 style={{ fontSize: 16, fontWeight: 600, color: "#fff", marginBottom: 8, lineHeight: 1.4 }}>{entry.title}</h2>
+          <h2 style={{ fontSize: 16, fontWeight: 600, color: "var(--foreground)", marginBottom: 8, lineHeight: 1.4 }}>{entry.title}</h2>
           <p style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.65 }}>{entry.summary}</p>
         </div>
       </Link>

@@ -5,6 +5,7 @@ import { MsLogo } from "@/components/prototype-ui";
 import { TopNav } from "@/components/top-nav";
 import { RESUME_PDF_URL } from "@/lib/resume";
 import { getSiteProfile } from "@/lib/site-content";
+import { DEFAULT_TERMINAL_SCHEME, getThemeBootScript } from "@/lib/terminal-schemes";
 
 import "./globals.css";
 
@@ -34,8 +35,9 @@ export default async function RootLayout({
   const profile = await getSiteProfile();
 
   return (
-    <html lang="en">
+    <html data-scroll-behavior="smooth" data-terminal-scheme={DEFAULT_TERMINAL_SCHEME} lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${jetBrainsMono.variable}`}>
+        <script dangerouslySetInnerHTML={{ __html: getThemeBootScript() }} />
         <TopNav resumeUrl={RESUME_PDF_URL} />
         <main>{children}</main>
 

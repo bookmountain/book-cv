@@ -33,7 +33,7 @@ export default async function ReferencesPage() {
               return (
                 <Reveal delay={index * 60} key={reference.email || reference.name}>
                   <div className="card" style={{ display: "flex", flexDirection: "column", gap: 24, minHeight: 280, padding: "24px 24px 22px" }}>
-                    <p style={{ fontSize: 26, fontWeight: 600, lineHeight: 1.2, color: "#fff", letterSpacing: "-0.03em" }}>
+                    <p style={{ fontSize: 26, fontWeight: 600, lineHeight: 1.2, color: "var(--foreground)", letterSpacing: "-0.03em" }}>
                       {reference.quote || fallbackQuote}
                     </p>
 
@@ -41,7 +41,7 @@ export default async function ReferencesPage() {
                       <span className="tag green" style={{ width: "fit-content" }}>
                         {relationshipLabel}
                       </span>
-                      <p style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{reference.name}</p>
+                      <p style={{ fontSize: 15, fontWeight: 600, color: "var(--foreground)" }}>{reference.name}</p>
                       <p style={{ fontSize: 13, color: "var(--muted-foreground)" }}>
                         {reference.role}, {reference.organization}
                       </p>
@@ -75,7 +75,7 @@ export default async function ReferencesPage() {
                 <div className="section-label" style={{ marginBottom: 12 }}>
                   Start A Conversation
                 </div>
-                <h2 style={{ fontSize: 28, fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 10 }}>
+                <h2 style={{ fontSize: 28, fontWeight: 700, color: "var(--foreground)", lineHeight: 1.2, marginBottom: 10 }}>
                   Need a direct introduction or want to discuss a project?
                 </h2>
                 <p style={{ maxWidth: 620, color: "var(--muted-foreground)", fontSize: 15, lineHeight: 1.75 }}>

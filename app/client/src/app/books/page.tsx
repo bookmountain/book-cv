@@ -18,7 +18,7 @@ export default async function BooksPage() {
               <BookShelfCard book={book} index={index} key={book.title} />
             ))}
           </div>
-          <div style={{ height: 8, background: "#141414", borderRadius: "0 0 4px 4px", border: "1px solid var(--border)", borderTop: "2px solid #1a1a1a" }} />
+          <div style={{ height: 8, background: "var(--secondary)", borderRadius: "0 0 4px 4px", border: "1px solid var(--border)", borderTop: "2px solid var(--border-strong)" }} />
         </div>
       </section>
     </div>

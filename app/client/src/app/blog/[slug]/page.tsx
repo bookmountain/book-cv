@@ -42,6 +42,10 @@ export default async function BlogEntryPage({ params }: WritingPageProps) {
       <section className="section">
         <div className="container" style={{ maxWidth: 860 }}>
           <div className="animate-fadeUp" style={{ animationDelay: "0.1s" }}>
+            <Link className="prototype-article-back" href="/blog">
+              <span aria-hidden="true">←</span>
+              All writing
+            </Link>
             <div className="section-label">{entry.category}</div>
             <h1 className="section-title" style={{ fontSize: "clamp(32px,4.5vw,48px)", marginBottom: 16 }}>
               {entry.title}
@@ -49,12 +53,9 @@ export default async function BlogEntryPage({ params }: WritingPageProps) {
             <p className="section-sub" style={{ maxWidth: 680, marginBottom: 24 }}>
               {entry.summary}
             </p>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-              <span className="tag">{entry.category}</span>
-              <span className="tag">{entry.reading_time}</span>
-              <Link className="btn btn-ghost" href="/blog">
-                Back to blog
-              </Link>
+            <div className="prototype-article-meta">
+              <span>{entry.category}</span>
+              <span>{entry.reading_time}</span>
             </div>
           </div>
 

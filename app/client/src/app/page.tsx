@@ -87,13 +87,13 @@ export default async function HomePage() {
               alignItems: "center",
               gap: 10,
               padding: "7px 14px",
-              background: "rgba(0,164,239,0.08)",
-              border: "1px solid rgba(0,164,239,0.2)",
+              background: "var(--accent-soft)",
+              border: "1px solid var(--accent-border)",
               borderRadius: 6,
             }}
           >
-            <span className="status-pulse" style={{ width: 10, height: 10, borderRadius: "50%", background: "#60b8f0" }} />
-            <span style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "#60b8f0", letterSpacing: "0.04em" }}>
+            <span className="status-pulse" style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--accent)" }} />
+            <span style={{ fontFamily: "JetBrains Mono", fontSize: 12, color: "var(--accent)", letterSpacing: "0.04em" }}>
               ex-Microsoft · VDI Team · 2022–2025
             </span>
           </div>
@@ -109,7 +109,7 @@ export default async function HomePage() {
                 fontWeight: 700,
                 letterSpacing: "-0.03em",
                 lineHeight: 1.1,
-                color: "#fff",
+                color: "var(--foreground)",
                 marginBottom: 20,
               }}
             >
@@ -149,7 +149,7 @@ export default async function HomePage() {
                 [content.profile.location.split(",")[0] || "Adelaide", "based"],
               ].map(([value, label]) => (
                 <div key={label}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>{value}</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)" }}>{value}</div>
                   <div style={{ fontSize: 12, color: "var(--muted-foreground)", fontFamily: "JetBrains Mono", marginTop: 2 }}>{label}</div>
                 </div>
               ))}
@@ -206,8 +206,8 @@ export default async function HomePage() {
                   return (
                     <Reveal delay={index * 70} key={reference.email || reference.name}>
                       <div className="card" style={{ minHeight: 320, padding: "24px 24px 22px", display: "flex", flexDirection: "column", gap: 22 }}>
-                        <div style={{ fontSize: 42, lineHeight: 0.8, color: "rgba(96,184,240,0.28)", fontFamily: "Georgia, serif" }}>“</div>
-                        <p style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.25, color: "#fff", letterSpacing: "-0.03em" }}>{summary}</p>
+                        <div style={{ fontSize: 42, lineHeight: 0.8, color: "var(--quote-mark)", fontFamily: "Georgia, serif" }}>“</div>
+                        <p style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.25, color: "var(--foreground)", letterSpacing: "-0.03em" }}>{summary}</p>
 
                         <div
                           style={{
@@ -221,7 +221,7 @@ export default async function HomePage() {
                           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                               {showMicrosoftBadge ? <MsLogo size={16} /> : null}
-                              <span style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{reference.name}</span>
+                              <span style={{ fontSize: 15, fontWeight: 600, color: "var(--foreground)" }}>{reference.name}</span>
                             </div>
                             {reference.relationship ? <span className="tag green">{reference.relationship}</span> : null}
                           </div>

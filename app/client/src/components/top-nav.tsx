@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { TerminalThemeSwitcher } from "@/components/terminal-theme-switcher";
+
 type TopNavProps = {
   resumeUrl: string;
 };
@@ -53,7 +55,8 @@ export function TopNav({ resumeUrl }: TopNavProps) {
               </Link>
             );
           })}
-          <a className="btn btn-ghost" href={resumeUrl} style={{ marginLeft: 8, padding: "6px 14px", fontSize: 12 }}>
+          <TerminalThemeSwitcher />
+          <a className="btn btn-ghost prototype-nav-resume" href={resumeUrl} style={{ marginLeft: 8, padding: "6px 14px", fontSize: 12 }}>
             Resume ↗
           </a>
         </div>
@@ -84,7 +87,12 @@ export function TopNav({ resumeUrl }: TopNavProps) {
                   </Link>
                 );
               })}
-              <a className="btn btn-ghost" href={resumeUrl} style={{ justifySelf: "start", marginTop: 8, padding: "6px 14px", fontSize: 12 }}>
+              <TerminalThemeSwitcher />
+              <a
+                className="btn btn-ghost prototype-nav-resume"
+                href={resumeUrl}
+                style={{ justifySelf: "start", marginTop: 8, padding: "6px 14px", fontSize: 12 }}
+              >
                 Resume ↗
               </a>
             </div>

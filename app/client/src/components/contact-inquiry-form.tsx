@@ -38,7 +38,7 @@ export function ContactInquiryForm({ email }: ContactInquiryFormProps) {
         name="name"
         placeholder="Name"
         required
-        style={{ borderRadius: 6, padding: "12px 14px", background: "#0e0e0e" }}
+        style={{ borderRadius: 6, padding: "12px 14px" }}
         type="text"
       />
       <input
@@ -46,7 +46,7 @@ export function ContactInquiryForm({ email }: ContactInquiryFormProps) {
         name="sender"
         placeholder="Email"
         required
-        style={{ borderRadius: 6, padding: "12px 14px", background: "#0e0e0e" }}
+        style={{ borderRadius: 6, padding: "12px 14px" }}
         type="email"
       />
       <textarea
@@ -55,7 +55,7 @@ export function ContactInquiryForm({ email }: ContactInquiryFormProps) {
         placeholder="Message"
         required
         rows={5}
-        style={{ borderRadius: 6, padding: "12px 14px", background: "#0e0e0e", resize: "vertical" }}
+        style={{ borderRadius: 6, padding: "12px 14px", resize: "vertical" }}
       />
       <button className="btn btn-primary" style={{ justifySelf: "start" }} type="submit">
         Send message
