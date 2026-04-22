@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:17-alpine
-    container_name: bookcv-db
+    container_name: shared-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -16,6 +16,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      default:
+        aliases:
+          - shared-postgres
 
   server:
     build:
@@ -49,3 +53,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  default:
+    name: shared-services
