@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 
-import { MsLogo } from "@/components/prototype-ui";
 import { TopNav } from "@/components/top-nav";
 import { RESUME_PDF_URL } from "@/lib/resume";
 import { getSiteProfile } from "@/lib/site-content";
@@ -44,7 +43,6 @@ export default async function RootLayout({
         <footer className="prototype-footer">
           <div className="prototype-footer-inner">
             <div className="prototype-footer-meta">
-              <MsLogo size={16} />
               <span>
                 {profile.full_name} · {profile.location} · {new Date().getFullYear()}
               </span>
