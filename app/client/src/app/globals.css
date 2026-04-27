@@ -982,6 +982,8 @@
 @layer components {
   .rich-text {
     @apply text-base leading-8 text-foreground/88;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .rich-text > :first-child {
@@ -1060,9 +1062,17 @@
     @apply bg-transparent p-0 text-inherit;
   }
 
+  .rich-text-table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+    border-radius: 0.85rem;
+  }
+
   .rich-text table {
     border: 1px solid var(--border-strong);
-    @apply w-full border-collapse overflow-hidden rounded-[0.85rem] text-sm;
+    min-width: 100%;
+    width: max-content;
+    @apply border-collapse overflow-hidden rounded-[0.85rem] text-sm;
   }
 
   .rich-text th {

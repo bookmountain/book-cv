@@ -29,6 +29,11 @@ export function RichText({ value, className = "" }: RichTextProps) {
               />
             );
           },
+          table: ({ ...props }) => (
+            <div className="rich-text-table-wrap">
+              <table {...props} />
+            </div>
+          ),
         }}
         remarkPlugins={[remarkGfm]}
       >
