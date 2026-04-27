@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { MermaidBlock } from "@/components/mermaid-block";
 import { cn } from "@/lib/utils";
 
 type RichTextProps = {
@@ -46,6 +47,19 @@ export function RichText({ value, className = "" }: RichTextProps) {
                 target={external ? "_blank" : undefined}
                 {...props}
               />
+            );
+          },
+          code: ({ className, children, ...props }) => {
+            const language = className?.match(/language-([\w-]+)/)?.[1];
+
+            if (language === "mermaid") {
+              return <MermaidBlock chart={String(children).replace(/\n$/, "")} />;
+            }
+
+            return (
+              <code className={className} {...props}>
+                {children}
+              </code>
             );
           },
           img: ({ src, alt, ...props }) => (
