@@ -60,6 +60,7 @@ export type WritingEntry = {
   reading_time: string;
   summary: string;
   body: string;
+  cover_src: string;
 };
 
 export type BookNote = {

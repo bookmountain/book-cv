@@ -8,6 +8,25 @@ type RichTextProps = {
   className?: string;
 };
 
+function resolveMediaSrc(src?: string) {
+  if (!src) {
+    return src;
+  }
+
+  if (!src.startsWith("/media/")) {
+    return src;
+  }
+
+  const apiBase = process.env.PORTFOLIO_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "";
+
+  if (!apiBase) {
+    return src;
+  }
+
+  const origin = apiBase.replace(/\/api\/?$/, "");
+  return `${origin}${src}`;
+}
+
 export function RichText({ value, className = "" }: RichTextProps) {
   if (!value.trim()) {
     return null;
@@ -29,6 +48,10 @@ export function RichText({ value, className = "" }: RichTextProps) {
               />
             );
           },
+          img: ({ src, alt, ...props }) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img alt={alt || ""} src={resolveMediaSrc(typeof src === "string" ? src : undefined)} {...props} />
+          ),
           table: ({ ...props }) => (
             <div className="rich-text-table-wrap">
               <table {...props} />

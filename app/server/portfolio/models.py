@@ -110,6 +110,7 @@ class WritingEntry(models.Model):
     reading_time = models.CharField(max_length=40, blank=True)
     summary = models.TextField()
     body = models.TextField(blank=True)
+    cover = models.FileField(upload_to="writing-covers/", blank=True)
     is_featured = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
@@ -119,6 +120,22 @@ class WritingEntry(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class WritingAsset(models.Model):
+    entry = models.ForeignKey(WritingEntry, on_delete=models.CASCADE, related_name="assets")
+    title = models.CharField(max_length=160)
+    image = models.FileField(upload_to="writing-assets/")
+    alt_text = models.CharField(max_length=180, blank=True)
+    caption = models.CharField(max_length=220, blank=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "title"]
+
+    def __str__(self) -> str:
+        return f"{self.entry.title} — {self.title}"
 
 
 class BookNote(models.Model):

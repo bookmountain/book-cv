@@ -61,7 +61,16 @@ export default async function BlogEntryPage({ params }: WritingPageProps) {
 
           <Reveal delay={120}>
             <div className="card" style={{ overflow: "hidden", marginTop: 32 }}>
-              <PostVisual entry={entry} />
+              {entry.cover_src ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt={entry.title}
+                  src={entry.cover_src}
+                  style={{ display: "block", width: "100%", aspectRatio: "16 / 7", objectFit: "cover" }}
+                />
+              ) : (
+                <PostVisual entry={entry} />
+              )}
               <div style={{ padding: "28px clamp(20px, 4vw, 30px) 34px" }}>
                 <RichText className="text-[0.98rem] leading-8 text-foreground/92" value={entry.body} />
               </div>

@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.db import models
+from django.utils.html import format_html
 
-from .models import BookNote, Capability, Education, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingEntry
+from .models import BookNote, Capability, Education, Experience, Project, ProjectScreenshot, Reference, SiteProfile, WritingAsset, WritingEntry
 from .widgets import MarkdownEditorWidget
 
 
@@ -19,6 +20,26 @@ class ProjectScreenshotInline(MarkdownEditorMixin, admin.StackedInline):
     extra = 0
     fields = ("title", "introduction", "image", "image_url", "alt_text", "sort_order")
     markdown_fields = ("introduction",)
+
+
+class WritingAssetInline(admin.StackedInline):
+    model = WritingAsset
+    extra = 0
+    fields = ("title", "image", "alt_text", "caption", "markdown_snippet", "sort_order")
+    readonly_fields = ("markdown_snippet",)
+
+    def markdown_snippet(self, obj: WritingAsset) -> str:
+        if not obj.pk or not obj.image:
+            return "Save this asset to get a markdown snippet."
+
+        alt_text = obj.alt_text or obj.title
+        return format_html(
+            '<code>![{}]({})</code>',
+            alt_text,
+            obj.image.url,
+        )
+
+    markdown_snippet.short_description = "Markdown snippet"
 
 
 @admin.register(SiteProfile)
@@ -67,6 +88,8 @@ class WritingEntryAdmin(MarkdownEditorMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title", "summary", "body")
     ordering = ("sort_order",)
+    fields = ("title", "slug", "eyebrow", "category", "reading_time", "summary", "body", "cover", "is_featured", "sort_order")
+    inlines = [WritingAssetInline]
     markdown_fields = ("body",)
 
 

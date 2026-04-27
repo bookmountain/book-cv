@@ -441,7 +441,16 @@ export function BlogCard({ delay = 0, entry }: { delay?: number; entry: WritingE
     <Reveal delay={delay}>
       <Link className="card prototype-blog-card" href={`/blog/${entry.slug}`} style={cssVars({ "--card-accent": accent })}>
         <div style={{ position: "relative", borderBottom: "1px solid var(--border)" }}>
-          <PostVisual entry={entry} />
+          {entry.cover_src ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              alt={entry.title}
+              src={entry.cover_src}
+              style={{ display: "block", width: "100%", height: 148, objectFit: "cover" }}
+            />
+          ) : (
+            <PostVisual entry={entry} />
+          )}
         </div>
         <div style={{ padding: "20px 22px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>

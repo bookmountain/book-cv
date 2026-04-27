@@ -34,7 +34,16 @@ export default async function BlogPage() {
                   </div>
 
                   <div className="prototype-blog-feed-thumb" aria-hidden="true">
-                    <PostVisual entry={entry} />
+                    {entry.cover_src ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        alt={entry.title}
+                        src={entry.cover_src}
+                        style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <PostVisual entry={entry} />
+                    )}
                   </div>
                 </Link>
               </Reveal>

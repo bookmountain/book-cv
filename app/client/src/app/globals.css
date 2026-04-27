@@ -1062,6 +1062,17 @@
     @apply bg-transparent p-0 text-inherit;
   }
 
+  .rich-text img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 1.75rem 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 0.85rem;
+    background: var(--card);
+  }
+
   .rich-text-table-wrap {
     overflow-x: auto;
     max-width: 100%;

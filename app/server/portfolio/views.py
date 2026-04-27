@@ -56,11 +56,21 @@ class WritingEntryListView(generics.ListAPIView):
     serializer_class = WritingEntrySerializer
     queryset = WritingEntry.objects.filter(is_featured=True)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
 
 class WritingEntryDetailView(generics.RetrieveAPIView):
     serializer_class = WritingEntrySerializer
     queryset = WritingEntry.objects.filter(is_featured=True)
     lookup_field = "slug"
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 
 
 class BookNoteListView(generics.ListAPIView):
@@ -94,6 +104,7 @@ class PortfolioContentView(APIView):
             "writings": WritingEntrySerializer(
                 WritingEntry.objects.filter(is_featured=True),
                 many=True,
+                context={"request": request},
             ).data,
             "books": BookNoteSerializer(
                 BookNote.objects.filter(is_published=True),
