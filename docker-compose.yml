@@ -35,6 +35,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - media_data:/app/media
     ports:
       - "8000:8000"
 
@@ -53,6 +55,7 @@ services:
 
 volumes:
   postgres_data:
+  media_data:
 
 networks:
   default:
