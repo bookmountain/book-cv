@@ -15,6 +15,30 @@ function sanitizeId(value: string) {
   return value.replace(/[^a-zA-Z0-9_-]/g, "");
 }
 
+function normalizeSvgMarkup(svgMarkup: string) {
+  if (typeof window === "undefined") {
+    return svgMarkup;
+  }
+
+  const parser = new DOMParser();
+  const document = parser.parseFromString(svgMarkup, "image/svg+xml");
+  const svg = document.querySelector("svg");
+
+  if (!svg) {
+    return svgMarkup;
+  }
+
+  svg.removeAttribute("width");
+  svg.removeAttribute("height");
+  svg.setAttribute("preserveAspectRatio", "xMidYMin meet");
+  svg.style.width = "100%";
+  svg.style.maxWidth = "none";
+  svg.style.height = "auto";
+  svg.style.display = "block";
+
+  return svg.outerHTML;
+}
+
 export function MermaidBlock({ chart }: MermaidBlockProps) {
   const reactId = useId();
   const [state, setState] = useState<RenderState>({ status: "loading" });
@@ -34,6 +58,9 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
           startOnLoad: false,
           securityLevel: "antiscript",
           theme: "base",
+          flowchart: {
+            useMaxWidth: false,
+          },
           themeVariables: {
             background: "transparent",
             primaryColor: styles.getPropertyValue("--card").trim() || "#1f2937",
@@ -45,7 +72,7 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
             clusterBkg: styles.getPropertyValue("--secondary").trim() || "#111827",
             clusterBorder: styles.getPropertyValue("--border-strong").trim() || "#334155",
             edgeLabelBackground: styles.getPropertyValue("--card").trim() || "#1f2937",
-            fontFamily: 'var(--font-mono-stack), "JetBrains Mono", monospace',
+            fontFamily: '"JetBrains Mono", "Consolas", "SFMono-Regular", monospace',
           },
         });
 
@@ -53,7 +80,7 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
         const { svg } = await mermaid.render(diagramId, chart);
 
         if (!cancelled) {
-          setState({ status: "ready", svg });
+          setState({ status: "ready", svg: normalizeSvgMarkup(svg) });
         }
       } catch (error) {
         if (!cancelled) {
