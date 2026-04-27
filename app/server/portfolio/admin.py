@@ -76,6 +76,7 @@ class BookNoteAdmin(admin.ModelAdmin):
     list_filter = ("is_published",)
     search_fields = ("title", "author", "summary", "takeaway")
     ordering = ("sort_order",)
+    fields = ("title", "author", "summary", "takeaway", "cover", "is_published", "sort_order")
 
 
 @admin.register(Reference)

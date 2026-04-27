@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 
+import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
 import type { BookNote, CapabilityRow, Project, WritingEntry } from "@/lib/site-content";
 
@@ -289,6 +290,7 @@ export function MsLogo({ size = 20 }: { size?: number }) {
 
 export function ProjectCard({ delay = 0, project }: { delay?: number; project: Project }) {
   const detailHref = `/projects/${project.slug}`;
+  const coverShot = project.screenshots.find((shot) => shot.image_src);
 
   return (
     <Reveal delay={delay}>
@@ -308,7 +310,17 @@ export function ProjectCard({ delay = 0, project }: { delay?: number; project: P
         ) : null}
 
         <Link className="prototype-project-cover-link" href={detailHref} style={{ overflow: "hidden" }}>
-          <ProjectVisual project={project} />
+          {coverShot ? (
+            <ProjectCover
+              alt={coverShot.alt_text || project.title}
+              caption={null}
+              className="h-[148px] rounded-none border-0"
+              imageSrc={coverShot.image_src}
+              title={coverShot.title || project.title}
+            />
+          ) : (
+            <ProjectVisual project={project} />
+          )}
         </Link>
 
         <div style={{ padding: "22px 24px" }}>
@@ -464,6 +476,7 @@ const bookCovers = [
 
 export function BookShelfCard({ book, index }: { book: BookNote; index: number }) {
   const cover = bookCovers[index % bookCovers.length];
+  const hasUploadedCover = Boolean(book.cover_src);
 
   return (
     <Reveal delay={index * 100}>
@@ -479,21 +492,46 @@ export function BookShelfCard({ book, index }: { book: BookNote; index: number }
             borderBottom: "1px solid var(--border)",
           }}
         >
-          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 6, background: cover.spine, opacity: 0.9 }} />
-          <div
-            style={{
-              position: "absolute",
-              top: 16,
-              right: 16,
-              fontFamily: "JetBrains Mono",
-              fontSize: 9,
-              color: cover.spine,
-              opacity: 0.35,
-              letterSpacing: "0.15em",
-            }}
-          >
-            {cover.label}
-          </div>
+          {hasUploadedCover ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={`${book.title} cover`}
+                src={book.cover_src}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(180deg, rgba(8,8,8,0.06) 0%, rgba(8,8,8,0.48) 100%)",
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 6, background: cover.spine, opacity: 0.9 }} />
+              <div
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  fontFamily: "JetBrains Mono",
+                  fontSize: 9,
+                  color: cover.spine,
+                  opacity: 0.35,
+                  letterSpacing: "0.15em",
+                }}
+              >
+                {cover.label}
+              </div>
+              <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.04 }} viewBox="0 0 200 200">
+                {Array.from({ length: 13 }, (_, line) => (
+                  <line key={line} stroke={cover.spine} strokeWidth="1" x1="0" x2="200" y1={line * 17} y2={line * 17} />
+                ))}
+              </svg>
+            </>
+          )}
           <div
             style={{
               position: "absolute",
@@ -501,20 +539,25 @@ export function BookShelfCard({ book, index }: { book: BookNote; index: number }
               left: 18,
               fontFamily: "JetBrains Mono",
               fontSize: 11,
-              color: cover.spine,
-              opacity: 0.6,
+              color: hasUploadedCover ? "rgba(255,255,255,0.78)" : cover.spine,
+              opacity: hasUploadedCover ? 1 : 0.6,
             }}
           >
             {String(index + 1).padStart(2, "0")}
           </div>
-          <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.04 }} viewBox="0 0 200 200">
-            {Array.from({ length: 13 }, (_, line) => (
-              <line key={line} stroke={cover.spine} strokeWidth="1" x1="0" x2="200" y1={line * 17} y2={line * 17} />
-            ))}
-          </svg>
           <div style={{ position: "relative", zIndex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", lineHeight: 1.3, maxWidth: 150, textWrap: "pretty" }}>{book.title}</div>
-            <div style={{ fontSize: 11, color: cover.spine, opacity: 0.8, marginTop: 5, fontFamily: "JetBrains Mono" }}>{book.author}</div>
+            <div
+              style={{
+                fontSize: 11,
+                color: hasUploadedCover ? "rgba(255,255,255,0.82)" : cover.spine,
+                opacity: hasUploadedCover ? 1 : 0.8,
+                marginTop: 5,
+                fontFamily: "JetBrains Mono",
+              }}
+            >
+              {book.author}
+            </div>
           </div>
         </div>
         <div style={{ padding: "16px 18px" }}>

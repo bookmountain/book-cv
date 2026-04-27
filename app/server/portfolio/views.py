@@ -67,6 +67,11 @@ class BookNoteListView(generics.ListAPIView):
     serializer_class = BookNoteSerializer
     queryset = BookNote.objects.filter(is_published=True)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
 
 class ReferenceListView(generics.ListAPIView):
     serializer_class = ReferenceSerializer
@@ -90,7 +95,11 @@ class PortfolioContentView(APIView):
                 WritingEntry.objects.filter(is_featured=True),
                 many=True,
             ).data,
-            "books": BookNoteSerializer(BookNote.objects.filter(is_published=True), many=True).data,
+            "books": BookNoteSerializer(
+                BookNote.objects.filter(is_published=True),
+                many=True,
+                context={"request": request},
+            ).data,
             "references": ReferenceSerializer(Reference.objects.all(), many=True).data,
         }
         return Response(payload, status=status.HTTP_200_OK)

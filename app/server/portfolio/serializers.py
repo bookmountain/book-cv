@@ -105,6 +105,8 @@ class WritingEntrySerializer(serializers.ModelSerializer):
 
 
 class BookNoteSerializer(serializers.ModelSerializer):
+    cover_src = serializers.SerializerMethodField()
+
     class Meta:
         model = BookNote
         fields = [
@@ -112,7 +114,16 @@ class BookNoteSerializer(serializers.ModelSerializer):
             "author",
             "summary",
             "takeaway",
+            "cover_src",
         ]
+
+    def get_cover_src(self, obj: BookNote) -> str:
+        if not obj.cover:
+            return ""
+
+        request = self.context.get("request")
+        cover_url = obj.cover.url
+        return request.build_absolute_uri(cover_url) if request else cover_url
 
 
 class ReferenceSerializer(serializers.ModelSerializer):

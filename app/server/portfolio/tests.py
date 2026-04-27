@@ -30,6 +30,7 @@ class TestPortfolioApi(TestCase):
         self.assertEqual(len(payload["books"]), 5)
         self.assertEqual(len(payload["references"]), 2)
         self.assertIn("screenshots", payload["projects"][0])
+        self.assertIn("cover_src", payload["books"][0])
         self.assertEqual(payload["education"][0]["institution"], "Adelaide University")
         self.assertEqual(payload["references"][0]["organization"], "Microsoft")
 

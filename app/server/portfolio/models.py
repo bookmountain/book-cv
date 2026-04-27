@@ -126,6 +126,7 @@ class BookNote(models.Model):
     author = models.CharField(max_length=120, blank=True)
     summary = models.TextField()
     takeaway = models.CharField(max_length=220, blank=True)
+    cover = models.FileField(upload_to="book-covers/", blank=True)
     is_published = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)

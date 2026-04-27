@@ -67,6 +67,7 @@ export type BookNote = {
   author: string;
   summary: string;
   takeaway: string;
+  cover_src: string;
 };
 
 export type Reference = {
