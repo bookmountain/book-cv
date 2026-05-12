@@ -29,7 +29,7 @@ class Command(BaseCommand):
                     "AI infrastructure."
                 ),
                 "location": "Adelaide, Australia",
-                "email": "bookmountain0222@gmail.com",
+                "email": "book.in.au@outlook.com",
                 "github_url": "https://github.com/bookmountain",
                 "linkedin_url": "https://linkedin.com/in/book-sam-603004169",
             },
