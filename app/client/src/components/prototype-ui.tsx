@@ -440,7 +440,7 @@ export function ExperienceSection({
   return (
     <section className="section" id="experience" style={{ scrollMarginTop: "var(--nav-height)" }}>
       <div className="container">
-        <div className="section-label">{index} / Experience</div>
+        <div className="section-label">{index ? `${index} / ` : ""}Experience</div>
         <h2 className="section-title">Where I have worked.</h2>
         <p className="section-sub">Roles, teams, and what I built, newest first.</p>
 
