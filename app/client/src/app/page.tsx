@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { HomeTerminal } from "@/components/home-terminal";
-import { AISection, ExperienceSection, MsLogo, PostRow, ProjectCard } from "@/components/prototype-ui";
+import { AISection, BeyondCodeSection, ExperienceSection, MsLogo, PostRow, ProjectCard } from "@/components/prototype-ui";
 import { Reveal } from "@/components/reveal";
 import { getDisplayCapabilities, getPortfolioContent } from "@/lib/site-content";
 
@@ -65,6 +65,7 @@ export default async function HomePage() {
   const references = content.references.slice(0, 3);
   const sectionNumbers = getSectionNumbers([
     ["experience", content.experiences.length > 0],
+    ["beyond", true],
     ["work", true],
     ["ai", capabilityRows.length > 0],
     ["references", references.length > 0],
@@ -187,6 +188,9 @@ export default async function HomePage() {
           <hr className="divider" />
         </>
       ) : null}
+
+      <BeyondCodeSection index={sectionNumbers.beyond} />
+      <hr className="divider" />
 
       <section className="section">
         <div className="container">

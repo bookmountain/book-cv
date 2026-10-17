@@ -532,6 +532,69 @@ export function ExperienceSection({
   );
 }
 
+const beyondCodeGroups = [
+  {
+    label: "Hardware",
+    tag: "Hands-on",
+    items: [
+      "Built my own PC.",
+      "Modded my iPod with a bigger battery and replaced its hard drive.",
+      "Replaced the chassis of my Nintendo Switch.",
+      "Fixed my ThinkPad's dull screen with a brighter one and upgraded its Wi-Fi card.",
+      "Order parts from Taobao and AliExpress to build my own gadgets and devices.",
+    ],
+  },
+  {
+    label: "Homelab & IT support",
+    tag: "Servers",
+    items: [
+      "Run a homelab on Proxmox for self-hosted services and local AI models.",
+      "Host this site and my project demos on my own server behind Cloudflare.",
+      "Was the go-to IT person at past jobs, setting up colleagues' desks, machines, and software.",
+    ],
+  },
+  {
+    label: "How I work",
+    tag: "People",
+    items: [
+      "Curious and self-taught: I learned most of my skills from YouTube and online tutorials.",
+      "Accountable: AI helps me build fast, but I check what it gives me and own the result.",
+      "Easy-going: I joined the CS Club, finished the 2026 CS Club Hackathon, and go to meetups and IT conferences.",
+    ],
+  },
+];
+
+export function BeyondCodeSection({ index }: { index: string }) {
+  return (
+    <section className="section" id="beyond-code" style={{ scrollMarginTop: "var(--nav-height)" }}>
+      <div className="container">
+        <div className="section-label">{index} / Beyond Code</div>
+        <h2 className="section-title">Hardware, servers, and people.</h2>
+        <p className="section-sub">I&apos;m the IT guy wherever I work. I like taking things apart, fixing them, and helping others.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+          {beyondCodeGroups.map((group, groupIndex) => (
+            <Reveal delay={groupIndex * 70} key={group.label}>
+              <article className="card" style={{ padding: "20px 22px", height: "100%" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                  <h3 style={{ fontSize: 15, fontWeight: 600, color: "var(--foreground)" }}>{group.label}</h3>
+                  <span className="tag green" style={{ fontSize: 10 }}>
+                    {group.tag}
+                  </span>
+                </div>
+                <ul className="prototype-experience-list">
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function AISection({ capabilities, index = "03" }: { capabilities: CapabilityRow[]; index?: string }) {
   const items = capabilities.slice(0, 8);
 

@@ -12,10 +12,10 @@ type TopNavProps = {
 
 const navItems = [
   { href: "/", label: "home" },
+  { href: "/#experience", label: "experience" },
   { href: "/projects", label: "projects" },
   { href: "/blog", label: "blog" },
   { href: "/books", label: "books" },
-  { href: "/#experience", label: "experience" },
   { href: "/contact", label: "contact" },
 ];
 
