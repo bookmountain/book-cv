@@ -73,15 +73,14 @@ export default async function HomePage() {
   ]);
 
   const terminalLines = [
-    { command: "$ whoami", output: `${content.profile.full_name} — ${content.profile.title}` },
-    { command: "$ cat experience/microsoft.txt", output: "3 yrs · VDI Team · Azure AI Studio · Copilot · Jest" },
-    {
-      command: "$ ls skills/ai/",
-      output: capabilityRows.slice(0, 6).map((row) => row.label.toLowerCase()).join("  ") || "rag  agents  ollama  prompting",
-    },
+    { command: "$ whoami", output: `${content.profile.full_name} · senior full-stack engineer · ${experienceYears} yrs` },
+    { command: "$ cat experience.log", output: "Sampras HK (remote) · ex-Microsoft, 3 yrs on Azure AI Document Intelligence" },
+    { command: "$ ./benchmark --api", output: "median latency 2.5 s → 61–78 ms (−97%), same results for 692 accounts" },
+    { command: "$ ls ~/projects", output: "ucompass  ai-web-generator  zoeandbook  immi-rank  ai-agent".replace(/-/g, "\u2011") },
+    { command: "$ ssh homelab docker ps -q | wc -l", output: "18 containers on a ThinkPad running Proxmox" },
     {
       command: "$ echo $STATUS",
-      output: `Open to thoughtful engineering work · ${content.profile.location || "Australia"}`,
+      output: `Open to full-stack and IT support roles · ${content.profile.location || "Adelaide, Australia"}`,
     },
   ];
 
@@ -288,7 +287,7 @@ export default async function HomePage() {
           <div className="section-label">{sectionNumbers.writing} / Writing</div>
           <h2 className="section-title">Engineering, AI, and delivery.</h2>
           <p className="section-sub">Notes from practice.</p>
-          <div style={{ display: "grid", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
             {posts.map((entry, index) => (
               <PostRow delay={index * 80} entry={entry} key={entry.slug} />
             ))}

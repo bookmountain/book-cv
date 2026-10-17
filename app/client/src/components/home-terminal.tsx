@@ -107,14 +107,23 @@ export function HomeTerminal({ lines }: HomeTerminalProps) {
         </span>
       </div>
 
-      <div className="space-y-5 px-5 py-6 font-mono text-[0.8rem] leading-7 sm:px-6">
-        {displayed.map((line, index) => (
-          <div key={`${index}-${line.type}`} style={{ color: line.type === "cmd" ? "var(--foreground)" : "var(--primary)" }}>
-            {line.text}
-          </div>
-        ))}
+      {/* Every line is laid out from the start and revealed as it types, so the box
+          keeps its final height and the page below never jumps. */}
+      <div className="space-y-3 px-5 py-5 font-mono text-[0.78rem] leading-6 sm:space-y-5 sm:px-6 sm:py-6 sm:text-[0.8rem] sm:leading-7">
+        {renderedLines.map((line, index) => {
+          const shown = done ? line.text : displayed[index]?.text ?? "";
+          const isTyping = !done && index === displayed.length - 1;
 
-        {!done ? <span className="terminal-cursor" /> : null}
+          return (
+            <div key={`${index}-${line.type}`} style={{ color: line.type === "cmd" ? "var(--foreground)" : "var(--primary)", whiteSpace: "pre-wrap" }}>
+              {shown}
+              {isTyping ? <span className="terminal-cursor" style={{ marginRight: "-0.5rem" }} /> : null}
+              <span aria-hidden="true" style={{ visibility: "hidden" }}>
+                {line.text.slice(shown.length)}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -61,21 +61,20 @@ export default async function ReferencesPage() {
 
           <Reveal delay={160}>
             <div
-              className="card"
+              className="card prototype-cta-card"
               style={{
                 marginTop: 48,
                 padding: "26px 28px",
                 display: "grid",
                 gap: 20,
                 alignItems: "center",
-                gridTemplateColumns: "minmax(0, 1fr) auto",
               }}
             >
               <div>
                 <div className="section-label" style={{ marginBottom: 12 }}>
                   Start A Conversation
                 </div>
-                <h2 style={{ fontSize: 28, fontWeight: 700, color: "var(--foreground)", lineHeight: 1.2, marginBottom: 10 }}>
+                <h2 style={{ fontSize: "clamp(22px, 5vw, 28px)", fontWeight: 700, color: "var(--foreground)", lineHeight: 1.2, marginBottom: 10 }}>
                   Need a direct introduction or want to discuss a project?
                 </h2>
                 <p style={{ maxWidth: 620, color: "var(--muted-foreground)", fontSize: 15, lineHeight: 1.75 }}>

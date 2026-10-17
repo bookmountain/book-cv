@@ -370,24 +370,14 @@ export function PostRow({ delay = 0, entry }: { delay?: number; entry: WritingEn
   return (
     <Reveal delay={delay}>
       <Link className="prototype-post-row" href={`/blog/${entry.slug}`}>
-        <span className="tag" style={{ flexShrink: 0, minWidth: 56, textAlign: "center" }}>
+        <span className="tag" style={{ flexShrink: 0, minWidth: 84, justifyContent: "center", textAlign: "center" }}>
           {entry.category}
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 600, color: "var(--foreground)", fontSize: 14, marginBottom: 4 }}>{entry.title}</div>
-          <div
-            style={{
-              fontSize: 13,
-              color: "var(--muted-foreground)",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {entry.summary}
-          </div>
+          <div className="prototype-post-summary">{entry.summary}</div>
         </div>
-        <span style={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "var(--muted-foreground)", flexShrink: 0 }}>
+        <span className="prototype-post-time" style={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "var(--muted-foreground)", flexShrink: 0 }}>
           {entry.reading_time}
         </span>
       </Link>
@@ -490,7 +480,7 @@ export function ExperienceSection({
                         >
                           {/microsoft/i.test(experience.company) ? <MsLogo size={14} /> : null}
                           <span style={{ fontWeight: 600, color: "var(--foreground)" }}>{experience.company}</span>
-                          {experience.location ? <span>· {experience.location}</span> : null}
+                          {experience.location ? <span className="prototype-exp-location">{experience.location}</span> : null}
                         </div>
                       </div>
                       <span className={isCurrent ? "tag green" : "tag"}>{experience.period}</span>
