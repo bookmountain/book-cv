@@ -17,7 +17,7 @@ export default async function ContactPage() {
   return (
     <div className="page-wrapper">
       <section className="section">
-        <div className="container" style={{ maxWidth: 720 }}>
+        <div className="container">
           <div className="section-label">Contact</div>
           <h1 className="section-title">Let&apos;s build something.</h1>
           <p className="section-sub">Open to graduate roles, collaborations, or just a conversation about engineering and AI.</p>
