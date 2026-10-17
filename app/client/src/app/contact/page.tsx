@@ -3,6 +3,15 @@ import { getSiteProfile } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
+const columnHeading = {
+  fontSize: 14,
+  fontWeight: 600,
+  color: "var(--muted-foreground)",
+  marginBottom: 20,
+  fontFamily: "JetBrains Mono",
+  letterSpacing: "0.06em",
+};
+
 function stripProtocol(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 }
@@ -22,21 +31,10 @@ export default async function ContactPage() {
           <h1 className="section-title">Let&apos;s build something.</h1>
           <p className="section-sub">Open to graduate roles, collaborations, or just a conversation about engineering and AI.</p>
 
-          <div className="grid gap-12 md:grid-cols-2" style={{ alignItems: "start" }}>
-            <div>
-              <h3
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: "var(--muted-foreground)",
-                  marginBottom: 20,
-                  fontFamily: "JetBrains Mono",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                FIND ME
-              </h3>
-              <div style={{ display: "grid", gap: 12 }}>
+          <div className="grid gap-12 md:grid-cols-2">
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <h3 style={columnHeading}>FIND ME</h3>
+              <div style={{ display: "grid", gap: 12, flex: 1, gridAutoRows: "1fr" }}>
                 {[
                   { label: "GitHub", value: stripProtocol(profile.github_url), href: profile.github_url },
                   { label: "LinkedIn", value: stripProtocol(profile.linkedin_url), href: profile.linkedin_url },
@@ -56,6 +54,7 @@ export default async function ContactPage() {
             </div>
 
             <div>
+              <h3 style={columnHeading}>SEND A MESSAGE</h3>
               <ContactInquiryForm email={profile.email} />
             </div>
           </div>
