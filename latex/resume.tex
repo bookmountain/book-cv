@@ -2,7 +2,7 @@
 %!TEX encoding = UTF-8 Unicode
 \documentclass[11pt,a4paper]{article}
 
-\usepackage[a4paper,left=1.25cm,right=1.25cm,top=1.15cm,bottom=1.25cm]{geometry}
+\usepackage[a4paper,left=1.25cm,right=1.25cm,top=1.15cm,bottom=0.9cm]{geometry}
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{fontspec}
@@ -11,12 +11,17 @@
 \usepackage{tabularx}
 \usepackage{xcolor}
 
+% Keep word gaps wide enough and avoid hyphenation so ATS parsers read whole words
+\AtBeginDocument{\spaceskip=3.6pt plus 1.8pt minus 0.2pt}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=1em
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
-\setlist[itemize]{leftmargin=1.2em,itemsep=0.2em,topsep=0.2em,parsep=0pt,partopsep=0pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.12em,topsep=0.15em,parsep=0pt,partopsep=0pt}
 \renewcommand{\familydefault}{\sfdefault}
-\defaultfontfeatures{Ligatures=TeX}
+\defaultfontfeatures{Ligatures={TeX,NoCommon}}
 \setmainfont[
   Path=assets/fonts/,
   Extension=.ttf,
@@ -38,6 +43,7 @@
 ]{Roboto}
 
 \definecolor{resumeText}{HTML}{111111}
+\definecolor{resumeLinkColor}{HTML}{1F4E9C}
 \hypersetup{
   pdftitle={Book Sam Resume},
   pdfauthor={Book Sam}
@@ -50,7 +56,7 @@
 
 \newcommand{\resumeHeader}{%
   \begin{center}
-    {\fontsize{30}{34}\selectfont\resumebold Book Sam}
+    {\spaceskip=0pt\fontsize{30}{34}\selectfont\resumebold Book Sam}
   \end{center}
   \vspace{0.25em}
   \hrule
@@ -68,8 +74,8 @@
 
 \newcommand{\resumeSection}[1]{%
   \Needspace{5\baselineskip}%
-  \vspace{1.5em}%
-  {\fontsize{18}{22}\selectfont\resumebold #1\par}%
+  \vspace{1.1em}%
+  {\spaceskip=0pt\fontsize{18}{22}\selectfont\resumebold #1\par}%
   \vspace{0.35em}%
   \hrule
   \vspace{0.8em}%
@@ -88,11 +94,15 @@
   \vspace{0.55em}
 }
 
-\newcommand{\resumeProject}[3]{%
+\newcommand{\resumeLink}[2]{\href{#1}{\textcolor{resumeLinkColor}{#2}}}
+
+\newcommand{\resumeProject}[4]{%
   \Needspace{5\baselineskip}%
-  {\resumebold #1} \textbar\ {\itshape #2}\par
+  \begin{tabularx}{\textwidth}{@{}Y r@{}}
+    {\resumebold #1} \textbar\ {\itshape #2} & {\small #3}
+  \end{tabularx}\par
   \begin{itemize}
-    #3
+    #4
   \end{itemize}
   \vspace{0.3em}
 }
@@ -121,6 +131,7 @@
 
 \input{sections/resume/summary.tex}
 \input{sections/resume/experience.tex}
+\clearpage
 \input{sections/resume/projects.tex}
 \input{sections/resume/skills.tex}
 

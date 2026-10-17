@@ -4,6 +4,7 @@
 % \resumeProject
 %   {Adelaide University Marketplace}
 %   {.NET, PostgreSQL, React}
+%   {}
 %   {
 %     \item Architecting a full-stack marketplace with robust authentication and high-concurrency listing management.
 %   }
@@ -11,6 +12,7 @@
 % \resumeProject
 %   {AI Agent Infrastructure Homelab}
 %   {Proxmox, Ollama, Python Automation}
+%   {}
 %   {
 %     \item Optimized Ollama within a Proxmox-based homelab to run local LLM workloads with lower inference latency for private AI experimentation.
 %     \item Built Python automation workflows to orchestrate local-model tasks and supporting services for repeatable AI development.
@@ -20,23 +22,44 @@
 \resumeProject
   {Microsoft Form Recognizer Toolkit}
   {Open Source, Azure AI, GitHub}
+  {}
   {
     \item Contributor to Microsoft's open-source \href{https://github.com/microsoft/Form-Recognizer-Toolkit}{Form Recognizer Toolkit}, supporting document intelligence tooling in a production-adjacent open-source codebase.
   }
 
 \resumeProject
   {Microservice Demo Auction Platform}
-  {.NET 8, Next.js 14, RabbitMQ, gRPC}
+  {.NET 8, Next.js 14, RabbitMQ, Docker}
+  {\resumeLink{https://github.com/bookmountain/microservice-demo}{GitHub}}
   {
-    \item Built a containerized auction platform with decoupled microservices, an API gateway, message-bus communication, real-time updates, and authentication flows, demonstrating hands-on microservice architecture experience via \href{https://github.com/bookmountain/microservice-demo}{microservice-demo}.
+    \item Built an auction app from separate services with login, bidding, and real-time notifications, using RabbitMQ and gRPC between services and Docker Compose to run them.
   }
 
 \resumeProject
-  {AI Agent Development }
-  {Java 21, SpringBoot AI, Vue.js, PGvector}
+  {AI Agent Development}
+  {Java 21, Spring AI, Vue 3, pgvector}
+  {\resumeLink{https://github.com/bookmountain/ai-agent}{GitHub} \textbar\ \resumeLink{https://ai-agent.bookmountain.work}{Live Demo}}
   {
-    \item Built a RAG-based conversational AI and an autonomous planning agent using Java 21, Spring AI, and PGvector
-    \item Implemented document ingestion, vector embedding, and semantic retrieval pipeline from scratch
-    \item Developed tool-calling integrations (web search, PDF generation, web scraping) used by a ReAct-pattern agent
-    \item Integrated MCP protocol for standardized external service communication
+    \item Built a RAG chatbot and a ReAct agent that answer from documents and run tasks with web search, PDF generation, web scraping, and MCP tools, streaming replies to a Vue 3 UI.
+    \item Containerized the application with Docker Compose and configured GitHub Actions deployment through a self-hosted runner.
+  }
+
+\resumeProject
+  {AI Web Generator}
+  {Java 21, Spring Boot, LangChain4j, LangGraph4j, MySQL, Redis, Vue 3}
+  {\resumeLink{https://github.com/bookmountain/ai-web-generator}{GitHub} \textbar\ \resumeLink{https://ai-web-generator.bookmountain.work}{Live Demo}}
+  {
+    \item Built a web app that turns a text prompt into a working website (single HTML, multi-file, or full Vue project), streams the code live over SSE, and lets users click any element in the preview to edit it.
+    \item Gave the AI agent 6 file tools and built an 11-step LangGraph4j workflow that collects images, icons, diagrams, and logos in 4 parallel branches, then checks code quality and retries if needed.
+    \item Added Redis chat memory, rate limiting (5 requests/min per user), Prometheus/Grafana monitoring, and 36 tests; deployed with Docker Compose and GitHub Actions.
+  }
+
+\resumeProject
+  {UCompass}
+  {React Native, Expo, ASP.NET Core, PostGIS, SignalR, Ollama}
+  {\resumeLink{https://devpost.com/software/ucompass}{Devpost} \textbar\ \resumeLink{https://github.com/bookmountain/hackathon-2026}{GitHub}}
+  {
+    \item Built a map app for Adelaide and Flinders students to find flatmates, buy and sell items, and join meetups, as a team of 4 at the 2026 CS Club Hackathon (Sep. 2026) in 33 hours.
+    \item Wrote the .NET 10 backend: 55 API endpoints across 12 controllers, email-code and JWT login, SignalR chat, PostGIS map search, and Cloudflare R2 photo storage.
+    \item Added photo AI with Qwen3-VL on local Ollama so users can fill in a listing or search the market from a photo; deployed the API with Docker Compose and GitHub Actions.
   }
