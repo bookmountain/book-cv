@@ -57,7 +57,7 @@
 
 \newcommand{\resumeHeader}{%
   \begin{center}
-    {\spaceskip=0pt\fontsize{30}{34}\selectfont\resumebold Book Sam}
+    {\fontsize{30}{34}\selectfont\resumebold\spaceskip=0.32em\relax Book Sam}
   \end{center}
   \vspace{0.25em}
   \hrule
@@ -67,7 +67,7 @@
     \href{https://github.com/bookmountain}{github.com/bookmountain} &
     \href{https://linkedin.com/in/book-sam-603004169}{linkedin.com/in/book-sam-603004169} &
     \href{tel:0467364679}{0467364679} \\
-    Adelaide, Australia & 
+    Adelaide, SA, Australia & 
     \href{https://me.bookmountain.work}{me.bookmountain.work} &
     \href{mailto:book.in.au@outlook.com}{book.in.au@outlook.com}
   \end{tabularx}}
@@ -75,18 +75,18 @@
 
 \newcommand{\resumeSection}[1]{%
   \Needspace{5\baselineskip}%
-  \vspace{1.1em}%
+  \vspace{0.9em}%
   {\spaceskip=0pt\fontsize{18}{22}\selectfont\resumebold #1\par}%
   \vspace{0.35em}%
   \hrule
-  \vspace{0.8em}%
+  \vspace{0.65em}%
 }
 
 \newcommand{\resumeExperience}[5]{%
   \Needspace{4\baselineskip}%
   \begin{tabularx}{\textwidth}{@{}Y Z@{}}
     {\resumebold #1} & {\resumebold #4} \\
-    {\small #2 \textbar\ #3} &
+    {\small #2} & {\small #3}
   \end{tabularx}\par
   \vspace{0.15em}
   \begin{itemize}
@@ -105,7 +105,7 @@
   \begin{itemize}
     #4
   \end{itemize}
-  \vspace{0.3em}
+  \vspace{0.15em}
 }
 
 \newcommand{\resumeSkillLine}[2]{%
@@ -118,7 +118,7 @@
     {\resumebold #1} & {\resumebold #2} \\
     #3 & #4
   \end{tabularx}\par
-  \vspace{0.45em}
+  \vspace{0.7em}
 }
 
 \newcommand{\resumeReferee}[3]{%
