@@ -1,15 +1,16 @@
 import Link from "next/link";
 
 import { HomeTerminal } from "@/components/home-terminal";
-import { AISection, MsLogo, PostRow, ProjectCard } from "@/components/prototype-ui";
+import { AISection, ExperienceSection, MsLogo, PostRow, ProjectCard } from "@/components/prototype-ui";
 import { Reveal } from "@/components/reveal";
 import { getDisplayCapabilities, getPortfolioContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
 function getExperienceYears(periods: string[]) {
+  const currentYear = String(new Date().getFullYear());
   const years = periods
-    .flatMap((period) => period.match(/\b(19|20)\d{2}\b/g) ?? [])
+    .flatMap((period) => [...(period.match(/\b(19|20)\d{2}\b/g) ?? []), ...(/present/i.test(period) ? [currentYear] : [])])
     .map((value) => Number(value))
     .filter((value) => Number.isFinite(value));
 
@@ -22,6 +23,18 @@ function getExperienceYears(periods: string[]) {
 
 function formatSectionNumber(value: number) {
   return String(value).padStart(2, "0");
+}
+
+// The hero is section 01; visible sections after it are numbered in order.
+function getSectionNumbers<T extends string>(sections: Array<[T, boolean]>) {
+  const numbers = {} as Record<T, string>;
+  let next = 2;
+
+  for (const [key, visible] of sections) {
+    numbers[key] = visible ? formatSectionNumber(next++) : "";
+  }
+
+  return numbers;
 }
 
 function getReferenceSummary(relationship: string, organization: string) {
@@ -50,9 +63,13 @@ export default async function HomePage() {
   const capabilityRows = getDisplayCapabilities(content);
   const experienceYears = getExperienceYears(content.experiences.map((experience) => experience.period));
   const references = content.references.slice(0, 3);
-  const contentSectionCount = 2 + (capabilityRows.length ? 1 : 0);
-  const referenceIndex = formatSectionNumber(contentSectionCount + 1);
-  const writingIndex = formatSectionNumber(contentSectionCount + (references.length ? 2 : 1));
+  const sectionNumbers = getSectionNumbers([
+    ["experience", content.experiences.length > 0],
+    ["work", true],
+    ["ai", capabilityRows.length > 0],
+    ["references", references.length > 0],
+    ["writing", true],
+  ]);
 
   const terminalLines = [
     { command: "$ whoami", output: `${content.profile.full_name} — ${content.profile.title}` },
@@ -164,9 +181,16 @@ export default async function HomePage() {
 
       <hr className="divider" />
 
+      {content.experiences.length ? (
+        <>
+          <ExperienceSection education={content.education} experiences={content.experiences} index={sectionNumbers.experience} />
+          <hr className="divider" />
+        </>
+      ) : null}
+
       <section className="section">
         <div className="container">
-          <div className="section-label">02 / Selected Work</div>
+          <div className="section-label">{sectionNumbers.work} / Selected Work</div>
           <h2 className="section-title">Systems and interfaces built to last.</h2>
           <p className="section-sub">Delivery-focused projects spanning product UI, architecture, and developer tooling.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -186,7 +210,7 @@ export default async function HomePage() {
 
       {capabilityRows.length ? (
         <>
-          <AISection capabilities={capabilityRows} />
+          <AISection capabilities={capabilityRows} index={sectionNumbers.ai} />
           <hr className="divider" />
         </>
       ) : null}
@@ -195,7 +219,7 @@ export default async function HomePage() {
         <>
           <section className="section">
             <div className="container">
-              <div className="section-label">{referenceIndex} / References</div>
+              <div className="section-label">{sectionNumbers.references} / References</div>
               <h2 className="section-title">References, presented like trusted reviews.</h2>
               <p className="section-sub">People who can speak directly to delivery, collaboration, and product work from Microsoft.</p>
               <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
@@ -257,7 +281,7 @@ export default async function HomePage() {
 
       <section className="section">
         <div className="container">
-          <div className="section-label">{writingIndex} / Writing</div>
+          <div className="section-label">{sectionNumbers.writing} / Writing</div>
           <h2 className="section-title">Engineering, AI, and delivery.</h2>
           <p className="section-sub">Notes from practice.</p>
           <div style={{ display: "grid", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>

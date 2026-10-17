@@ -11,6 +11,7 @@ from portfolio.models import (
     SiteProfile,
     WritingEntry,
 )
+from portfolio.resume_content import RESUME_EXPERIENCES, RESUME_PROJECTS
 from portfolio.resume_source import load_resume_education_entries, load_resume_reference_entries
 
 
@@ -59,60 +60,7 @@ class Command(BaseCommand):
                 ],
                 "repo_url": "https://github.com/bookmountain/book-cv",
                 "live_url": "https://me.bookmountain.work",
-                "sort_order": 1,
-            },
-            {
-                "title": "Microservice Demo Auction Platform",
-                "slug": "microservice-demo-auction-platform",
-                "eyebrow": "Architecture",
-                "stack": ".NET 8, Next.js 14, RabbitMQ, gRPC",
-                "summary": (
-                    "A containerized auction platform built around decoupled services, asynchronous events, "
-                    "real-time updates, and gateway routing."
-                ),
-                "details": (
-                    "This project is my working proof that I understand distributed application boundaries beyond "
-                    "just talking about them in interviews. It is organized around multiple services with clear "
-                    "ownership, asynchronous messaging, and a frontend that consumes live state instead of relying "
-                    "on one large monolith.\n\n"
-                    "The main value is not only the tech stack. It demonstrates how I think about service contracts, "
-                    "event-driven updates, failure boundaries, and how frontend product behavior changes when the "
-                    "backend is split into focused services."
-                ),
-                "highlights": [
-                    "Modeled a real auction workflow with decoupled services instead of a monolithic API.",
-                    "Used RabbitMQ and gRPC to cover both asynchronous messaging and tighter service communication.",
-                    "Built the project as a practical microservice portfolio piece rather than a toy CRUD demo.",
-                ],
-                "repo_url": "https://github.com/bookmountain/microservice-demo",
-                "live_url": "",
-                "sort_order": 2,
-            },
-            {
-                "title": "Microsoft Form Recognizer Toolkit",
-                "slug": "microsoft-form-recognizer-toolkit",
-                "eyebrow": "Open Source",
-                "stack": "Azure AI, Document Intelligence, GitHub",
-                "summary": (
-                    "Contribution work inside Microsoft's public toolkit for document intelligence workflows "
-                    "and supporting developer tooling."
-                ),
-                "details": (
-                    "This project reflects a public, inspectable part of my Microsoft work. Contributing to the "
-                    "official toolkit meant working within existing conventions, keeping developer ergonomics in mind, "
-                    "and improving tools that supported Azure AI document workflows.\n\n"
-                    "The important signal here is not just that the repository is public. It shows that I can work "
-                    "inside a large organization's engineering standards and contribute in a way that helps other "
-                    "developers use the platform effectively."
-                ),
-                "highlights": [
-                    "Contributed to Microsoft's public developer tooling around Form Recognizer workflows.",
-                    "Worked in a codebase where usability and documentation mattered alongside implementation.",
-                    "Used the project as a bridge between internal product work and public developer experience.",
-                ],
-                "repo_url": "https://github.com/microsoft/Form-Recognizer-Toolkit",
-                "live_url": "",
-                "sort_order": 3,
+                "sort_order": 6,
             },
             {
                 "title": "AI Agent Infrastructure Homelab",
@@ -138,7 +86,7 @@ class Command(BaseCommand):
                 ],
                 "repo_url": "https://github.com/bookmountain",
                 "live_url": "",
-                "sort_order": 4,
+                "sort_order": 7,
             },
             {
                 "title": "Playwright Automation Workflow",
@@ -158,7 +106,7 @@ class Command(BaseCommand):
                     "Browser-level checks for critical paths.",
                     "Designed for GitHub Actions preview validation.",
                 ],
-                "sort_order": 5,
+                "sort_order": 8,
                 "is_featured": False,
             },
             {
@@ -178,52 +126,34 @@ class Command(BaseCommand):
                     "Documented setup and environment assumptions.",
                     "Focused on repeatability instead of one-machine hacks.",
                 ],
-                "sort_order": 6,
-                "is_featured": False,
-            },
-            {
-                "title": "AI Agent Project",
-                "slug": "ai-agent-project",
-                "eyebrow": "Current Build Queue",
-                "stack": "Python, local models, agent orchestration",
-                "summary": (
-                    "An experiment in agent-style workflows that combine structured prompts, tooling, and local "
-                    "model infrastructure."
-                ),
-                "details": (
-                    "The point of this build is not to overclaim autonomous intelligence. It is to explore the parts "
-                    "of agent workflows that are actually useful: bounded tools, structured inputs, clear outputs, and "
-                    "repeatable runtime behavior."
-                ),
-                "highlights": [
-                    "Bounded tools and explicit workflow design.",
-                    "Focused on useful orchestration rather than hype.",
-                ],
-                "sort_order": 7,
-                "is_featured": False,
-            },
-            {
-                "title": "AI Web Generator",
-                "slug": "ai-web-generator",
-                "eyebrow": "Current Build Queue",
-                "stack": "Next.js, Django, prompt workflows",
-                "summary": (
-                    "A project focused on generating practical web experiences while keeping the output readable, "
-                    "maintainable, and grounded in real implementation details."
-                ),
-                "details": (
-                    "This is where I want to test how far AI-assisted UI generation can go before it stops being a "
-                    "good engineering tool and starts producing generic output. The goal is to keep the generated "
-                    "result useful, readable, and consistent with real product constraints."
-                ),
-                "highlights": [
-                    "Combines generation speed with human design review.",
-                    "Treats maintainability as a first-class output metric.",
-                ],
-                "sort_order": 8,
+                "sort_order": 9,
                 "is_featured": False,
             },
         ]
+
+        # Resume projects come first, in resume order. The resume does not cover the toolkit's
+        # long-form text, so the seed keeps its own details and highlights for it.
+        resume_project_extras = {
+            "microsoft-form-recognizer-toolkit": {
+                "details": (
+                    "This project reflects a public, inspectable part of my Microsoft work. Contributing to the "
+                    "official toolkit meant working within existing conventions, keeping developer ergonomics in mind, "
+                    "and improving tools that supported Azure AI document workflows.\n\n"
+                    "The important signal here is not just that the repository is public. It shows that I can work "
+                    "inside a large organization's engineering standards and contribute in a way that helps other "
+                    "developers use the platform effectively."
+                ),
+                "highlights": [
+                    "Contributed to Microsoft's public developer tooling around Form Recognizer workflows.",
+                    "Worked in a codebase where usability and documentation mattered alongside implementation.",
+                    "Used the project as a bridge between internal product work and public developer experience.",
+                ],
+            },
+        }
+        seed_projects = [
+            {**payload, **resume_project_extras.get(payload["slug"], {}), "sort_order": index}
+            for index, payload in enumerate(RESUME_PROJECTS, start=1)
+        ] + seed_projects
 
         seeded_projects = []
         for payload in seed_projects:
@@ -311,67 +241,10 @@ class Command(BaseCommand):
                     },
                 )
 
-        seed_experiences = [
-            {
-                "company": "Microsoft",
-                "role": "Software Engineer, VDI Team",
-                "location": "Taipei, Taiwan",
-                "period": "Mar 2022 — Apr 2025",
-                "summary": (
-                    "Worked across Azure AI Studio migration, enterprise document workflows, developer tooling, "
-                    "accessibility, and delivery operations."
-                ),
-                "highlights": [
-                    "Migrated VDI products into Azure AI Studio and aligned legacy capabilities with scalable AI-enabled workflows.",
-                    "Used AI-assisted development tools to speed up workflow optimization for enterprise document processing.",
-                    "Standardized Linux workflows with WSL2 to reduce setup friction and improve team-wide velocity.",
-                ],
-                "sort_order": 1,
-            },
-            {
-                "company": "Gold Crown Technology Co., Ltd.",
-                "role": "Front-End Developer",
-                "location": "Taipei, Taiwan",
-                "period": "Feb 2021 — Feb 2022",
-                "summary": (
-                    "Built React and Vue applications with a focus on search visibility, faster rendering, and "
-                    "clearer product interactions."
-                ),
-                "highlights": [
-                    "Delivered high-performance interfaces in React, Vue, and TypeScript.",
-                    "Improved SEO and load times through Next.js SSR and GraphQL-driven rendering.",
-                ],
-                "sort_order": 2,
-            },
-            {
-                "company": "DediProg",
-                "role": "Front-End Developer",
-                "location": "Taipei, Taiwan",
-                "period": "Nov 2020 — Feb 2021",
-                "summary": "Maintained and modernized legacy front-end systems while improving runtime performance.",
-                "highlights": [
-                    "Updated older jQuery-based workflows without disrupting existing product behavior.",
-                ],
-                "sort_order": 3,
-            },
-            {
-                "company": "KozyGuru",
-                "role": "Front-End Developer",
-                "location": "Taipei, Taiwan",
-                "period": "Feb 2020 — Jul 2020",
-                "summary": "Built the core property management workflow for Australian Airbnb listings.",
-                "highlights": [
-                    "Shipped product-facing workflows for listing operations and day-to-day management.",
-                ],
-                "sort_order": 4,
-            },
-        ]
-
-        for payload in seed_experiences:
+        for index, payload in enumerate(RESUME_EXPERIENCES, start=1):
             Experience.objects.update_or_create(
                 company=payload["company"],
-                role=payload["role"],
-                defaults=payload,
+                defaults={**payload, "sort_order": index},
             )
 
         seeded_education_ids = []

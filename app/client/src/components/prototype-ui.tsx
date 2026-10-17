@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
-import type { BookNote, CapabilityRow, Project, WritingEntry } from "@/lib/site-content";
+import type { BookNote, CapabilityRow, Education, Experience, Project, WritingEntry } from "@/lib/site-content";
 
 function cssVars(vars: Record<string, string | number | undefined>) {
   return vars as CSSProperties;
@@ -395,7 +395,144 @@ export function PostRow({ delay = 0, entry }: { delay?: number; entry: WritingEn
   );
 }
 
-export function AISection({ capabilities }: { capabilities: CapabilityRow[] }) {
+const EXPERIENCE_HIGHLIGHT_PREVIEW = 3;
+
+function ExperienceHighlights({ items }: { items: string[] }) {
+  const preview = items.slice(0, EXPERIENCE_HIGHLIGHT_PREVIEW);
+  const rest = items.slice(EXPERIENCE_HIGHLIGHT_PREVIEW);
+
+  return (
+    <>
+      <ul className="prototype-experience-list">
+        {preview.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      {rest.length ? (
+        <details className="prototype-experience-more">
+          <summary>
+            {rest.length} more
+          </summary>
+          <ul className="prototype-experience-list">
+            {rest.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+    </>
+  );
+}
+
+export function ExperienceSection({
+  education,
+  experiences,
+  index,
+}: {
+  education: Education[];
+  experiences: Experience[];
+  index: string;
+}) {
+  if (!experiences.length) {
+    return null;
+  }
+
+  return (
+    <section className="section" id="experience" style={{ scrollMarginTop: "var(--nav-height)" }}>
+      <div className="container">
+        <div className="section-label">{index} / Experience</div>
+        <h2 className="section-title">Where I have worked.</h2>
+        <p className="section-sub">Roles, teams, and what I built, newest first.</p>
+
+        <div style={{ display: "grid", position: "relative" }}>
+          <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 1, background: "var(--border)" }} />
+          {experiences.map((experience, itemIndex) => {
+            const isCurrent = itemIndex === 0;
+            const highlights = experience.highlights.filter(Boolean);
+
+            return (
+              <Reveal delay={itemIndex * 70} key={`${experience.company}-${experience.role}`}>
+                <div style={{ display: "grid", gridTemplateColumns: "16px minmax(0, 1fr)", gap: 20, marginBottom: 20 }}>
+                  <div
+                    style={{
+                      width: 15,
+                      height: 15,
+                      borderRadius: "50%",
+                      background: isCurrent ? "var(--accent)" : "var(--secondary)",
+                      border: `2px solid ${isCurrent ? "var(--accent)" : "var(--border-strong)"}`,
+                      zIndex: 1,
+                      marginTop: 24,
+                    }}
+                  />
+                  <article className="card" style={{ padding: "20px 22px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        gap: 12,
+                        flexWrap: "wrap",
+                        marginBottom: 12,
+                      }}
+                    >
+                      <div style={{ minWidth: 0 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.35 }}>{experience.role}</h3>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            flexWrap: "wrap",
+                            marginTop: 4,
+                            fontSize: 13,
+                            color: "var(--muted-foreground)",
+                          }}
+                        >
+                          {/microsoft/i.test(experience.company) ? <MsLogo size={14} /> : null}
+                          <span style={{ fontWeight: 600, color: "var(--foreground)" }}>{experience.company}</span>
+                          {experience.location ? <span>· {experience.location}</span> : null}
+                        </div>
+                      </div>
+                      <span className={isCurrent ? "tag green" : "tag"}>{experience.period}</span>
+                    </div>
+
+                    {highlights.length ? (
+                      <ExperienceHighlights items={highlights} />
+                    ) : (
+                      <p style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.7 }}>{experience.summary}</p>
+                    )}
+                  </article>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        {education.length ? (
+          <div style={{ marginTop: 28 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--foreground)", marginBottom: 14 }}>Education</h3>
+            <div style={{ display: "grid", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+              {education.map((entry) => (
+                <div className="prototype-education-row" key={`${entry.degree}-${entry.institution}`}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, color: "var(--foreground)", fontSize: 14 }}>{entry.degree}</div>
+                    <div style={{ fontSize: 13, color: "var(--muted-foreground)", marginTop: 2 }}>
+                      {entry.institution}
+                      {entry.location ? ` · ${entry.location}` : ""}
+                    </div>
+                  </div>
+                  <span className="tag">{entry.period}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+export function AISection({ capabilities, index = "03" }: { capabilities: CapabilityRow[]; index?: string }) {
   const items = capabilities.slice(0, 8);
 
   if (!items.length) {
@@ -405,7 +542,7 @@ export function AISection({ capabilities }: { capabilities: CapabilityRow[] }) {
   return (
     <section className="section">
       <div className="container">
-        <div className="section-label">03 / AI Practice</div>
+        <div className="section-label">{index} / AI Practice</div>
         <h2 className="section-title">Embracing the AI shift — hands-on.</h2>
         <p className="section-sub">Not just using AI tools; understanding how they work and building with them purposefully.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
