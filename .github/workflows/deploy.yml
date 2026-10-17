@@ -106,3 +106,10 @@ jobs:
           cd /work/book-cv
           # This runs the local script you already have
           bash scripts/deploy-remote.sh
+
+      - name: Sync resume to SeekHunter
+        continue-on-error: true
+        run: |
+          rsync -az --delete -e "ssh -i /home/book/.ssh/seekhunter_deploy -o StrictHostKeyChecking=accept-new" \
+            latex/sections/ root@192.168.4.50:/opt/seek-hunter/book-cv/sections/
+          ssh -i /home/book/.ssh/seekhunter_deploy root@192.168.4.50 'systemctl start --no-block seekhunter-rescore.service'
