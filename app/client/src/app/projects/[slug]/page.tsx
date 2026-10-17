@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ProjectShot } from "@/components/project-shot";
 import { ProjectVisual } from "@/components/prototype-ui";
 import { Reveal } from "@/components/reveal";
 import { RichText } from "@/components/rich-text";
@@ -119,18 +118,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </section>
               ) : null}
 
-              {project.screenshots.length ? (
-                <section>
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)", marginBottom: 16 }}>Walkthrough</h2>
-                  <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
-                    {project.screenshots.map((screenshot, index) => (
-                      <Reveal delay={220 + index * 60} key={`${project.slug}-${screenshot.title}`}>
-                        <ProjectShot screenshot={screenshot} />
-                      </Reveal>
-                    ))}
-                  </div>
-                </section>
-              ) : null}
             </div>
 
             <Reveal delay={200}>

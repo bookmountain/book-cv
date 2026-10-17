@@ -12,7 +12,8 @@
 \usepackage{xcolor}
 
 % Keep word gaps wide enough and avoid hyphenation so ATS parsers read whole words
-\AtBeginDocument{\spaceskip=3.6pt plus 1.8pt minus 0.2pt}
+% Left-aligned text with fixed word gaps: even spacing, and ATS parsers still see every space
+\AtBeginDocument{\raggedright\frenchspacing\spaceskip=3.6pt\relax}
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 \emergencystretch=1em
