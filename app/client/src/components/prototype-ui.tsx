@@ -600,14 +600,9 @@ export function AISection({ capabilities, index = "03" }: { capabilities: Capabi
         <p className="section-sub">Languages, frameworks, and tools I use day to day, across web, backend, cloud, and AI.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
           {items.map((item, index) => (
-            <Reveal delay={index * 70} key={item.label}>
-              <div className="card" style={{ padding: "18px 20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <span style={{ fontWeight: 600, fontSize: 14, color: "var(--foreground)" }}>{item.label}</span>
-                  <span className="tag green" style={{ fontSize: 10 }}>
-                    Focus
-                  </span>
-                </div>
+            <Reveal className="h-full" delay={index * 70} key={item.label}>
+              <div className="card h-full" style={{ padding: "18px 20px" }}>
+                <div style={{ fontWeight: 600, fontSize: 14, color: "var(--foreground)", marginBottom: 8 }}>{item.label}</div>
                 <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>{item.value}</p>
               </div>
             </Reveal>
