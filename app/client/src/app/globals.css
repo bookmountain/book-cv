@@ -669,6 +669,179 @@
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+/* Skills: a 6-column bento grid of skill groups, each skill a chip with its logo. */
+.skills-bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.skills-cell {
+  grid-column: span 3;
+}
+
+.skills-cell:nth-child(7n + 1),
+.skills-cell:nth-child(7n + 5) {
+  grid-column: span 2;
+}
+
+.skills-cell:nth-child(7n + 2),
+.skills-cell:nth-child(7n + 6) {
+  grid-column: span 4;
+}
+
+.skills-cell:nth-child(7n) {
+  grid-column: 1 / -1;
+}
+
+.skills-card {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.skills-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 70%);
+  opacity: 0.6;
+}
+
+.skills-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skills-card-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.skills-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.skills-card-path {
+  font-family: var(--font-mono-stack);
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.skills-card-count {
+  margin-left: auto;
+  align-self: flex-start;
+  font-family: var(--font-mono-stack);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--border-strong);
+}
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 11px 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--secondary);
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--foreground);
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+}
+
+.skill-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-border);
+}
+
+.skill-logos {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.skill-logo {
+  display: block;
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.skill-logo-lucide {
+  width: 16px;
+  height: 16px;
+  margin: 1px;
+  color: var(--muted-foreground);
+}
+
+.skill-logo-mask {
+  background-color: var(--logo-color, var(--foreground));
+  mask: var(--logo) center / contain no-repeat;
+  -webkit-mask: var(--logo) center / contain no-repeat;
+}
+
+.skill-logo-dot {
+  width: 6px;
+  height: 6px;
+  margin: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (max-width: 1024px) {
+  .skills-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skills-cell,
+  .skills-cell:nth-child(n) {
+    grid-column: span 1;
+  }
+
+  .skills-cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .skills-bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skills-card {
+    padding: 18px 16px;
+  }
+}
+
 /* The scheme comments are longer than the nav has room for; the switcher's tooltip shows them instead. */
 .prototype-nav-links .prototype-theme-comment {
   display: none;

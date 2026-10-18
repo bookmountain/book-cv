@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ProjectCover } from "@/components/project-cover";
 import { Reveal } from "@/components/reveal";
 import type { BookNote, CapabilityRow, Education, Experience, Project, WritingEntry } from "@/lib/site-content";
+import { getSkillGroupIcon, getSkillIcons, splitSkills } from "@/lib/skill-icons";
 
 function cssVars(vars: Record<string, string | number | undefined>) {
   return vars as CSSProperties;
@@ -592,24 +593,82 @@ export function AISection({ capabilities, index = "03" }: { capabilities: Capabi
     return null;
   }
 
+  const groups = items.map((item) => ({ ...item, skills: splitSkills(item.value) }));
+  const total = new Set(groups.flatMap((group) => group.skills.map((skill) => skill.toLowerCase()))).size;
+
   return (
     <section className="section">
       <div className="container">
         <div className="section-label">{index} / Skills</div>
         <h2 className="section-title">What I build with.</h2>
-        <p className="section-sub">Languages, frameworks, and tools I use day to day, across web, backend, cloud, and AI.</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
-          {items.map((item, index) => (
-            <Reveal className="h-full" delay={index * 70} key={item.label}>
-              <div className="card h-full" style={{ padding: "18px 20px" }}>
-                <div style={{ fontWeight: 600, fontSize: 14, color: "var(--foreground)", marginBottom: 8 }}>{item.label}</div>
-                <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>{item.value}</p>
-              </div>
-            </Reveal>
-          ))}
+        <p className="section-sub">
+          {total} tools across {groups.length} areas, from the browser to the server rack.
+        </p>
+        <div className="skills-bento">
+          {groups.map((group, groupIndex) => {
+            const GroupIcon = getSkillGroupIcon(group.label);
+            const slug = group.label.toLowerCase().replace(/&/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+            return (
+              <Reveal className="skills-cell" delay={groupIndex * 70} key={group.label}>
+                <div className="card skills-card">
+                  <div className="skills-card-head">
+                    <span className="skills-card-icon" aria-hidden="true">
+                      <GroupIcon size={18} strokeWidth={1.75} />
+                    </span>
+                    <div style={{ minWidth: 0 }}>
+                      <h3 className="skills-card-title">{group.label}</h3>
+                      <div className="skills-card-path">~/stack/{slug}</div>
+                    </div>
+                    <span className="skills-card-count" aria-hidden="true">
+                      {String(group.skills.length).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <ul className="skills-chips">
+                    {group.skills.map((skill) => (
+                      <li className="skill-chip" key={skill}>
+                        <SkillLogos name={skill} />
+                        <span>{skill}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
+  );
+}
+
+function SkillLogos({ name }: { name: string }) {
+  const icons = getSkillIcons(name);
+
+  if (!icons.length) {
+    return <span className="skill-logo skill-logo-dot" aria-hidden="true" />;
+  }
+
+  return (
+    <span className="skill-logos" aria-hidden="true">
+      {icons.map((icon, index) => {
+        if (icon.kind === "lucide") {
+          const Icon = icon.icon;
+          return <Icon className="skill-logo skill-logo-lucide" key={index} size={16} strokeWidth={1.75} />;
+        }
+        if (icon.kind === "mask") {
+          return (
+            <span
+              className="skill-logo skill-logo-mask"
+              key={index}
+              style={cssVars({ "--logo": `url(${icon.src})`, "--logo-color": icon.color })}
+            />
+          );
+        }
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img alt="" className="skill-logo" height={18} key={index} loading="lazy" src={icon.src} width={18} />;
+      })}
+    </span>
   );
 }
 
