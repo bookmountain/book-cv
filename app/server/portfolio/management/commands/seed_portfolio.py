@@ -291,7 +291,7 @@ class Command(BaseCommand):
             },
             {
                 "label": "AI Engineering",
-                "value": "RAG, AI Agents, Tool Calling, MCP, Spring AI, LangChain4j, LangGraph4j, Ollama, Prompt Engineering",
+                "value": "RAG, AI Agents, Tool Calling, MCP, Spring AI, LangChain4j, LangGraph4j, Ollama",
                 "sort_order": 6,
             },
             {

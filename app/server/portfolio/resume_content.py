@@ -155,14 +155,13 @@ RESUME_EXPERIENCES = [
         "period": "Mar 2022 — Apr 2025",
         "summary": "Front-end work on Azure AI Document Intelligence and Azure AI Foundry with React, TypeScript, and Redux.",
         "highlights": [
-            "Built front-end features for Azure Form Recognizer Studio (renamed Azure AI Document Intelligence in "
-            "2023) with React, TypeScript, and Redux, including the document labeling UI used to train custom "
-            "extraction models.",
-            "Migrated Document Intelligence Studio features into Azure AI Studio (now Azure AI Foundry) as the two "
+            "Built front-end features for Azure Form Recognizer Studio with React, TypeScript, and Redux, including "
+            "the document labeling UI used to train custom extraction models.",
+            "Migrated Form Recognizer Studio features into Azure AI Foundry as the two "
             "products merged.",
             "Built a front-end monorepo that combined Azure AI products from multiple departments, as the platform "
-            "grew from OCR (Form Recognizer) to images and audio in Azure AI Studio.",
-            "Introduced Redux Toolkit Query (RTK Query) for API caching and request deduplication, cutting repeated "
+            "grew from OCR to images and audio in Azure AI Foundry.",
+            "Introduced RTK Query for API caching and request deduplication, cutting repeated "
             "API calls and page loading time.",
             "Kept unit test coverage above 90% with Jest and React Testing Library, improving release stability.",
             "Used GitHub Copilot to speed up development of Form Recognizer document processing features.",
