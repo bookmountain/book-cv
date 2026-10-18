@@ -595,9 +595,9 @@ export function AISection({ capabilities, index = "03" }: { capabilities: Capabi
   return (
     <section className="section">
       <div className="container">
-        <div className="section-label">{index} / AI Practice</div>
-        <h2 className="section-title">Embracing the AI shift — hands-on.</h2>
-        <p className="section-sub">Not just using AI tools; understanding how they work and building with them purposefully.</p>
+        <div className="section-label">{index} / Skills</div>
+        <h2 className="section-title">What I build with.</h2>
+        <p className="section-sub">Languages, frameworks, and tools I use day to day, across web, backend, cloud, and AI.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
           {items.map((item, index) => (
             <Reveal delay={index * 70} key={item.label}>

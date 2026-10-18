@@ -265,24 +265,39 @@ class Command(BaseCommand):
 
         seed_capabilities = [
             {
-                "label": "Application",
-                "value": "TypeScript, React, Next.js, NestJS, Vue, PostgreSQL",
+                "label": "Languages",
+                "value": "TypeScript, JavaScript, C#, Java, Python, SQL, HTML/CSS",
                 "sort_order": 1,
             },
             {
-                "label": "AI",
-                "value": "Azure AI Studio, Ollama, RAG architecture, Codex, Copilot",
+                "label": "Frontend & Mobile",
+                "value": "React, Next.js, Vue 3, Redux Toolkit, RTK Query, React Native, Expo, Monorepo",
                 "sort_order": 2,
             },
             {
-                "label": "Automation",
-                "value": "Playwright, Selenium, pragmatic CI, browser verification",
+                "label": "Backend",
+                "value": "Node.js, NestJS, ASP.NET Core, Spring Boot, GraphQL, SignalR, RabbitMQ, gRPC",
                 "sort_order": 3,
             },
             {
-                "label": "Systems",
-                "value": "Proxmox, Linux, Docker, RabbitMQ, gRPC, WSL2",
+                "label": "Cloud & DevOps",
+                "value": "Cloudflare Workers, Azure, Docker, GitHub Actions, Linux, Proxmox, Prometheus/Grafana",
                 "sort_order": 4,
+            },
+            {
+                "label": "Data",
+                "value": "PostgreSQL, MySQL, MongoDB, Redis, pgvector, PostGIS",
+                "sort_order": 5,
+            },
+            {
+                "label": "AI Engineering",
+                "value": "RAG, AI Agents, Tool Calling, MCP, Spring AI, LangChain4j, LangGraph4j, Ollama, Prompt Engineering",
+                "sort_order": 6,
+            },
+            {
+                "label": "Testing & Tools",
+                "value": "Jest, React Testing Library, Selenium, Git, Linux, Claude Code, Codex",
+                "sort_order": 7,
             },
         ]
 
