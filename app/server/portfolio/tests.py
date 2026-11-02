@@ -5,7 +5,9 @@ from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.test import TestCase
 
+from .legacy_seed_text import PREVIOUS_RESUME_EXPERIENCE_TEXT
 from .models import Experience, Project
+from .resume_content import RESUME_EXPERIENCES
 from .resume_source import load_resume_education_entries
 
 
@@ -135,6 +137,19 @@ class TestSyncResumeContent(TestCase):
             ["Sampras HK", "Microsoft", "Gold Crown Technology Co., Ltd.", "DediProg", "KozyGuru"],
         )
         self.assertEqual(Experience.objects.get(company="Microsoft").sort_order, 1)
+
+    def test_sync_replaces_text_from_an_earlier_resume_version(self):
+        microsoft = Experience.objects.get(company="Microsoft")
+        microsoft.highlights = PREVIOUS_RESUME_EXPERIENCE_TEXT["Microsoft"]["highlights"][-1]
+        microsoft.save()
+        written_by_hand = ["Typed in the admin."]
+        Experience.objects.create(company="KozyGuru", highlights=written_by_hand, sort_order=4)
+
+        call_command("sync_resume_content", stdout=StringIO())
+
+        microsoft_payload = next(item for item in RESUME_EXPERIENCES if item["company"] == "Microsoft")
+        self.assertEqual(Experience.objects.get(company="Microsoft").highlights, microsoft_payload["highlights"])
+        self.assertEqual(Experience.objects.get(company="KozyGuru").highlights, written_by_hand)
 
 
 class TestAdminMarkdownPreview(TestCase):

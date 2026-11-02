@@ -111,3 +111,66 @@ LEGACY_EXPERIENCE_TEXT = {
         ],
     },
 }
+
+
+# Earlier versions of ``resume_content``. A row that still holds one of these was written by a
+# previous sync, not by hand, so the next sync may replace it. Add the old value here whenever
+# a resume-covered text field changes.
+PREVIOUS_RESUME_PROJECT_TEXT = {
+    "microsoft-form-recognizer-toolkit": {
+        "summary": [
+            "Contributor to Microsoft's open-source Form Recognizer Toolkit, supporting document intelligence tooling in a production-adjacent open-source codebase."
+        ]
+    },
+    "ai-web-generator": {
+        "highlights": [
+            [
+                "Built a web app that turns a text prompt into a working website (single HTML, multi-file, or full Vue project), streams the code live over SSE, and lets users click any element in the preview to edit it.",
+                "Gave the AI agent 6 file tools and built an 11-step LangGraph4j workflow that collects images, icons, diagrams, and logos in 4 parallel branches, then checks code quality and retries if needed.",
+                "Added Redis chat memory, rate limiting (5 requests/min per user), Prometheus/Grafana monitoring, and 36 tests; deployed with Docker Compose and GitHub Actions."
+            ]
+        ]
+    }
+}
+
+PREVIOUS_RESUME_EXPERIENCE_TEXT = {
+    "Microsoft": {
+        "highlights": [
+            [
+                "Built front-end features for Azure Form Recognizer Studio (renamed Azure AI Document Intelligence in 2023) with React, TypeScript, and Redux, including the document labeling UI used to train custom extraction models.",
+                "Migrated Document Intelligence Studio features into Azure AI Studio (now Azure AI Foundry) as the two products merged.",
+                "Built a front-end monorepo that combined Azure AI products from multiple departments, as the platform grew from OCR (Form Recognizer) to images and audio in Azure AI Studio.",
+                "Introduced Redux Toolkit Query (RTK Query) for API caching and request deduplication, cutting repeated API calls and page loading time.",
+                "Kept unit test coverage above 90% with Jest and React Testing Library, improving release stability.",
+                "Used GitHub Copilot to speed up development of Form Recognizer document processing features.",
+                "Set up a shared WSL2 Linux development environment for the team, cutting manual setup work.",
+                "Built accessibility features so the product works for more users."
+            ],
+            [
+                "Built front-end features for Azure Form Recognizer Studio with React, TypeScript, and Redux, including the document labeling UI used to train custom extraction models.",
+                "Migrated Form Recognizer Studio features into Azure AI Foundry as the two products merged.",
+                "Built a front-end monorepo that combined Azure AI products from multiple departments, as the platform grew from OCR to images and audio in Azure AI Foundry.",
+                "Introduced RTK Query for API caching and request deduplication, cutting repeated API calls and page loading time.",
+                "Kept unit test coverage above 90% with Jest and React Testing Library, improving release stability.",
+                "Used GitHub Copilot to speed up development of Form Recognizer document processing features.",
+                "Set up a shared WSL2 Linux development environment for the team, cutting manual setup work.",
+                "Built accessibility features so the product works for more users."
+            ]
+        ]
+    },
+    "Gold Crown Technology Co., Ltd.": {
+        "highlights": [
+            [
+                "Built web apps with React, Vue, and TypeScript, with a focus on easy-to-use interfaces.",
+                "Added server-side rendering with Next.js and GraphQL to improve SEO and page load times."
+            ]
+        ]
+    },
+    "KozyGuru": {
+        "highlights": [
+            [
+                "Built the core property management platform for Australian Airbnb listings."
+            ]
+        ]
+    }
+}

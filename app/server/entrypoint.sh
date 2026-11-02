@@ -8,6 +8,9 @@ if [ "${SEED_DEMO_CONTENT:-true}" = "true" ]; then
   python manage.py seed_portfolio
 fi
 
+# Keep resume-covered projects and experiences in step with resume_content.py.
+python manage.py sync_resume_content
+
 if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
   python manage.py shell <<'PY'
 from django.contrib.auth import get_user_model

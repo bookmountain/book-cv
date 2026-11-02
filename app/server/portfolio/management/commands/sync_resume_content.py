@@ -2,17 +2,22 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.db.models import Max, Min
 
-from portfolio.legacy_seed_text import LEGACY_EXPERIENCE_TEXT, LEGACY_PROJECT_TEXT
+from portfolio.legacy_seed_text import (
+    LEGACY_EXPERIENCE_TEXT,
+    LEGACY_PROJECT_TEXT,
+    PREVIOUS_RESUME_EXPERIENCE_TEXT,
+    PREVIOUS_RESUME_PROJECT_TEXT,
+)
 from portfolio.models import Experience, Project
 from portfolio.resume_content import RESUME_EXPERIENCES, RESUME_PROJECTS
 
 # Short fields the resume owns. They are always set to the resume value.
-PROJECT_RESUME_FIELDS = ("stack", "repo_url", "live_url")
+PROJECT_RESUME_FIELDS = ("repo_url", "live_url")
 EXPERIENCE_RESUME_FIELDS = ("role", "location", "period")
 
 # Text fields that may have been written by hand in the admin. They are only replaced
 # when the live value is empty or still the text an older seed wrote.
-PROJECT_TEXT_FIELDS = ("summary", "details", "highlights")
+PROJECT_TEXT_FIELDS = ("stack", "summary", "details", "highlights")
 EXPERIENCE_TEXT_FIELDS = ("summary", "highlights")
 
 # Only used when a project row has to be created.
@@ -92,7 +97,10 @@ class Command(BaseCommand):
             return
 
         legacy = LEGACY_PROJECT_TEXT.get(slug, {})
-        self._apply(project, payload, f"project {slug}", PROJECT_RESUME_FIELDS, PROJECT_TEXT_FIELDS, legacy)
+        previous = PREVIOUS_RESUME_PROJECT_TEXT.get(slug, {})
+        self._apply(
+            project, payload, f"project {slug}", PROJECT_RESUME_FIELDS, PROJECT_TEXT_FIELDS, legacy, previous
+        )
 
     def _sync_experience(self, payload, is_newest):
         company = payload["company"]
@@ -111,7 +119,16 @@ class Command(BaseCommand):
             return
 
         legacy = LEGACY_EXPERIENCE_TEXT.get(company, {})
-        self._apply(matches[0], payload, f"experience {company}", EXPERIENCE_RESUME_FIELDS, EXPERIENCE_TEXT_FIELDS, legacy)
+        previous = PREVIOUS_RESUME_EXPERIENCE_TEXT.get(company, {})
+        self._apply(
+            matches[0],
+            payload,
+            f"experience {company}",
+            EXPERIENCE_RESUME_FIELDS,
+            EXPERIENCE_TEXT_FIELDS,
+            legacy,
+            previous,
+        )
 
     def _next_experience_sort_order(self):
         return (Experience.objects.aggregate(value=Max("sort_order"))["value"] or 0) + 1
@@ -131,7 +148,7 @@ class Command(BaseCommand):
         self.stdout.write("  ~ shifted existing experience sort_order values by +1 to make room at the top")
         return 0
 
-    def _apply(self, instance, payload, label, resume_fields, text_fields, legacy):
+    def _apply(self, instance, payload, label, resume_fields, text_fields, legacy, previous):
         changed = []
         kept = []
 
@@ -148,7 +165,7 @@ class Command(BaseCommand):
             if _normalize(current) == _normalize(payload[field]):
                 continue
 
-            legacy_values = [legacy[field]] if field in legacy else []
+            legacy_values = ([legacy[field]] if field in legacy else []) + previous.get(field, [])
             if _is_replaceable(current, legacy_values):
                 setattr(instance, field, payload[field])
                 changed.append(field)
