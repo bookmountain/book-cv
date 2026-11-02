@@ -183,7 +183,7 @@ export default async function HomePage() {
 
       {content.experiences.length ? (
         <>
-          <ExperienceSection education={content.education} experiences={content.experiences} index={sectionNumbers.experience} />
+          <ExperienceSection compact education={content.education} experiences={content.experiences} index={sectionNumbers.experience} />
           <hr className="divider" />
         </>
       ) : null}

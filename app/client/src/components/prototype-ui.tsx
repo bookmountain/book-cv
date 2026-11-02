@@ -400,10 +400,13 @@ export function ExperienceSection({
   education,
   experiences,
   index,
+  compact = false,
 }: {
   education: Education[];
   experiences: Experience[];
   index: string;
+  /** Role, company, and dates only, with a link to the full /experience page. */
+  compact?: boolean;
 }) {
   if (!experiences.length) {
     return null;
@@ -414,7 +417,7 @@ export function ExperienceSection({
       <div className="container">
         <div className="section-label">{index ? `${index} / ` : ""}Experience</div>
         <h2 className="section-title">Where I have worked.</h2>
-        <p className="section-sub">Roles, teams, and what I built, newest first.</p>
+        <p className="section-sub">{compact ? "Roles and teams, newest first." : "Roles, teams, and what I built, newest first."}</p>
 
         <div style={{ display: "grid", position: "relative" }}>
           <div style={{ position: "absolute", left: 7, top: 8, bottom: 8, width: 1, background: "var(--border)" }} />
@@ -424,7 +427,7 @@ export function ExperienceSection({
 
             return (
               <Reveal delay={itemIndex * 70} key={`${experience.company}-${experience.role}`}>
-                <div style={{ display: "grid", gridTemplateColumns: "16px minmax(0, 1fr)", gap: 20, marginBottom: 20 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "16px minmax(0, 1fr)", gap: 20, marginBottom: compact ? 12 : 20 }}>
                   <div
                     style={{
                       width: 15,
@@ -433,10 +436,10 @@ export function ExperienceSection({
                       background: isCurrent ? "var(--accent)" : "var(--secondary)",
                       border: `2px solid ${isCurrent ? "var(--accent)" : "var(--border-strong)"}`,
                       zIndex: 1,
-                      marginTop: 24,
+                      marginTop: compact ? 18 : 24,
                     }}
                   />
-                  <article className="card" style={{ padding: "20px 22px" }}>
+                  <article className="card" style={{ padding: compact ? "14px 22px" : "20px 22px" }}>
                     <div
                       style={{
                         display: "flex",
@@ -444,7 +447,7 @@ export function ExperienceSection({
                         alignItems: "flex-start",
                         gap: 12,
                         flexWrap: "wrap",
-                        marginBottom: 12,
+                        marginBottom: compact ? 0 : 12,
                       }}
                     >
                       <div style={{ minWidth: 0 }}>
@@ -468,7 +471,7 @@ export function ExperienceSection({
                       <span className={isCurrent ? "tag green" : "tag"}>{experience.period}</span>
                     </div>
 
-                    {highlights.length ? (
+                    {compact ? null : highlights.length ? (
                       <ExperienceHighlights items={highlights} />
                     ) : (
                       <p style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.7 }}>{experience.summary}</p>
@@ -480,7 +483,15 @@ export function ExperienceSection({
           })}
         </div>
 
-        {education.length ? (
+        {compact ? (
+          <div style={{ marginTop: 28 }}>
+            <Link className="btn btn-ghost" href="/experience">
+              Full experience →
+            </Link>
+          </div>
+        ) : null}
+
+        {!compact && education.length ? (
           <div style={{ marginTop: 28 }}>
             <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--foreground)", marginBottom: 14 }}>Education</h3>
             <div style={{ display: "grid", gap: 1, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
