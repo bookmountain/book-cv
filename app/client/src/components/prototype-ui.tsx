@@ -536,12 +536,11 @@ const beyondCodeGroups = [
     ],
   },
   {
-    label: "Homelab & IT support",
+    label: "Homelab",
     tag: "Servers",
     items: [
       "Run a homelab on Proxmox for self-hosted services and local AI models.",
       "Host this site and my project demos on my own server behind Cloudflare.",
-      "Was the go-to IT person at past jobs, setting up colleagues' desks, machines, and software.",
     ],
   },
   {
@@ -561,7 +560,7 @@ export function BeyondCodeSection({ index }: { index: string }) {
       <div className="container">
         <div className="section-label">{index} / Beyond Code</div>
         <h2 className="section-title">Hardware, servers, and people.</h2>
-        <p className="section-sub">I&apos;m the IT guy wherever I work. I like taking things apart, fixing them, and helping others.</p>
+        <p className="section-sub">I like taking things apart, fixing them, and helping others.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
           {beyondCodeGroups.map((group, groupIndex) => (
             <Reveal delay={groupIndex * 70} key={group.label}>

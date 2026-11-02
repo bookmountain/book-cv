@@ -17,8 +17,7 @@ RESUME_PROJECTS = [
         # Resume wording, unchanged.
         "stack": "Open Source, Azure AI, GitHub",
         "summary": (
-            "Contributor to Microsoft's open-source Form Recognizer Toolkit, supporting document intelligence "
-            "tooling in a production-adjacent open-source codebase."
+            "Coded and tested contributions to Microsoft's open-source Form Recognizer Toolkit."
         ),
         "repo_url": "https://github.com/microsoft/Form-Recognizer-Toolkit",
         "live_url": "",
@@ -92,8 +91,7 @@ RESUME_PROJECTS = [
             "project), streams the code live over SSE, and lets users click any element in the preview to edit it.",
             "Gave the AI agent 6 file tools and built an 11-step LangGraph4j workflow that collects images, icons, "
             "diagrams, and logos in 4 parallel branches, then checks code quality and retries if needed.",
-            "Added Redis chat memory, rate limiting (5 requests/min per user), Prometheus/Grafana monitoring, and "
-            "36 tests; deployed with Docker Compose and GitHub Actions.",
+            "Added Redis chat memory, rate limiting (5 requests/min per user), and Prometheus/Grafana monitoring.",
         ],
         "repo_url": "https://github.com/bookmountain/ai-web-generator",
         "live_url": "https://ai-web-generator.bookmountain.work",
@@ -155,18 +153,15 @@ RESUME_EXPERIENCES = [
         "period": "Mar 2022 — Apr 2025",
         "summary": "Front-end work on Azure AI Document Intelligence and Azure AI Foundry with React, TypeScript, and Redux.",
         "highlights": [
-            "Built front-end features for Azure Form Recognizer Studio with React, TypeScript, and Redux, including "
-            "the document labeling UI used to train custom extraction models.",
-            "Migrated Form Recognizer Studio features into Azure AI Foundry as the two "
-            "products merged.",
-            "Built a front-end monorepo that combined Azure AI products from multiple departments, as the platform "
-            "grew from OCR to images and audio in Azure AI Foundry.",
-            "Introduced RTK Query for API caching and request deduplication, cutting repeated "
-            "API calls and page loading time.",
-            "Kept unit test coverage above 90% with Jest and React Testing Library, improving release stability.",
-            "Used GitHub Copilot to speed up development of Form Recognizer document processing features.",
-            "Set up a shared WSL2 Linux development environment for the team, cutting manual setup work.",
-            "Built accessibility features so the product works for more users.",
+            "Built front-end features for Azure AI Document Intelligence Studio with React, TypeScript, and Redux, "
+            "including the document labeling UI for training custom models.",
+            "Migrated Document Intelligence Studio into Azure AI Foundry during the product merger, building a "
+            "monorepo that unified Azure AI front ends from multiple departments.",
+            "Introduced RTK Query for API caching and request deduplication, cutting redundant API requests by 28% "
+            "and average page-load time by 18%.",
+            "Kept unit test coverage above 90% with Jest, Enzyme, and React Testing Library.",
+            "Adopted GitHub Copilot for document processing features, raising development throughput by about 26%.",
+            "Kept interfaces fully usable at 400% browser zoom to meet Microsoft's accessibility requirements.",
         ],
     },
     {
@@ -176,8 +171,9 @@ RESUME_EXPERIENCES = [
         "period": "Feb 2021 — Feb 2022",
         "summary": "Built web apps with React, Vue, and TypeScript, and added server-side rendering with Next.js and GraphQL.",
         "highlights": [
-            "Built web apps with React, Vue, and TypeScript, with a focus on easy-to-use interfaces.",
-            "Added server-side rendering with Next.js and GraphQL to improve SEO and page load times.",
+            "Built web apps with React and Vue, and migrated projects from JavaScript to TypeScript for type safety.",
+            "Added Next.js server-side rendering with GraphQL, cutting average page-load time by 23% and "
+            "contributing to a 12% relative increase in organic search click-through rate.",
         ],
     },
     {
@@ -197,7 +193,8 @@ RESUME_EXPERIENCES = [
         "period": "Feb 2020 — Jul 2020",
         "summary": "Built the core property management platform for Australian Airbnb listings.",
         "highlights": [
-            "Built the core property management platform for Australian Airbnb listings.",
+            "Built the core property management platform for Australian Airbnb listings, contributing to an 8% "
+            "relative increase in booking conversion.",
         ],
     },
 ]

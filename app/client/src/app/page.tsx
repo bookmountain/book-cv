@@ -80,7 +80,7 @@ export default async function HomePage() {
     { command: "$ ssh homelab docker ps -q | wc -l", output: "18 containers on a ThinkPad running Proxmox" },
     {
       command: "$ echo $STATUS",
-      output: `Open to full-stack and IT support roles · ${content.profile.location || "Adelaide, Australia"}`,
+      output: `Open to full-stack roles · ${content.profile.location || "Adelaide, Australia"}`,
     },
   ];
 
