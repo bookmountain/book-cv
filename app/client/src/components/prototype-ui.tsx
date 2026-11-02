@@ -386,32 +386,13 @@ export function PostRow({ delay = 0, entry }: { delay?: number; entry: WritingEn
   );
 }
 
-const EXPERIENCE_HIGHLIGHT_PREVIEW = 3;
-
 function ExperienceHighlights({ items }: { items: string[] }) {
-  const preview = items.slice(0, EXPERIENCE_HIGHLIGHT_PREVIEW);
-  const rest = items.slice(EXPERIENCE_HIGHLIGHT_PREVIEW);
-
   return (
-    <>
-      <ul className="prototype-experience-list">
-        {preview.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-      {rest.length ? (
-        <details className="prototype-experience-more">
-          <summary>
-            {rest.length} more
-          </summary>
-          <ul className="prototype-experience-list">
-            {rest.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </details>
-      ) : null}
-    </>
+    <ul className="prototype-experience-list">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
   );
 }
 
